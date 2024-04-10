@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import { getUser, signOut } from '../auth';
+	import { getUser, signOut } from '../../auth';
 
 	async function onSignOut() {
 		await signOut();

@@ -9,6 +9,9 @@ const config = {
 		adapter: adapter(),
 		paths: {
 			base: '/fem-link-sharing-app'
+		},
+		alias: {
+			$: './src'
 		}
 	}
 };

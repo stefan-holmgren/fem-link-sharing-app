@@ -40,3 +40,50 @@ canvas {
 	}
 }
 /* END RESET */
+
+@font-face {
+	font-family: 'Instrument Sans';
+	src: url('/fonts/InstrumentSans-Regular.ttf') format('truetype');
+	font-weight: 400; /* Regular */
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Instrument Sans';
+	src: url('/fonts/InstrumentSans-SemiBold.ttf') format('truetype');
+	font-weight: 600; /* Semi-Bold */
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Instrument Sans';
+	src: url('/fonts/InstrumentSans-Bold.ttf') format('truetype');
+	font-weight: 700; /* Bold */
+	font-style: normal;
+}
+
+:root {
+	--fw-regular: 400;
+	--fw-semibold: 600;
+	--fw-bold: 700;
+
+	--clr-primary-400-rgb: 99, 60, 255;
+	--clr-primary-400: rgb(var(--clr-primary-400-rgb));
+	--clr-primary-600: #efebff;
+	--clr-primary-500: #beadff;
+
+	--clr-base-400: #333333;
+	--clr-base-500: #737373;
+	--clr-base-600: #d9d9d9;
+	--clr-base-700: #fafafa;
+	--clr-base-900: #ffffff;
+
+	--clr-accent: #ff3939;
+}
+
+body {
+	font-family: 'Instrument Sans';
+	font-weight: var(--fw-regular);
+	line-height: 1.5;
+	color: var(--clr-base-400);
+}
