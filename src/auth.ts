@@ -8,6 +8,8 @@ import {
 	signOut as firebaseSignOut
 } from 'firebase/auth';
 
+import type { User } from 'firebase/auth';
+
 const auth = getAuth();
 
 export const signInWithEmailAndPassword = async (email: string, password: string) => {
@@ -24,14 +26,15 @@ export const signOut = async () => {
 	await firebaseSignOut(auth);
 };
 
-export const getUser = () => {
-	return auth.currentUser;
+export const getUser = async () => {
+	return new Promise<User | null>((res, rej) => {
+		const unsubscribe = onAuthStateChanged(
+			auth,
+			(user) => {
+				unsubscribe();
+				res(user);
+			},
+			rej
+		);
+	});
 };
-
-onAuthStateChanged(auth, (user) => {
-	if (user) {
-		console.log('User is signed in');
-	} else {
-		console.log('No user is signed in');
-	}
-});
