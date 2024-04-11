@@ -2,9 +2,8 @@
 	import { signInWithEmailAndPassword } from '$/auth';
 	import Button from '$/components/Button.svelte';
 	import Input, { type InputRef } from '$/components/Input.svelte';
-	import { WrongCredentialsError } from '$/lib/errors';
+	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
-	import type { HTMLInputAttributes } from 'svelte/elements';
 
 	let email = '';
 	let password = '';
@@ -18,8 +17,11 @@
 		busy = true;
 		try {
 			await signInWithEmailAndPassword({ email, password });
+			goto(`${base}/`, { replaceState: true });
 		} catch (ex) {
 			password = '';
+			emailRef.triggerError();
+			passwordRef.triggerError();
 		} finally {
 			busy = false;
 		}

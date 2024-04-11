@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
 	export type InputRef = {
-		triggerError: (message: string) => void;
+		triggerError: (message?: string) => void;
 		focus: () => void;
 	};
 </script>
@@ -18,13 +18,15 @@
 	export let required: HTMLInputAttributes['required'] = false;
 	export let value = '';
 
+	let hasError = false;
 	let errorMessage = '';
 
 	let inputRef: HTMLInputElement;
 
 	export const ref: InputRef = {
-		triggerError: (message: string) => {
-			errorMessage = message;
+		triggerError: (message) => {
+			hasError = true;
+			errorMessage = message ?? '';
 		},
 		focus: () => {
 			inputRef.focus();
@@ -38,6 +40,7 @@
 	const onInput = (e: Event) => {
 		value = (e.target as HTMLInputElement).value;
 		errorMessage = '';
+		hasError = false;
 		dispatch('input', { value });
 	};
 
@@ -67,7 +70,7 @@
 		<input
 			on:invalid={onInvalid}
 			bind:this={inputRef}
-			class:error={!!errorMessage}
+			class:error={!!hasError}
 			{required}
 			{type}
 			{placeholder}

@@ -1,12 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
-	import { base } from '$app/paths';
-	import { getUser, signOut } from '../../auth';
-
-	async function onSignOut() {
-		await signOut();
-		goto(`${base}/login`, { replaceState: true });
-	}
 </script>
 
 <p>

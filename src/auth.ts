@@ -10,7 +10,7 @@ import {
 } from 'firebase/auth';
 
 import type { User } from 'firebase/auth';
-import { WrongCredentialsError } from './lib/errors';
+import { AccountAlreadyExistsError, WrongCredentialsError } from './lib/errors';
 
 const auth = getAuth();
 
@@ -29,8 +29,21 @@ export const signInWithEmailAndPassword = async (args: { email: string; password
 };
 
 export const signUpWithEmailAndPassword = async (args: { email: string; password: string }) => {
-	const credentials = await firebaseCreateUserWithEmailAndPassword(auth, args.email, args.password);
-	return credentials.user;
+	try {
+		const credentials = await firebaseCreateUserWithEmailAndPassword(
+			auth,
+			args.email,
+			args.password
+		);
+		return credentials.user;
+	} catch (error) {
+		if (error instanceof FirebaseError) {
+			if (error.code === 'auth/email-already-in-use') {
+				throw new AccountAlreadyExistsError();
+			}
+		}
+		throw error;
+	}
 };
 
 export const signOut = async () => {

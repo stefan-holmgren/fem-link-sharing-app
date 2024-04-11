@@ -1,17 +1,40 @@
-<script>
+<script lang="ts">
 	import { signUpWithEmailAndPassword } from '$/auth';
 	import Button from '$/components/Button.svelte';
 	import Input from '$/components/Input.svelte';
+	import type { InputRef } from '$/components/Input.svelte';
+	import { AccountAlreadyExistsError } from '$/lib/errors';
+	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 
 	let email = '';
 	let password = '';
 	let confirmPassword = '';
 
+	let emailRef: InputRef;
+	let passwordRef: InputRef;
+	let confirmPasswordRef: InputRef;
+
+	let busy = false;
+
 	async function signup() {
+		if (password !== confirmPassword) {
+			passwordRef.triggerError('Mismatch');
+			confirmPasswordRef.triggerError('Mismatch');
+			return;
+		}
+
+		busy = true;
 		try {
 			await signUpWithEmailAndPassword({ email, password });
-		} catch (err) {}
+			goto(`${base}/`, { replaceState: true });
+		} catch (err) {
+			if (err instanceof AccountAlreadyExistsError) {
+				emailRef.triggerError('Already exists');
+			}
+		} finally {
+			busy = false;
+		}
 	}
 </script>
 
@@ -19,6 +42,7 @@
 <p>Let's get you started sharing your links!</p>
 <form on:submit={signup}>
 	<Input
+		bind:ref={emailRef}
 		label="Email address"
 		type="email"
 		bind:value={email}
@@ -27,6 +51,7 @@
 		autocomplete="username"
 	/>
 	<Input
+		bind:ref={passwordRef}
 		label="Password"
 		type="password"
 		bind:value={password}
@@ -36,6 +61,7 @@
 		placeholder="At least 8 characters"
 	/>
 	<Input
+		bind:ref={confirmPasswordRef}
 		label="Confirm password"
 		type="password"
 		bind:value={confirmPassword}
@@ -45,7 +71,7 @@
 		placeholder="At least 8 characters"
 	/>
 	<p>Password must contain at least 8 characters</p>
-	<Button type="submit">Create new account</Button>
+	<Button type="submit" disabled={busy}>Create new account</Button>
 </form>
 
 <div class="auth-link-container">
