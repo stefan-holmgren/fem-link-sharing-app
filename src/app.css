@@ -63,14 +63,15 @@ canvas {
 }
 
 :root {
+	--anim-duration: 0.3s;
 	--fw-regular: 400;
 	--fw-semibold: 600;
 	--fw-bold: 700;
 
 	--clr-primary-400-rgb: 99, 60, 255;
 	--clr-primary-400: rgb(var(--clr-primary-400-rgb));
-	--clr-primary-600: #efebff;
 	--clr-primary-500: #beadff;
+	--clr-primary-600: #efebff;
 
 	--clr-base-400: #333333;
 	--clr-base-500: #737373;
@@ -78,7 +79,8 @@ canvas {
 	--clr-base-700: #fafafa;
 	--clr-base-900: #ffffff;
 
-	--clr-accent: #ff3939;
+	--clr-accent-rgb: 255, 57, 57;
+	--clr-accent: rgb(var(--clr-accent-rgb));
 }
 
 body {
@@ -86,4 +88,15 @@ body {
 	font-weight: var(--fw-regular);
 	line-height: 1.5;
 	color: var(--clr-base-400);
+}
+
+a {
+	color: var(--clr-primary-400);
+
+	transition: color var(--anim-duration);
+
+	&:hover,
+	&:focus {
+		color: var(--clr-primary-500);
+	}
 }
