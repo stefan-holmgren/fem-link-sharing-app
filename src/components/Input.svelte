@@ -109,22 +109,25 @@
 					border-color: var(--clr-accent);
 				}
 
-				&[type='email'] {
-					padding-left: 2.75rem;
-					background: url('/images/icon-email.svg') no-repeat 1rem center;
-					background-color: white;
-				}
-
-				&[type='url'] {
-					padding-left: 2.75rem;
-					background: url('/images/icon-link.svg') no-repeat 1rem center;
-					background-color: white;
-				}
-
+				&[type='email'],
+				&[type='url'],
 				&[type='password'] {
 					padding-left: 2.75rem;
-					background: url('/images/icon-password.svg') no-repeat 1rem center;
 					background-color: white;
+					background-repeat: no-repeat;
+					background-position: 1rem center;
+
+					&[type='email'] {
+						background-image: url('/images/icon-email.svg');
+					}
+
+					&[type='url'] {
+						background-image: url('/images/icon-link.svg');
+					}
+
+					&[type='password'] {
+						background-image: url('/images/icon-password.svg');
+					}
 				}
 
 				&:focus {
