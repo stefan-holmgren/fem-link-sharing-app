@@ -53,7 +53,6 @@
 		if (targetLink && draggedLink) {
 			const draggedIndex = links.indexOf(draggedLink);
 			const targetIndex = links.indexOf(targetLink);
-			links = [...links];
 			links.splice(draggedIndex, 1);
 			links.splice(targetIndex, 0, draggedLink);
 			links = [...links];
