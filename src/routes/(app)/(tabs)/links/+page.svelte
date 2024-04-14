@@ -36,6 +36,11 @@
 				originalIndex: links.length
 			}
 		];
+
+		requestAnimationFrame(() => {
+			const lastLi = document.querySelector('.links-container ul li:last-child');
+			lastLi?.scrollIntoView({ behavior: 'smooth' });
+		});
 	}
 
 	function onRemoveLink(link: OrderableLink) {
@@ -61,6 +66,7 @@
 
 	function onDragEnd(event: DragEvent) {
 		draggedLink = null;
+		renumberLinks();
 	}
 
 	function onDragStart(event: DragEvent, link: OrderableLink) {
@@ -110,7 +116,7 @@
 				</li>
 			{:else}
 				{#each links as link, i (link.id)}
-					<li class="link" class:dragging={draggedLink === link} data-link-id={link.id}>
+					<li class="link" class:dragging={draggedLink?.id === link.id} data-link-id={link.id}>
 						<div class="link-header">
 							<div
 								role="button"
