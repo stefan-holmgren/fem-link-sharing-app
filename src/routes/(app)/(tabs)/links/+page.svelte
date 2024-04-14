@@ -13,6 +13,8 @@
 
 	type OrderableLink = Link & { originalIndex: number };
 
+	let clientY = 0;
+
 	let links: OrderableLink[] = [
 		{ id: Date.now().toString(), type: 'github', url: 'blahblah', originalIndex: 0 }
 	];
@@ -50,10 +52,15 @@
 
 	function onDragOver(event: DragEvent) {
 		event.preventDefault();
+
+		// for drag-scrolling
+		clientY = event.clientY;
+
 		const target = event.target as HTMLElement;
 		const li = target.closest('li');
 		const targetLink = li && links.find((l) => l.id === li.dataset.linkId);
-		if (targetLink === draggedLink) return;
+
+		if (targetLink?.id === draggedLink?.id) return;
 
 		if (targetLink && draggedLink) {
 			const draggedIndex = links.indexOf(draggedLink);
@@ -76,15 +83,38 @@
 			const rect = li.getBoundingClientRect();
 			const x = event.clientX - rect.left;
 			const y = event.clientY - rect.top;
-			event.dataTransfer?.setDragImage(li, x, y);
+			if (event.dataTransfer) {
+				event.dataTransfer.setDragImage(li, x, y);
+				event.dataTransfer.effectAllowed = 'move';
+			}
 			// To allow the browser to make the drag image, we need to set the draggedLink in the next frame
 			requestAnimationFrame(() => {
 				draggedLink = link;
+				clientY = event.clientY;
+				dragAndDropScroll();
 			});
 		}
 	}
 
 	function onDrop(event: DragEvent) {}
+
+	function dragAndDropScroll() {
+		console.log('DnD scroll', clientY);
+		const buffer = 150; // distance from top or bottom
+		const maxScrollSpeed = 20;
+
+		if (clientY < buffer) {
+			const scrollAmount = (maxScrollSpeed * (buffer - clientY)) / buffer;
+			window.scrollBy(0, -scrollAmount);
+		} else if (clientY > window.innerHeight - buffer) {
+			const scrollAmount = (maxScrollSpeed * (clientY - (window.innerHeight - buffer))) / buffer;
+			window.scrollBy(0, scrollAmount);
+		}
+		// Are we still dragging? Keep checking for scroll opportunities
+		if (draggedLink) {
+			requestAnimationFrame(dragAndDropScroll);
+		}
+	}
 
 	onMount(() => {
 		// disable default dragover event, the return animation is slow and ugly
