@@ -99,7 +99,6 @@
 	function onDrop(event: DragEvent) {}
 
 	function dragAndDropScroll() {
-		console.log('DnD scroll', clientY);
 		const buffer = 150; // distance from top or bottom
 		const maxScrollSpeed = 20;
 
