@@ -1,26 +1,28 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import LinksIcon from '$/icons/icon-links-header.svg?raw';
-	import ProfileIcon from '$/icons/icon-profile-details-header.svg?raw';
-	import PreviewIcon from '$/icons/icon-preview-header.svg?raw';
-	import { page } from '$app/stores';
+	import NavLink from '$/components/NavLink.svelte';
+	import IconLinksHeader from '$/icons/IconLinksHeader.svelte';
+	import IconProfileDetailsHeader from '$/icons/IconProfileDetailsHeader.svelte';
+	import IconPreviewHeader from '$/icons/IconPreviewHeader.svelte';
 </script>
 
 <main>
 	<header>
 		<img src="{base}/images/logo-devlinks-small.svg" alt="devlinks" />
 		<nav>
-			<a href="{base}/" class:active={$page.url.pathname === `${base}/links`}
-				>{@html LinksIcon}<span>Links</span></a
-			><a href="{base}/profile" class:active={$page.url.pathname === `${base}/profile`}
-				>{@html ProfileIcon}<span>Profile Details</span></a
-			>
+			<NavLink href="{base}/links">
+				<IconLinksHeader slot="icon" />
+				<span slot="label">Links</span>
+			</NavLink>
+			<NavLink href="{base}/profile">
+				<IconProfileDetailsHeader slot="icon" />
+				<span slot="label">Profile Details</span>
+			</NavLink>
 		</nav>
-		<a href="{base}/preview">{@html PreviewIcon}<span>Preview</span></a>
+		<a href="{base}/preview"><IconPreviewHeader /><span>Preview</span></a>
 	</header>
 	<div>
 		<slot />
-		<div>Hello</div>
 	</div>
 </main>
 
@@ -61,24 +63,6 @@
 				position: relative;
 				display: grid;
 				grid-auto-flow: column;
-				a {
-					transition: all var(--anim-duration);
-					color: var(--clr-base-500);
-					border-radius: 0.5rem;
-					padding: 0.6875rem 1.6875rem;
-					span {
-						display: none;
-					}
-
-					&.active {
-						color: var(--clr-primary-400);
-						background-color: var(--clr-primary-600);
-					}
-
-					&:hover {
-						color: var(--clr-primary-400);
-					}
-				}
 			}
 			> a {
 				@include button('secondary');
@@ -90,10 +74,11 @@
 		}
 
 		> div {
+			display: flex;
+			flex-direction: column;
 			position: relative;
 			background-color: var(--clr-base-900);
 			margin: 1rem;
-			padding: 1.5rem;
 			border-radius: 0.75rem;
 			flex: 1;
 		}

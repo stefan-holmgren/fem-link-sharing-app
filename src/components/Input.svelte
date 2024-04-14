@@ -99,6 +99,7 @@
 				padding: 0.75rem 1rem;
 				border: 1px solid var(--clr-base-600);
 				background: none no-repeat 1rem center;
+				color: var(--base-400);
 
 				transition: all var(--anim-duration);
 
@@ -111,11 +112,19 @@
 				&[type='email'] {
 					padding-left: 2.75rem;
 					background: url('/images/icon-email.svg') no-repeat 1rem center;
+					background-color: white;
+				}
+
+				&[type='url'] {
+					padding-left: 2.75rem;
+					background: url('/images/icon-link.svg') no-repeat 1rem center;
+					background-color: white;
 				}
 
 				&[type='password'] {
 					padding-left: 2.75rem;
 					background: url('/images/icon-password.svg') no-repeat 1rem center;
+					background-color: white;
 				}
 
 				&:focus {

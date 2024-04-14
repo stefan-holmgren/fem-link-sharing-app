@@ -4,5 +4,3 @@
 
 	redirect(302, `${base}/links`);
 </script>
-
-<h1>Hello</h1>
