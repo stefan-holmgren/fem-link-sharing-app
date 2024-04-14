@@ -10,6 +10,4 @@ export const load = async () => {
 	if (!user) {
 		redirect(302, `${base}/login`);
 	}
-
-	return { user };
 };
