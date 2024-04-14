@@ -14,6 +14,7 @@
 	type OrderableLink = Link & { originalIndex: number };
 
 	let clientY = 0;
+	let touchDrag = false;
 
 	let links: OrderableLink[] = [
 		{ id: Date.now().toString(), type: 'github', url: 'blahblah', originalIndex: 0 }
@@ -50,6 +51,15 @@
 		renumberLinks();
 	}
 
+	function swapLinks(link1: OrderableLink, link2: OrderableLink) {
+		const index1 = links.indexOf(link1);
+		const index2 = links.indexOf(link2);
+		if (index1 === -1 || index2 === -1) return;
+		links[index1] = link2;
+		links[index2] = link1;
+		links = [...links];
+	}
+
 	function onDragOver(event: DragEvent) {
 		event.preventDefault();
 
@@ -60,18 +70,42 @@
 		const li = target.closest('li');
 		const targetLink = li && links.find((l) => l.id === li.dataset.linkId);
 
-		if (targetLink?.id === draggedLink?.id) return;
-
-		if (targetLink && draggedLink) {
-			const draggedIndex = links.indexOf(draggedLink);
-			const targetIndex = links.indexOf(targetLink);
-			links.splice(draggedIndex, 1);
-			links.splice(targetIndex, 0, draggedLink);
-			links = [...links];
-		}
+		if (!targetLink || !draggedLink || targetLink?.id === draggedLink?.id) return;
+		swapLinks(draggedLink, targetLink);
 	}
 
 	function onDragEnd(event: DragEvent) {
+		draggedLink = null;
+		renumberLinks();
+	}
+
+	function onTouchDragStart(event: TouchEvent, link: OrderableLink) {
+		event.preventDefault();
+		clientY = event.touches[0].clientY;
+		touchDrag = true;
+		draggedLink = link;
+		requestAnimationFrame(dragAndDropScroll);
+	}
+
+	function onTouchDragMove(event: TouchEvent) {
+		if (!draggedLink) return;
+		clientY = event.touches[0].clientY;
+
+		const overElement = document.elementFromPoint(
+			event.touches[0].clientX,
+			event.touches[0].clientY
+		) as HTMLElement;
+
+		if (overElement) {
+			const link = links.find((l) => l.id === overElement.dataset.linkId);
+			if (link) {
+				swapLinks(draggedLink, link);
+			}
+		}
+	}
+
+	function onTouchDragEnd(event: TouchEvent) {
+		touchDrag = false;
 		draggedLink = null;
 		renumberLinks();
 	}
@@ -145,7 +179,12 @@
 				</li>
 			{:else}
 				{#each links as link, i (link.id)}
-					<li class="link" class:dragging={draggedLink?.id === link.id} data-link-id={link.id}>
+					<li
+						class="link"
+						class:dragging={draggedLink?.id === link.id}
+						class:touched={touchDrag}
+						data-link-id={link.id}
+					>
 						<div class="link-header">
 							<div
 								role="button"
@@ -153,6 +192,15 @@
 								class="drag-handle"
 								draggable="true"
 								on:dragstart={(e) => onDragStart(e, link)}
+								on:touchstart={(e) => {
+									onTouchDragStart(e, link);
+								}}
+								on:touchend={(e) => {
+									onTouchDragEnd(e);
+								}}
+								on:touchmove={(e) => {
+									onTouchDragMove(e);
+								}}
 							>
 								<img src="{base}/images/icon-drag-and-drop.svg" alt="" />
 								<h3>Link #{link.originalIndex + 1}</h3>
@@ -202,6 +250,9 @@
 				background-color: var(--clr-base-700);
 
 				&.link {
+					transition:
+						background-color var(--anim-duration),
+						box-shadow var(--anim-duration);
 					.link-header {
 						display: flex;
 						align-items: center;
@@ -209,6 +260,7 @@
 						color: var(--clr-base-500);
 
 						.drag-handle {
+							touch-action: none;
 							display: flex;
 							align-items: center;
 							gap: 0.5rem;
@@ -231,8 +283,12 @@
 						}
 					}
 
-					&.dragging {
+					&.dragging:not(.touched) {
 						opacity: 0;
+					}
+					&.dragging.touched {
+						background-color: var(--clr-primary-600);
+						box-shadow: 0 0 2rem 0 rgba(var(--clr-primary-400-rgb), 25%);
 					}
 				}
 
