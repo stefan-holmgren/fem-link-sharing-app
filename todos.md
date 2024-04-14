@@ -4,3 +4,4 @@
 - spinner for button when busy (login/create-account)
 - error message when login fails
 - error message when create-account fails
+- drag shadow doesn't have rounded corners

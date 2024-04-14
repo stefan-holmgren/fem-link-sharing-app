@@ -1,22 +1,96 @@
 <script lang="ts">
+	import { flip } from 'svelte/animate';
 	import { base } from '$app/paths';
 	import Button from '$/components/Button.svelte';
 	import Input from '$/components/Input.svelte';
+	import { onMount } from 'svelte';
 
 	type Link = {
+		id: string;
 		type: 'github';
 		url: string;
 	};
 
-	let links: Link[] = [{ type: 'github', url: '' }];
+	type OrderableLink = Link & { originalIndex: number };
+
+	let links: OrderableLink[] = [
+		{ id: Date.now().toString(), type: 'github', url: 'blahblah', originalIndex: 0 }
+	];
+
+	let draggedLink: OrderableLink | null;
+
+	function renumberLinks() {
+		links.forEach((link, i) => {
+			link.originalIndex = i;
+		});
+		links = [...links];
+	}
 
 	function onAddLink() {
-		links = [...links, { type: 'github', url: '' }];
+		links = [
+			...links,
+			{
+				id: Date.now().toString(),
+				type: 'github',
+				url: Date.now().toString(),
+				originalIndex: links.length
+			}
+		];
 	}
 
-	function onRemoveLink(index: number) {
-		links = links.filter((_, i) => i !== index);
+	function onRemoveLink(link: OrderableLink) {
+		links = links.filter((l) => l !== link);
+		renumberLinks();
 	}
+
+	function onDragOver(event: DragEvent) {
+		event.preventDefault();
+		const target = event.target as HTMLElement;
+		const li = target.closest('li');
+		const targetLink = li && links.find((l) => l.id === li.dataset.linkId);
+		if (targetLink === draggedLink) return;
+
+		if (targetLink && draggedLink) {
+			const draggedIndex = links.indexOf(draggedLink);
+			const targetIndex = links.indexOf(targetLink);
+			links = [...links];
+			links.splice(draggedIndex, 1);
+			links.splice(targetIndex, 0, draggedLink);
+			links = [...links];
+		}
+	}
+
+	function onDragEnd(event: DragEvent) {
+		draggedLink = null;
+	}
+
+	function onDragStart(event: DragEvent, link: OrderableLink) {
+		const target = event.target as HTMLElement;
+		const li = target.closest('li');
+		if (li) {
+			const rect = li.getBoundingClientRect();
+			const x = event.clientX - rect.left;
+			const y = event.clientY - rect.top;
+			event.dataTransfer?.setDragImage(li, x, y);
+			// To allow the browser to make the drag image, we need to set the draggedLink in the next frame
+			requestAnimationFrame(() => {
+				draggedLink = link;
+			});
+		}
+	}
+
+	function onDrop(event: DragEvent) {}
+
+	onMount(() => {
+		// disable default dragover event, the return animation is slow and ugly
+		function disableReturnAnimation(event: DragEvent) {
+			event.preventDefault();
+		}
+		document.addEventListener('dragover', disableReturnAnimation);
+		return () => {
+			document.removeEventListener('dragover', disableReturnAnimation);
+		};
+	});
 </script>
 
 <div class="container">
@@ -25,7 +99,7 @@
 
 	<div class="links-container">
 		<Button variant="secondary" on:click={onAddLink}>+ Add new link</Button>
-		<ul>
+		<ul on:drop={onDrop} on:dragover={onDragOver} on:dragend={onDragEnd}>
 			{#if links.length === 0}
 				<li class="tutorial">
 					<img src="{base}/images/illustration-empty.svg" alt="" />
@@ -36,12 +110,20 @@
 					</p>
 				</li>
 			{:else}
-				{#each links as link, i}
-					<li class="link">
+				{#each links as link, i (link.id)}
+					<li class="link" class:dragging={draggedLink === link} data-link-id={link.id}>
 						<div class="link-header">
-							<img src="{base}/images/icon-drag-and-drop.svg" alt="" />
-							<h3>Link #{i + 1}</h3>
-							<button on:click={() => onRemoveLink(i)}>Remove</button>
+							<div
+								role="button"
+								tabindex="-1"
+								class="drag-handle"
+								draggable="true"
+								on:dragstart={(e) => onDragStart(e, link)}
+							>
+								<img src="{base}/images/icon-drag-and-drop.svg" alt="" />
+								<h3>Link #{link.originalIndex + 1}</h3>
+							</div>
+							<button on:click={() => onRemoveLink(link)}>Remove</button>
 						</div>
 						<Input
 							label="Link"
@@ -92,8 +174,14 @@
 						gap: 0.5rem;
 						color: var(--clr-base-500);
 
-						h3 {
-							font-weight: var(--fw-bold);
+						.drag-handle {
+							display: flex;
+							align-items: center;
+							gap: 0.5rem;
+
+							h3 {
+								font-weight: var(--fw-bold);
+							}
 						}
 
 						button {
@@ -107,6 +195,10 @@
 						& > :last-child {
 							margin-left: auto;
 						}
+					}
+
+					&.dragging {
+						opacity: 0;
 					}
 				}
 
