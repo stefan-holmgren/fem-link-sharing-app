@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { flip } from 'svelte/animate';
 	import { base } from '$app/paths';
 	import Button from '$/components/Button.svelte';
 	import Input from '$/components/Input.svelte';
 	import { onMount } from 'svelte';
 	import Select from '$/components/Select.svelte';
-	import SelectOption from '$/components/SelectOption.svelte';
+	import IconGithub from '$/icons/IconGithub.svelte';
+	import IconFrontendMentor from '$/icons/IconFrontendMentor.svelte';
 
 	type Link = {
 		id: string;
@@ -43,7 +43,7 @@
 		];
 
 		requestAnimationFrame(() => {
-			const lastLi = document.querySelector('.links-container ul li:last-child');
+			const lastLi = document.querySelector('.links-container > ul > li:last-child');
 			lastLi?.scrollIntoView({ behavior: 'smooth' });
 		});
 	}
@@ -131,8 +131,6 @@
 		}
 	}
 
-	function onDrop(event: DragEvent) {}
-
 	function dragAndDropScroll() {
 		const buffer = 150; // distance from top or bottom
 		const maxScrollSpeed = 20;
@@ -168,7 +166,7 @@
 
 	<div class="links-container">
 		<Button variant="secondary" on:click={onAddLink}>+ Add new link</Button>
-		<ul on:drop={onDrop} on:dragover={onDragOver} on:dragend={onDragEnd}>
+		<ul on:dragover={onDragOver} on:dragend={onDragEnd}>
 			{#if links.length === 0}
 				<li class="tutorial">
 					<img src="{base}/images/illustration-empty.svg" alt="" />
@@ -193,13 +191,13 @@
 								class="drag-handle"
 								draggable="true"
 								on:dragstart={(e) => onDragStart(e, link)}
-								on:touchstart={(e) => {
+								on:touchstart|passive={(e) => {
 									onTouchDragStart(e, link);
 								}}
-								on:touchend={(e) => {
+								on:touchend|passive={(e) => {
 									onTouchDragEnd(e);
 								}}
-								on:touchmove={(e) => {
+								on:touchmove|passive={(e) => {
 									onTouchDragMove(e);
 								}}
 							>
@@ -208,18 +206,20 @@
 							</div>
 							<button on:click={() => onRemoveLink(link)}>Remove</button>
 						</div>
-						<Select label="Platform" name="platform1">
-							<SelectOption value="github">GitHub</SelectOption>
-							<SelectOption value="frontendmentor">Frontend Mentor</SelectOption>
-							<SelectOption value="x">X</SelectOption>
-							<SelectOption value="linkedin">LinkedIn</SelectOption>
-						</Select>
-						<Select label="Platform2" name="platform2">
-							<SelectOption value="github">GitHub</SelectOption>
-							<SelectOption value="frontendmentor">Frontend Mentor</SelectOption>
-							<SelectOption value="x">X</SelectOption>
-							<SelectOption value="linkedin">LinkedIn</SelectOption>
-						</Select>
+						<Select
+							label="Platform"
+							placeholder="Select a platform"
+							options={[
+								{ value: 'github', label: 'GitHub', icon: IconGithub },
+								{
+									value: 'frontendmentor',
+									label: 'Frontend Mentor',
+									icon: IconFrontendMentor
+								},
+								{ value: 'x', label: 'X', icon: IconGithub },
+								{ value: 'linkedin', label: 'LinkedIn', icon: IconGithub }
+							]}
+						/>
 						<Input
 							label="Link"
 							type="url"

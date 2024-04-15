@@ -1,88 +1,149 @@
-<script lang="ts">
-	import { setContext } from 'svelte';
-	export let label = '';
-	export let name: string;
-
-	let dropDownListId = Date.now().toString(36) + '-' + Math.random().toString(36).slice(2);
-	let hidden = true;
-
-	setContext('name', name);
+<script context="module" lang="ts">
+	export type SelectOption = {
+		value: string;
+		label: string;
+		icon?: typeof SvelteComponent<{}>;
+	};
 </script>
 
-<label
-	>{label}
-	<div>
-		<button
-			role="combobox"
-			aria-expanded={!hidden}
-			aria-controls={dropDownListId}
-			on:click={() => (hidden = !hidden)}>Value</button
-		>
-		<ul class:hidden id={dropDownListId}>
-			<slot />
+<script lang="ts">
+	import { createSelect, melt } from '@melt-ui/svelte';
+	import { SvelteComponent } from 'svelte';
+
+	export let label = '';
+	export let placeholder = '';
+	export let options: SelectOption[] = [];
+
+	let selectedOption: SelectOption | null = null;
+
+	const {
+		elements: { trigger: triggerEl, menu: menuEl, label: labelEl, option: optionEl },
+		states: { selected, open }
+	} = createSelect<string>({
+		portal: null,
+		onSelectedChange: ({ curr, next }) => {
+			console.log(curr?.value, next?.value);
+			return next;
+		}
+	});
+
+	selected.subscribe((selectedValue) => {
+		selectedOption = options.find((option) => option.value === selectedValue?.value) ?? null;
+	});
+</script>
+
+<div class="select">
+	<label use:melt={$labelEl} for={$triggerEl.id}>{label}</label>
+	<button class:open={$open} use:melt={$triggerEl}>
+		{#if selectedOption}
+			{#if selectedOption.icon}
+				<svelte:component this={selectedOption.icon} />
+			{/if}
+			<span>{selectedOption.label}</span>
+		{:else}
+			<span class="placeholder">{placeholder}</span>
+		{/if}
+	</button>
+	{#if open}
+		<ul use:melt={$menuEl}>
+			{#each options as option (option.value)}
+				<li use:melt={$optionEl({ value: option.value })}>
+					{#if option.icon}
+						<svelte:component this={option.icon} />
+					{/if}
+					<span>{option.label}</span>
+				</li>
+			{/each}
 		</ul>
-	</div>
-</label>
+	{/if}
+</div>
 
 <style lang="scss">
-	label {
-		font-size: 0.75rem;
-
-		div {
+	.select {
+		label {
+			font-size: 0.75rem;
+		}
+		button {
 			position: relative;
-			button {
-				text-align: left;
-				appearance: none;
-				cursor: pointer;
-				margin-top: 0.25rem;
-				width: 100%;
-				font-size: 1rem;
-				display: block;
-				border-radius: 0.5rem;
-				padding: 0.75rem 1rem;
-				border: 1px solid var(--clr-base-600);
-				background: none no-repeat right 1rem center;
-				background-color: var(--clr-base-900);
-				color: var(--base-400);
+			text-align: left;
+			appearance: none;
+			cursor: pointer;
+			margin-top: 0.25rem;
+			min-height: 3em;
+			width: 100%;
+			font-size: 1rem;
+			display: flex;
+			align-items: center;
+			column-gap: 0.75rem;
+			border-radius: 0.5rem;
+			padding: 0.75rem 1rem;
+			border: 1px solid var(--clr-base-600);
+			background: none no-repeat right 1rem center;
+			background-color: var(--clr-base-900);
+			color: var(--base-400);
 
-				background-image: url('/images/icon-chevron-down.svg');
-
-				&:focus {
-					outline: none;
-					border: 1px solid rgb(var(--clr-primary-400-rgb));
-					box-shadow: 0 0 2rem rgba(var(--clr-primary-400-rgb), 25%);
-				}
+			span.placeholder {
+				opacity: 50%;
 			}
 
-			ul {
-				max-height: 5rem;
-				overflow-y: auto;
-				font-size: 1rem;
+			&::after {
 				position: absolute;
-				margin-top: 0.5rem;
-				z-index: 1;
-				border-radius: 0.5rem;
+				content: '';
+				display: inline-block;
+				width: 0.75rem;
+				height: 0.75rem;
+				place-content: center;
+				top: 50%;
+				right: 1rem;
+				transform: translateY(-50%);
+				background-image: url('/images/icon-chevron-down.svg');
+				background-size: contain;
+				background-repeat: no-repeat;
+				background-position: center;
+			}
 
-				border: 1px solid var(--clr-base-600);
-				background-color: var(--clr-base-900);
-				width: 100%;
-				box-shadow: 0 0 2rem 0 rgba(0, 0, 0, 10%);
+			&.open::after {
+				transform: translateY(-50%) rotate(180deg);
+			}
 
-				padding: 0.75rem 1rem;
+			&:focus {
+				outline: none;
+				border: 1px solid rgb(var(--clr-primary-400-rgb));
+				box-shadow: 0 0 2rem rgba(var(--clr-primary-400-rgb), 25%);
+			}
+		}
 
-				display: grid;
-				row-gap: 0.75rem;
+		ul {
+			z-index: 1;
+			font-size: 1rem;
+			margin-top: 0.5rem;
+			border-radius: 0.5rem;
+			border: 1px solid var(--clr-base-600);
+			background-color: var(--clr-base-900);
+			width: 100%;
+			box-shadow: 0 0 2rem 0 rgba(0, 0, 0, 10%);
 
-				&.hidden {
-					display: none;
+			padding: 0.75rem 1rem;
+
+			display: grid;
+			row-gap: 0.75rem;
+
+			li {
+				display: flex;
+				column-gap: 0.75rem;
+				cursor: pointer;
+				&[data-highlighted] {
+					color: var(--clr-primary-500);
 				}
 
-				::-webkit-scrollbar {
-					background: transparent;
-					width: 0;
-					border: none;
+				&[data-selected] {
+					color: var(--clr-primary-400);
 				}
-				scrollbar-width: none;
+
+				&:not(:first-child) {
+					border-top: 1px solid var(--clr-base-600);
+					padding-top: 1rem;
+				}
 			}
 		}
 	}

@@ -68,6 +68,7 @@ canvas {
 	--fw-semibold: 600;
 	--fw-bold: 700;
 
+	/* --clr-primary-400: #633cff; */
 	--clr-primary-400-rgb: 99, 60, 255;
 	--clr-primary-400: rgb(var(--clr-primary-400-rgb));
 	--clr-primary-500: #beadff;
