@@ -4,6 +4,8 @@
 	import Button from '$/components/Button.svelte';
 	import Input from '$/components/Input.svelte';
 	import { onMount } from 'svelte';
+	import Select from '$/components/Select.svelte';
+	import SelectOption from '$/components/SelectOption.svelte';
 
 	type Link = {
 		id: string;
@@ -206,6 +208,18 @@
 							</div>
 							<button on:click={() => onRemoveLink(link)}>Remove</button>
 						</div>
+						<Select label="Platform" name="platform1">
+							<SelectOption value="github">GitHub</SelectOption>
+							<SelectOption value="frontendmentor">Frontend Mentor</SelectOption>
+							<SelectOption value="x">X</SelectOption>
+							<SelectOption value="linkedin">LinkedIn</SelectOption>
+						</Select>
+						<Select label="Platform2" name="platform2">
+							<SelectOption value="github">GitHub</SelectOption>
+							<SelectOption value="frontendmentor">Frontend Mentor</SelectOption>
+							<SelectOption value="x">X</SelectOption>
+							<SelectOption value="linkedin">LinkedIn</SelectOption>
+						</Select>
 						<Input
 							label="Link"
 							type="url"
@@ -249,9 +263,13 @@
 				background-color: var(--clr-base-700);
 
 				&.link {
+					display: grid;
+					row-gap: 0.75rem;
+
 					transition:
 						background-color var(--anim-duration),
 						box-shadow var(--anim-duration);
+
 					.link-header {
 						display: flex;
 						align-items: center;
