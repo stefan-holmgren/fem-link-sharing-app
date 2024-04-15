@@ -6,6 +6,7 @@
 	import Select from '$/components/Select.svelte';
 	import IconGithub from '$/icons/IconGithub.svelte';
 	import IconFrontendMentor from '$/icons/IconFrontendMentor.svelte';
+	import IconX from '$/icons/IconX.svelte';
 
 	type Link = {
 		id: string;
@@ -216,7 +217,7 @@
 									label: 'Frontend Mentor',
 									icon: IconFrontendMentor
 								},
-								{ value: 'x', label: 'X', icon: IconGithub },
+								{ value: 'x', label: 'X', icon: IconX },
 								{ value: 'linkedin', label: 'LinkedIn', icon: IconGithub }
 							]}
 						/>
