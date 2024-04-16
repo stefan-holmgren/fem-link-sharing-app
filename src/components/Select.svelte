@@ -118,6 +118,8 @@
 			font-size: 1rem;
 			margin-top: 0.5rem;
 			border-radius: 0.5rem;
+			max-height: 21rem;
+			overflow-y: auto;
 			border: 1px solid var(--clr-base-600);
 			background-color: var(--clr-base-900);
 			width: 100%;
