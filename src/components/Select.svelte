@@ -28,6 +28,7 @@
 
 	selected.subscribe((selectedValue) => {
 		selectedOption = options.find((option) => option.value === selectedValue?.value) ?? null;
+		value = selectedValue?.value ?? null;
 	});
 </script>
 
