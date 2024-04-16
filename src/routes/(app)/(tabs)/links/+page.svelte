@@ -4,9 +4,7 @@
 	import Input from '$/components/Input.svelte';
 	import { onMount } from 'svelte';
 	import Select from '$/components/Select.svelte';
-	import IconGithub from '$/icons/IconGithub.svelte';
-	import IconFrontendMentor from '$/icons/IconFrontendMentor.svelte';
-	import IconX from '$/icons/IconX.svelte';
+	import { platforms } from '$lib/platform';
 
 	type Link = {
 		id: string;
@@ -19,9 +17,7 @@
 	let clientY = 0;
 	let touchDrag = false;
 
-	let links: OrderableLink[] = [
-		{ id: Date.now().toString(), type: 'github', url: 'blahblah', originalIndex: 0 }
-	];
+	let links: OrderableLink[] = [];
 
 	let draggedLink: OrderableLink | null;
 
@@ -38,7 +34,7 @@
 			{
 				id: Date.now().toString(),
 				type: 'github',
-				url: Date.now().toString(),
+				url: '',
 				originalIndex: links.length
 			}
 		];
@@ -149,6 +145,11 @@
 		}
 	}
 
+	function getPlaceholderUrl(type: string) {
+		const platform = platforms.find((p) => p.id === type);
+		return `e.g. ${platform ? platform.urlPattern : 'https://example.com/<username>'}`;
+	}
+
 	onMount(() => {
 		// disable default dragover event, the return animation is slow and ugly
 		function disableReturnAnimation(event: DragEvent) {
@@ -210,22 +211,19 @@
 						<Select
 							label="Platform"
 							placeholder="Select a platform"
-							options={[
-								{ value: 'github', label: 'GitHub', icon: IconGithub },
-								{
-									value: 'frontendmentor',
-									label: 'Frontend Mentor',
-									icon: IconFrontendMentor
-								},
-								{ value: 'x', label: 'X', icon: IconX },
-								{ value: 'linkedin', label: 'LinkedIn', icon: IconGithub }
-							]}
+							bind:value={link.type}
+							options={platforms.map((platform) => ({
+								value: platform.id,
+								label: platform.name,
+								icon: platform.icon
+							}))}
 						/>
+
 						<Input
 							label="Link"
 							type="url"
 							bind:value={link.url}
-							placeholder="e.g. https://www.github.com/"
+							placeholder={getPlaceholderUrl(link.type)}
 						/>
 					</li>
 				{/each}

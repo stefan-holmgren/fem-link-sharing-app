@@ -13,18 +13,17 @@
 	export let label = '';
 	export let placeholder = '';
 	export let options: SelectOption[] = [];
+	export let value: string | null = null;
 
-	let selectedOption: SelectOption | null = null;
+	let selectedOption: SelectOption | null =
+		options.find((option) => option.value === value) ?? null;
 
 	const {
 		elements: { trigger: triggerEl, menu: menuEl, label: labelEl, option: optionEl },
 		states: { selected, open }
 	} = createSelect<string>({
-		portal: null,
-		onSelectedChange: ({ curr, next }) => {
-			console.log(curr?.value, next?.value);
-			return next;
-		}
+		defaultSelected: value ? { value } : undefined,
+		portal: null
 	});
 
 	selected.subscribe((selectedValue) => {
