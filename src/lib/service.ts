@@ -25,4 +25,4 @@ export const loadLinks = async (userId: string) => {
 	return snapshot.val() as Link[] | null;
 };
 
-export const linksStore = writable<Link[]>([]);
+export const linksStore = writable<Link[] | null>();

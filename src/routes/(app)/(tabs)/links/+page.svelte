@@ -5,10 +5,9 @@
 	import { onMount } from 'svelte';
 	import Select from '$/components/Select.svelte';
 	import { platforms } from '$lib/platform';
-	import { saveLinks, type Link, loadLinks, linksStore } from '$lib/service';
+	import { saveLinks, type Link, linksStore } from '$lib/service';
 
 	export let data;
-
 	const { user } = data;
 
 	type OrderableLink = Partial<Link> & { originalIndex: number };
@@ -17,14 +16,20 @@
 	let touchDrag = false;
 
 	let links: OrderableLink[] = [];
+	let originalLinks: OrderableLink[] = [];
 	let draggedLink: OrderableLink | null;
 	let saving = false;
+	let loading = true;
+	let modified = false;
 
 	linksStore.subscribe((value) => {
+		if (!value) return;
+		loading = false;
 		links = value.map((link, i) => ({
 			...link,
 			originalIndex: i
 		}));
+		originalLinks = JSON.parse(JSON.stringify(links));
 	});
 
 	function renumberLinks() {
@@ -50,12 +55,12 @@
 	}
 
 	function onRemoveLink(link: OrderableLink) {
+		modified = true;
 		links = links.filter((l) => l !== link);
 		renumberLinks();
 	}
 
 	async function onSave() {
-		console.log('Saving links', links);
 		const validLinks: Link[] = links
 			.map(({ id, platform, url }) =>
 				id && platform && url
@@ -72,7 +77,9 @@
 		try {
 			await saveLinks(user.uid, validLinks);
 			linksStore.set(validLinks);
+			modified = false;
 		} catch (error) {
+			// TODO show error to user
 			console.error(error);
 		} finally {
 			saving = false;
@@ -189,6 +196,10 @@
 			document.removeEventListener('dragover', disableReturnAnimation);
 		};
 	});
+
+	$: {
+		modified = JSON.stringify(links) !== JSON.stringify(originalLinks);
+	}
 </script>
 
 <div class="container">
@@ -196,17 +207,19 @@
 	<p>Add/edit/remove links below and then share all your profiles with the world!</p>
 
 	<div class="links-container">
-		<Button variant="secondary" on:click={onAddLink}>+ Add new link</Button>
+		<Button variant="secondary" on:click={onAddLink} disabled={loading}>+ Add new link</Button>
 		<ul on:dragover={onDragOver} on:dragend={onDragEnd}>
 			{#if links.length === 0}
-				<li class="tutorial">
-					<img src="{base}/images/illustration-empty.svg" alt="" />
-					<h2>Let's get you started</h2>
-					<p>
-						Use the “Add new link” button to get started. Once you have more than one link, you can
-						reorder and edit them. We're here to help you share your profiles with everyone!
-					</p>
-				</li>
+				{#if !loading}
+					<li class="tutorial">
+						<img src="{base}/images/illustration-empty.svg" alt="" />
+						<h2>Let's get you started</h2>
+						<p>
+							Use the “Add new link” button to get started. Once you have more than one link, you
+							can reorder and edit them. We're here to help you share your profiles with everyone!
+						</p>
+					</li>
+				{/if}
 			{:else}
 				{#each links as link, i (link.id)}
 					<li
@@ -264,7 +277,8 @@
 </div>
 
 <div class="save-container">
-	<Button variant="primary" disabled={links.length === 0 || saving} on:click={onSave}>Save</Button>
+	<Button variant="primary" disabled={!modified || saving || loading} on:click={onSave}>Save</Button
+	>
 </div>
 
 <style lang="scss">

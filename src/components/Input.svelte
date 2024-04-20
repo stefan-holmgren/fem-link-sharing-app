@@ -6,8 +6,6 @@
 </script>
 
 <script lang="ts">
-	import { error } from '@sveltejs/kit';
-
 	import { createEventDispatcher } from 'svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	export let label = '';

@@ -8,7 +8,7 @@
 
 <script lang="ts">
 	import { createSelect, melt } from '@melt-ui/svelte';
-	import { SvelteComponent } from 'svelte';
+	import { SvelteComponent, createEventDispatcher } from 'svelte';
 
 	export let label = '';
 	export let placeholder = '';
@@ -17,6 +17,10 @@
 
 	let selectedOption: SelectOption | null =
 		options.find((option) => option.value === value) ?? null;
+
+	const dispatch = createEventDispatcher<{
+		change: { value: string | null };
+	}>();
 
 	const {
 		elements: { trigger: triggerEl, menu: menuEl, label: labelEl, option: optionEl },
@@ -29,6 +33,7 @@
 	selected.subscribe((selectedValue) => {
 		selectedOption = options.find((option) => option.value === selectedValue?.value) ?? null;
 		value = selectedValue?.value ?? null;
+		dispatch('change', { value });
 	});
 </script>
 
