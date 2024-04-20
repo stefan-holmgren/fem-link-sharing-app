@@ -10,7 +10,7 @@ import {
 } from 'firebase/auth';
 
 import type { User } from 'firebase/auth';
-import { AccountAlreadyExistsError, WrongCredentialsError } from './lib/errors';
+import { AccountAlreadyExistsError, WrongCredentialsError } from './errors';
 
 const auth = getAuth();
 

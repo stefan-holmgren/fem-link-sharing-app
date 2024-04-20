@@ -14,8 +14,24 @@ import IconX from '$/icons/IconX.svelte';
 import IconYoutube from '$/icons/IconYoutube.svelte';
 import type { ComponentType } from 'svelte';
 
-type Platform = {
-	id: string;
+type PlatformId =
+	| 'github'
+	| 'frontendmentor'
+	| 'x'
+	| 'linkedin'
+	| 'youtube'
+	| 'facebook'
+	| 'twitch'
+	| 'devto'
+	| 'codewars'
+	| 'codepen'
+	| 'freecodecamp'
+	| 'gitlab'
+	| 'hashnode'
+	| 'stackoverflow';
+
+export type Platform = {
+	id: PlatformId;
 	urlPattern: string;
 	name: string;
 	icon: ComponentType;
@@ -106,7 +122,7 @@ export const platforms: Platform[] = [
 		name: 'Stack Overflow',
 		icon: IconStackoverflow
 	}
-];
+] as const;
 
 export const validatePlatformUrl = (platform: Platform, url: string) => {
 	const regex = url.replace(/\./g, '\\.').replace(/\//g, '\\/').replace('<username>', '(.+)');

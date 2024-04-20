@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { signInWithEmailAndPassword } from '$/auth';
+	import { signInWithEmailAndPassword } from '$/lib/auth';
 	import Button from '$/components/Button.svelte';
 	import Input, { type InputRef } from '$/components/Input.svelte';
 	import { goto } from '$app/navigation';

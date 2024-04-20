@@ -5,11 +5,17 @@
 	import { onMount } from 'svelte';
 	import Select from '$/components/Select.svelte';
 	import { platforms } from '$lib/platform';
+	import { saveLinks } from '$lib/service';
+	import type { Platform } from '$lib/platform';
+
+	export let data;
+
+	const user = { data };
 
 	type Link = {
 		id: string;
-		type: 'github';
-		url: string;
+		platform?: Platform['id'];
+		url?: string;
 	};
 
 	type OrderableLink = Link & { originalIndex: number };
@@ -32,9 +38,7 @@
 		links = [
 			...links,
 			{
-				id: Date.now().toString(),
-				type: 'github',
-				url: '',
+				id: Date.now().toString(36),
 				originalIndex: links.length
 			}
 		];
@@ -48,6 +52,10 @@
 	function onRemoveLink(link: OrderableLink) {
 		links = links.filter((l) => l !== link);
 		renumberLinks();
+	}
+
+	function onSave() {
+		saveLinks(user.uid, links);
 	}
 
 	function swapLinks(link1: OrderableLink, link2: OrderableLink) {
@@ -211,7 +219,7 @@
 						<Select
 							label="Platform"
 							placeholder="Select a platform"
-							bind:value={link.type}
+							bind:value={link.platform}
 							options={platforms.map((platform) => ({
 								value: platform.id,
 								label: platform.name,
@@ -223,7 +231,9 @@
 							label="Link"
 							type="url"
 							bind:value={link.url}
-							placeholder={getPlaceholderUrl(link.type)}
+							placeholder={link.platform
+								? getPlaceholderUrl(link.platform)
+								: 'Select a platform first'}
 						/>
 					</li>
 				{/each}
@@ -233,7 +243,7 @@
 </div>
 
 <div class="save-container">
-	<Button variant="primary" disabled={links.length === 0}>Save</Button>
+	<Button variant="primary" disabled={links.length === 0} on:click={() => onSave}>Save</Button>
 </div>
 
 <style lang="scss">
