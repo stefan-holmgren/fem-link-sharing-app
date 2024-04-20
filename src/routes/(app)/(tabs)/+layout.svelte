@@ -4,6 +4,17 @@
 	import IconLinksHeader from '$/icons/IconLinksHeader.svelte';
 	import IconProfileDetailsHeader from '$/icons/IconProfileDetailsHeader.svelte';
 	import IconPreviewHeader from '$/icons/IconPreviewHeader.svelte';
+	import { onMount } from 'svelte';
+	import { loadLinks } from '$lib/service';
+	import { linksStore } from '$lib/service';
+
+	export let data;
+
+	onMount(async () => {
+		const { user } = data;
+		const links = await loadLinks(user.uid);
+		linksStore.set(links);
+	});
 </script>
 
 <main>

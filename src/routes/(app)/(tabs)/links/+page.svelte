@@ -5,27 +5,27 @@
 	import { onMount } from 'svelte';
 	import Select from '$/components/Select.svelte';
 	import { platforms } from '$lib/platform';
-	import { saveLinks } from '$lib/service';
-	import type { Platform } from '$lib/platform';
+	import { saveLinks, type Link, loadLinks, linksStore } from '$lib/service';
 
 	export let data;
 
-	const user = { data };
+	const { user } = data;
 
-	type Link = {
-		id: string;
-		platform?: Platform['id'];
-		url?: string;
-	};
-
-	type OrderableLink = Link & { originalIndex: number };
+	type OrderableLink = Partial<Link> & { originalIndex: number };
 
 	let clientY = 0;
 	let touchDrag = false;
 
 	let links: OrderableLink[] = [];
-
 	let draggedLink: OrderableLink | null;
+	let saving = false;
+
+	linksStore.subscribe((value) => {
+		links = value.map((link, i) => ({
+			...link,
+			originalIndex: i
+		}));
+	});
 
 	function renumberLinks() {
 		links.forEach((link, i) => {
@@ -54,8 +54,28 @@
 		renumberLinks();
 	}
 
-	function onSave() {
-		saveLinks(user.uid, links);
+	async function onSave() {
+		console.log('Saving links', links);
+		const validLinks: Link[] = links
+			.map(({ id, platform, url }) =>
+				id && platform && url
+					? {
+							id,
+							platform,
+							url
+						}
+					: undefined
+			)
+			.filter((link): link is Link => !!link);
+
+		saving = true;
+		try {
+			await saveLinks(user.uid, validLinks);
+		} catch (error) {
+			console.error(error);
+		} finally {
+			saving = false;
+		}
 	}
 
 	function swapLinks(link1: OrderableLink, link2: OrderableLink) {
@@ -243,7 +263,7 @@
 </div>
 
 <div class="save-container">
-	<Button variant="primary" disabled={links.length === 0} on:click={() => onSave}>Save</Button>
+	<Button variant="primary" disabled={links.length === 0 || saving} on:click={onSave}>Save</Button>
 </div>
 
 <style lang="scss">
