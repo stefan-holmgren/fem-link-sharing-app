@@ -10,17 +10,19 @@ export type Link = {
 	url: string;
 };
 
+const pathPrefix = 'fem/link-sharing-app';
+
 export const saveLinks = async (userId: string, links: Link[]) => {
 	const database = getDatabase(app);
-	const userLinksRef = ref(database, `users/${userId}/links`);
+	const userLinksRef = ref(database, `${pathPrefix}/users/${userId}/links`);
 	set(userLinksRef, links);
 };
 
 export const loadLinks = async (userId: string) => {
 	const database = getDatabase(app);
-	const userLinksRef = ref(database, `users/${userId}/links`);
+	const userLinksRef = ref(database, `${pathPrefix}/users/${userId}/links`);
 	const snapshot = await get(userLinksRef);
-	return snapshot.val();
+	return snapshot.val() as Link[] | null;
 };
 
 export const linksStore = writable<Link[]>([]);

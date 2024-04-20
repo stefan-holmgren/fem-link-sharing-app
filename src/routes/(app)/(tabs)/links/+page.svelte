@@ -71,6 +71,7 @@
 		saving = true;
 		try {
 			await saveLinks(user.uid, validLinks);
+			linksStore.set(validLinks);
 		} catch (error) {
 			console.error(error);
 		} finally {
