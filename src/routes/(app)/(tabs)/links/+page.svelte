@@ -118,7 +118,6 @@
 		const { clientX, clientY } = event.detail;
 		const dragOverLink = getOrderableLinkAt(clientX, clientY);
 		if (draggedLink && dragOverLink && draggedLink.id !== dragOverLink.id) {
-			console.log('SWAP LINKS');
 			swapLinks(draggedLink, dragOverLink);
 		}
 		currentClientY = clientY;
