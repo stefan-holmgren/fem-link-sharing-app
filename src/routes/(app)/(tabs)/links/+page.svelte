@@ -5,7 +5,6 @@
 
 <script lang="ts">
 	import Button from '$/components/Button.svelte';
-	import { onMount } from 'svelte';
 	import { saveLinks, linksStore } from '$lib/service';
 	import LinkComponent, {
 		type LinkDragEndEvent,
@@ -16,6 +15,8 @@
 	import { convertToOrderableLinks } from './_lib/convertToOrderableLinks';
 	import { swapOrderableLinks } from './_lib/swapOrderableLinks';
 	import { convertToLinks } from './_lib/convertToLinks';
+	import DisableDragReturnAnimation from './_components/DisableDragReturnAnimation.svelte';
+	import WindowAutoScroller from './_components/WindowAutoScroller.svelte';
 
 	export let data;
 	const { user } = data;
@@ -97,7 +98,6 @@
 		if (linkToDrag) {
 			draggedLink = linkToDrag;
 			currentClientY = clientY;
-			dragAndDropScroll();
 		}
 	}
 
@@ -133,36 +133,6 @@
 		renumberLinks();
 	}
 
-	function dragAndDropScroll() {
-		const buffer = 150; // distance from top or bottom
-		const maxScrollSpeed = 20;
-
-		if (currentClientY < buffer) {
-			const scrollAmount = (maxScrollSpeed * (buffer - currentClientY)) / buffer;
-			window.scrollBy(0, -scrollAmount);
-		} else if (currentClientY > window.innerHeight - buffer) {
-			const scrollAmount =
-				(maxScrollSpeed * (currentClientY - (window.innerHeight - buffer))) / buffer;
-			window.scrollBy(0, scrollAmount);
-		}
-		// Are we still dragging? Keep checking for scroll opportunities
-		if (draggedLink) {
-			requestAnimationFrame(dragAndDropScroll);
-		}
-	}
-
-	onMount(() => {
-		// disable default dragover event, the return animation is slow and ugly
-		function disableReturnAnimation(event: DragEvent) {
-			event.preventDefault();
-		}
-
-		document.addEventListener('dragover', disableReturnAnimation);
-		return () => {
-			document.removeEventListener('dragover', disableReturnAnimation);
-		};
-	});
-
 	$: {
 		// No need to check the modified as long as we're dragging
 		if (!draggedLink) {
@@ -170,6 +140,9 @@
 		}
 	}
 </script>
+
+<DisableDragReturnAnimation />
+<WindowAutoScroller {currentClientY} enabled={!!draggedLink} />
 
 <div class="container">
 	<h1>Customize your links</h1>
