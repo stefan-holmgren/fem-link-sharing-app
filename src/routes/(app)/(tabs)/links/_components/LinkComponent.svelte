@@ -46,6 +46,7 @@
 				event.dataTransfer.setDragImage(linkEl, x, y);
 				event.dataTransfer.effectAllowed = 'move';
 			}
+			// We need to do a pause to allow the drag image to be set
 			requestAnimationFrame(() => {
 				dragging = true;
 				dispatch('dragStart', { link, clientX: event.clientX, clientY: event.clientY });
