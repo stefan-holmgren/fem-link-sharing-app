@@ -8,6 +8,7 @@
 	};
 	export type LinkDragEndEvent = {
 		link: Link;
+		cancelled: boolean;
 	};
 
 	export type LinkRemoveEvent = {
@@ -17,7 +18,7 @@
 
 <script lang="ts">
 	import { platforms } from '$lib/platform';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
 	import { base } from '$app/paths';
 	import Select from '$/components/Select.svelte';
 	import Input from '$/components/Input.svelte';
@@ -60,7 +61,7 @@
 
 	function onDragEnd(event: DragEvent) {
 		dragging = false;
-		dispatch('dragEnd', { link });
+		dispatch('dragEnd', { link, cancelled: event.dataTransfer?.dropEffect === 'none' });
 	}
 
 	function onTouchDragStart(event: TouchEvent) {
@@ -85,7 +86,8 @@
 		touchDrag = false;
 		dragging = false;
 		dispatch('dragEnd', {
-			link
+			link,
+			cancelled: false
 		});
 	}
 
@@ -93,6 +95,27 @@
 		const platform = platforms.find((p) => p.id === type);
 		return `e.g. ${platform ? platform.urlPattern : 'https://example.com/<username>'}`;
 	}
+
+	onMount(() => {
+		const onKeyDown = (event: KeyboardEvent) => {
+			if (event.key === 'Escape') {
+				if (touchDrag) {
+					touchDrag = false;
+					dragging = false;
+					event.preventDefault();
+					dispatch('dragEnd', {
+						link,
+						cancelled: true
+					});
+				}
+			}
+		};
+
+		document.addEventListener('keydown', onKeyDown);
+		return () => {
+			document.removeEventListener('keydown', onKeyDown);
+		};
+	});
 </script>
 
 <div class="link" class:dragging class:touched={touchDrag}>

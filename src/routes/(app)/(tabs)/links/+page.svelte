@@ -1,22 +1,28 @@
+<script lang="ts" context="module">
+	import { type Link } from '$lib/service';
+	export type OrderableLink = Link & { originalIndex: number };
+</script>
+
 <script lang="ts">
 	import Button from '$/components/Button.svelte';
 	import { onMount } from 'svelte';
-	import { saveLinks, type Link, linksStore } from '$lib/service';
+	import { saveLinks, linksStore } from '$lib/service';
 	import LinkComponent, {
 		type LinkDragEndEvent,
 		type LinkDragEvent,
 		type LinkRemoveEvent
 	} from './_components/LinkComponent.svelte';
 	import TutorialComponent from './_components/TutorialComponent.svelte';
+	import { convertToOrderableLinks } from './_lib/convertToOrderableLinks';
+	import { swapOrderableLinks } from './_lib/swapOrderableLinks';
+	import { convertToLinks } from './_lib/convertToLinks';
 
 	export let data;
 	const { user } = data;
 
-	type OrderableLink = Link & { originalIndex: number };
-
 	let currentClientY = 0;
 
-	let links: OrderableLink[] = [];
+	let orderableLinks: OrderableLink[] = [];
 	let originalLinks: OrderableLink[] = [];
 	let draggedLink: OrderableLink | null;
 	let saving = false;
@@ -26,28 +32,30 @@
 	linksStore.subscribe((value) => {
 		if (!value) return;
 		loading = false;
-		links = value.map((link, i) => ({
-			...link,
-			originalIndex: i
-		}));
-		originalLinks = JSON.parse(JSON.stringify(links));
+		orderableLinks = convertToOrderableLinks(value);
+		originalLinks = JSON.parse(JSON.stringify(orderableLinks));
 	});
 
 	function renumberLinks() {
-		links.forEach((link, i) => {
-			link.originalIndex = i;
+		orderableLinks.forEach((orderableLink, i) => {
+			orderableLink.originalIndex = i;
 		});
-		links = [...links];
+		orderableLinks = [...orderableLinks];
+	}
+
+	function resetLinksInOrder() {
+		orderableLinks.sort((a, b) => a.originalIndex - b.originalIndex);
+		orderableLinks = [...orderableLinks];
 	}
 
 	function onAddLink() {
-		links = [
-			...links,
+		orderableLinks = [
+			...orderableLinks,
 			{
 				id: Date.now().toString(36),
 				platform: 'github',
 				url: '',
-				originalIndex: links.length
+				originalIndex: orderableLinks.length
 			}
 		];
 
@@ -59,27 +67,17 @@
 
 	function onRemoveLink(event: CustomEvent<LinkRemoveEvent>) {
 		const { link } = event.detail;
-		links = links.filter((l) => l.id !== link.id);
+		orderableLinks = orderableLinks.filter((l) => l.id !== link.id);
 		renumberLinks();
 	}
 
 	async function onSave() {
-		const validLinks: Link[] = links
-			.map(({ id, platform, url }) =>
-				id && platform && url
-					? {
-							id,
-							platform,
-							url
-						}
-					: undefined
-			)
-			.filter((link): link is Link => !!link);
+		const links = convertToLinks(orderableLinks);
 
 		saving = true;
 		try {
-			await saveLinks(user.uid, validLinks);
-			linksStore.set(validLinks);
+			await saveLinks(user.uid, links);
+			linksStore.set(links);
 		} catch (error) {
 			// TODO show error to user
 			console.error(error);
@@ -89,46 +87,49 @@
 	}
 
 	function swapLinks(link1: OrderableLink, link2: OrderableLink) {
-		const index1 = links.indexOf(link1);
-		const index2 = links.indexOf(link2);
-		if (index1 === -1 || index2 === -1) return;
-		[links[index1], links[index2]] = [links[index2], links[index1]];
-		links = [...links];
+		swapOrderableLinks(orderableLinks, link1, link2);
+		orderableLinks = [...orderableLinks];
 	}
 
 	function onDragStart(event: CustomEvent<LinkDragEvent>) {
 		const { link, clientY } = event.detail;
-		const linkToDrag = links.find((l) => l.id === link.id);
-
-		console.log('Link to drag:', linkToDrag);
+		const linkToDrag = orderableLinks.find((l) => l.id === link.id);
 		if (linkToDrag) {
 			draggedLink = linkToDrag;
-			requestAnimationFrame(() => {
-				currentClientY = clientY;
-				dragAndDropScroll();
-			});
+			currentClientY = clientY;
+			dragAndDropScroll();
 		}
+	}
+
+	function getOrderableLinkAt(clientX: number, clientY: number): OrderableLink | null {
+		const overElement = document.elementFromPoint(clientX, clientY) as HTMLElement;
+		if (!overElement) return null;
+
+		const overLi = overElement.closest('li[data-link-id]');
+		if (!overLi) return null;
+
+		const dragOverLink = orderableLinks.find(
+			(l) => l.id === (overLi as HTMLElement).dataset.linkId
+		);
+		return dragOverLink ?? null;
 	}
 
 	function onDrag(event: CustomEvent<LinkDragEvent>) {
 		const { clientX, clientY } = event.detail;
-		currentClientY = clientY;
-
-		const overElement = document.elementFromPoint(clientX, clientY) as HTMLElement;
-		if (!overElement) return;
-
-		const overLi = overElement.closest('li[data-link-id]');
-		if (!overLi) return;
-
-		const dragOverLink = links.find((l) => l.id === (overLi as HTMLElement).dataset.linkId);
-
-		if (draggedLink && dragOverLink) {
+		const dragOverLink = getOrderableLinkAt(clientX, clientY);
+		if (draggedLink && dragOverLink && draggedLink.id !== dragOverLink.id) {
+			console.log('SWAP LINKS');
 			swapLinks(draggedLink, dragOverLink);
 		}
+		currentClientY = clientY;
 	}
 
 	function onDragEnd(event: CustomEvent<LinkDragEndEvent>) {
 		draggedLink = null;
+		if (event.detail.cancelled) {
+			resetLinksInOrder();
+			return;
+		}
 		renumberLinks();
 	}
 
@@ -155,6 +156,7 @@
 		function disableReturnAnimation(event: DragEvent) {
 			event.preventDefault();
 		}
+
 		document.addEventListener('dragover', disableReturnAnimation);
 		return () => {
 			document.removeEventListener('dragover', disableReturnAnimation);
@@ -162,7 +164,10 @@
 	});
 
 	$: {
-		modified = JSON.stringify(links) !== JSON.stringify(originalLinks);
+		// No need to check the modified as long as we're dragging
+		if (!draggedLink) {
+			modified = JSON.stringify(orderableLinks) !== JSON.stringify(originalLinks);
+		}
 	}
 </script>
 
@@ -173,12 +178,12 @@
 	<div class="links-container">
 		<Button variant="secondary" on:click={onAddLink} disabled={loading}>+ Add new link</Button>
 		<ul>
-			{#if links.length === 0}
+			{#if orderableLinks.length === 0}
 				{#if !loading}
 					<TutorialComponent />
 				{/if}
 			{:else}
-				{#each links as link, i (link.id)}
+				{#each orderableLinks as link, i (link.id)}
 					<li data-link-id={link.id}>
 						<LinkComponent
 							header={`Link #${link.originalIndex + 1}`}
