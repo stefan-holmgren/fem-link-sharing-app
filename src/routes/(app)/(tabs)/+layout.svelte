@@ -13,7 +13,6 @@
 	onMount(async () => {
 		const { user } = data;
 		const links = await loadLinks(user.uid);
-		console.log('Loaded links', links);
 		linksStore.set(links ?? []);
 	});
 </script>
