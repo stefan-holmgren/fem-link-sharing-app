@@ -1,0 +1,31 @@
+.login {
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .fields {
+      display: flex;
+      flex-direction: column;
+      input:last-of-type {
+        margin-top: 10px;
+      }
+
+      .error {
+        margin: 8px 0 0 0;
+        color: red;
+      }
+    }
+  }
+
+  button.google {
+    width: 100%;
+    margin-top: 16px;
+    background-color: #4285f4;
+    color: white;
+  }
+}
+
+.error {
+  color: green;
+}
