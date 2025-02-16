@@ -1,7 +1,7 @@
 import styles from "./Login.module.css";
 import { FormEvent, useRef, useState, useTransition } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "./login";
+import { login } from "./utils/login";
 
 export const Login = () => {
   const [isPending, startTransition] = useTransition();

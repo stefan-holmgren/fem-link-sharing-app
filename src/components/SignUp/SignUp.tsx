@@ -1,7 +1,7 @@
 import { FormEvent, useRef, useState, useTransition } from "react";
 import styles from "./SignUp.module.css";
 import { useNavigate } from "react-router-dom";
-import { signup } from "./signup";
+import { signup } from "./utils/signup";
 
 export const SignUp = () => {
   const [errorMessage, setErrorMessage] = useState("");
