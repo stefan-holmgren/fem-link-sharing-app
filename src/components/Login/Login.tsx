@@ -46,7 +46,6 @@ export const Login = () => {
             placeholder="Password"
             required
           />
-          <input type="number" name="numeric" />
           {errorMessage && (
             <p className={styles.error} aria-live="assertive" role="alert">
               {errorMessage}
