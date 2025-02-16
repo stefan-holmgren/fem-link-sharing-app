@@ -1,18 +1,9 @@
-import { auth } from "@/config/firebase";
-import { onAuthStateChanged, User } from "firebase/auth";
 import styles from "./Home.module.css";
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuthContext } from "../AuthContext/useAuthContext";
 
 export const Home = () => {
-  const [user, setUser] = useState<User | null | undefined>();
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (authorizedUser) => {
-      setUser(authorizedUser);
-    });
-    return unsubscribe;
-  }, []);
+  const { user } = useAuthContext();
 
   return (
     <div className={styles.home}>

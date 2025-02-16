@@ -6,17 +6,20 @@ import { Logout } from "./components/Logout";
 import { SignUp } from "./components/SignUp";
 import { ForgotPassword } from "./components/ForgotPassword/ForgotPassword";
 import { ResetPassword } from "./components/ResetPassword/ResetPassword";
+import { AuthContextProvider } from "./components/AuthContext/AuthContextProvider";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/Logout" element={<Logout />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/reset-password" element={<ResetPassword />} />
-    </Routes>
+    <AuthContextProvider>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/Logout" element={<Logout />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+      </Routes>
+    </AuthContextProvider>
   );
 }
 
