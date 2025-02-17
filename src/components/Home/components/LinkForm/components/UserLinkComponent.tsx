@@ -1,4 +1,5 @@
-import { Ref } from "react";
+import styles from "./UserLinkComponent.module.css";
+import { ChangeEvent, InvalidEvent, Ref, useState } from "react";
 import { UserLink } from "../utils/userLinks.utils";
 import { isPlatform, linkTypes, Platform } from "./linkTypes.utils";
 
@@ -11,12 +12,19 @@ type UserLinkComponentProps = {
 export const UserLinkComponent = ({ userLink, ref, onPlatformChanged }: UserLinkComponentProps) => {
   const currentLinkType = linkTypes.find((linkType) => linkType.value === userLink.platform);
   const inputPlaceHolder = currentLinkType?.exampleUrl ? `e.g. ${currentLinkType.exampleUrl}` : "";
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const onInput = (e: ChangeEvent<HTMLInputElement>) => {
+    e.target.setCustomValidity("");
+    setErrorMessage(null);
+  };
+
   return (
-    <li key={userLink.url}>
+    <li className={styles["user-link-component"]}>
       <select
         aria-label="Platform"
-        required
         ref={ref}
+        value={userLink.platform}
         onChange={(e) => {
           if (isPlatform(e.target.value)) {
             onPlatformChanged(e.target.value);
@@ -24,19 +32,13 @@ export const UserLinkComponent = ({ userLink, ref, onPlatformChanged }: UserLink
         }}
       >
         {linkTypes.map(({ value, label }) => (
-          <option value={value} selected={userLink.platform === value}>
+          <option value={value} key={value}>
             {label}
           </option>
         ))}
       </select>
-      <input
-        type="url"
-        defaultValue={userLink.url}
-        required
-        placeholder={inputPlaceHolder}
-        pattern={currentLinkType?.urlPattern}
-        title={"Please check the URL"}
-      />
+      <input type="url" defaultValue={userLink.url} placeholder={inputPlaceHolder} onInput={onInput} />
+      {!!errorMessage && <span className={styles["error-message"]}>{errorMessage}</span>}
     </li>
   );
 };
