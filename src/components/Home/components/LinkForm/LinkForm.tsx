@@ -1,41 +1,13 @@
-import { ChangeEventHandler, FormEventHandler, MouseEventHandler, useEffect, useRef, useState } from "react";
+import { FormEventHandler, MouseEventHandler, useEffect, useRef, useState } from "react";
 import styles from "./LinkForm.module.css";
 import { User } from "@/components/AuthContext/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { getUserLinks, UserLink } from "./utils/userLinks.utils";
-
-const platforms = ["github", "youtube"] as const;
-
-type Platform = (typeof platforms)[number];
-
-type LinkType = {
-  value: Platform;
-  label: string;
-  urlPattern: string;
-  exampleUrl: string;
-};
-
-const linkTypes: LinkType[] = [
-  {
-    value: "github",
-    label: "GitHub",
-    urlPattern: "https://github\\.com/.+",
-    exampleUrl: "https://github.com/<username>",
-  },
-  {
-    value: "youtube",
-    label: "YouTube",
-    urlPattern: "https://www.youtube.com/@.+",
-    exampleUrl: "https://www.youtube.com/@<username>",
-  },
-];
+import { UserLinkComponent } from "./components/UserLinkComponent";
+import { linkTypes, Platform } from "./components/linkTypes.utils";
 
 type LinkFormProps = {
   user: User;
-};
-
-const isPlatform = (value: string): value is Platform => {
-  return platforms.includes(value as Platform);
 };
 
 export const LinkForm = ({ user }: LinkFormProps) => {
@@ -68,17 +40,15 @@ export const LinkForm = ({ user }: LinkFormProps) => {
     lastSelectRef.current?.focus();
   };
 
-  const onPlatformChanged =
-    (index: number): ChangeEventHandler<HTMLSelectElement> =>
-    (e) => {
-      setCurrentUserLinks((prev) => {
-        if (isPlatform(e.target.value) && prev?.[index]) {
-          prev[index].platform = e.target.value;
-          return [...prev];
-        }
-        return prev;
-      });
-    };
+  const onPlatformChanged = (index: number) => (newPlatform: Platform) => {
+    setCurrentUserLinks((prev) => {
+      if (prev?.[index]) {
+        prev[index].platform = newPlatform;
+        return [...prev];
+      }
+      return prev;
+    });
+  };
 
   return (
     <form className={styles["link-form"]} onSubmit={onSubmit} ref={formRef}>
@@ -89,29 +59,14 @@ export const LinkForm = ({ user }: LinkFormProps) => {
         <div>Loading...</div>
       ) : (
         <ul>
-          {currentUserLinks.map((userLink, i) => {
-            const currentLinkType = linkTypes.find((linkType) => linkType.value === userLink.platform);
-            const inputPlaceHolder = currentLinkType?.exampleUrl ? `e.g. ${currentLinkType.exampleUrl}` : "";
-            return (
-              <li key={userLink.url}>
-                <select aria-label="Platform" required ref={i === currentUserLinks.length - 1 ? lastSelectRef : undefined} onChange={onPlatformChanged(i)}>
-                  {linkTypes.map(({ value, label }) => (
-                    <option value={value} selected={userLink.platform === value}>
-                      {label}
-                    </option>
-                  ))}
-                </select>
-                <input
-                  type="url"
-                  defaultValue={userLink.url}
-                  required
-                  placeholder={inputPlaceHolder}
-                  pattern={currentLinkType?.urlPattern}
-                  title={"Please check the URL"}
-                ></input>
-              </li>
-            );
-          })}
+          {currentUserLinks.map((userLink, i) => (
+            <UserLinkComponent
+              key={i}
+              userLink={userLink}
+              ref={i === currentUserLinks.length - 1 ? lastSelectRef : undefined}
+              onPlatformChanged={onPlatformChanged(i)}
+            />
+          ))}
         </ul>
       )}
       <button type="submit">Save</button>
