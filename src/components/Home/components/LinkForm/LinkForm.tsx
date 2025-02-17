@@ -91,7 +91,7 @@ export const LinkForm = ({ user }: LinkFormProps) => {
         <ul>
           {currentUserLinks.map((userLink, i) => {
             const currentLinkType = linkTypes.find((linkType) => linkType.value === userLink.platform);
-
+            const inputPlaceHolder = currentLinkType?.exampleUrl ? `e.g. ${currentLinkType.exampleUrl}` : "";
             return (
               <li key={userLink.url}>
                 <select aria-label="Platform" required ref={i === currentUserLinks.length - 1 ? lastSelectRef : undefined} onChange={onPlatformChanged(i)}>
@@ -105,7 +105,7 @@ export const LinkForm = ({ user }: LinkFormProps) => {
                   type="url"
                   defaultValue={userLink.url}
                   required
-                  placeholder={currentLinkType?.exampleUrl ?? ""}
+                  placeholder={inputPlaceHolder}
                   pattern={currentLinkType?.urlPattern}
                   title={"Please check the URL"}
                 ></input>
