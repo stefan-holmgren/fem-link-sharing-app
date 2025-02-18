@@ -43,6 +43,8 @@ export const UserLinkComponent = ({ userLink, onChange, ref }: UserLinkComponent
     } else {
       setErrorMessage(null);
     }
+    e.target.focus();
+    e.target.select();
   };
 
   const onInput = (e: ChangeEvent<HTMLInputElement>) => {
