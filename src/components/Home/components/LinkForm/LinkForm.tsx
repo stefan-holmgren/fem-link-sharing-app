@@ -1,8 +1,8 @@
-import { FormEventHandler, MouseEventHandler, useEffect, useRef, useState } from "react";
+import { FormEventHandler, MouseEventHandler, startTransition, useEffect, useRef, useState } from "react";
 import styles from "./LinkForm.module.css";
 import { User } from "@/components/AuthContext/AuthContext";
 import { UserLink } from "./utils/userLinks.utils";
-import { UserLinkComponent } from "./components/UserLinkComponent";
+import { UserLinkComponent, UserLinkComponentRef } from "./components/UserLinkComponent";
 import { linkTypes } from "./components/linkTypes.utils";
 import { useSaveUserLinks } from "./hooks/useSaveUserLinks";
 import { useGetUserLinks } from "./hooks/useGetUserLinks";
@@ -16,8 +16,8 @@ export const LinkForm = ({ user }: LinkFormProps) => {
   const saveUserLinks = useSaveUserLinks();
 
   const [currentUserLinks, setCurrentUserLinks] = useState<UserLink[]>([]);
-  const lastSelectRef = useRef<HTMLSelectElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
+  const lastUserLinkRef = useRef<UserLinkComponentRef>(null);
 
   useEffect(() => {
     if (userLinks) {
@@ -26,7 +26,10 @@ export const LinkForm = ({ user }: LinkFormProps) => {
   }, [userLinks]);
 
   useEffect(() => {
-    lastSelectRef.current?.focus();
+    // if we've added a link, it's url is empty, so we can focus on that
+    if (currentUserLinks.length && currentUserLinks[currentUserLinks.length - 1].url === "") {
+      lastUserLinkRef.current?.focus();
+    }
   }, [currentUserLinks]);
 
   const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
@@ -38,10 +41,7 @@ export const LinkForm = ({ user }: LinkFormProps) => {
     if (!formRef.current?.reportValidity()) {
       return;
     }
-
     setCurrentUserLinks((prev) => [...(prev ? prev : []), { url: "", platform: linkTypes[0].value }]);
-
-    lastSelectRef.current?.focus();
   };
 
   const onLinkChange = (index: number) => (newLink: UserLink) => {
@@ -73,7 +73,7 @@ export const LinkForm = ({ user }: LinkFormProps) => {
         <ul>
           {currentUserLinks.map((userLink, i) => (
             <li key={i}>
-              <UserLinkComponent key={i} userLink={userLink} onChange={onLinkChange(i)} />
+              <UserLinkComponent userLink={userLink} onChange={onLinkChange(i)} ref={lastUserLinkRef} />
               <button type="button" onClick={() => onLinkDelete(i)}>
                 X
               </button>

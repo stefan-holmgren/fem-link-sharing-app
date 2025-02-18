@@ -10,7 +10,7 @@ type UserLinkComponentProps = {
   ref?: Ref<UserLinkComponentRef>;
 };
 
-type UserLinkComponentRef = {
+export type UserLinkComponentRef = {
   focus: () => void;
 };
 
@@ -18,21 +18,24 @@ export const UserLinkComponent = ({ userLink, onChange, ref }: UserLinkComponent
   const currentLinkType = linkTypes.find((linkType) => linkType.value === userLink.platform);
   const inputPlaceHolder = currentLinkType?.exampleUrl ? `e.g. ${currentLinkType.exampleUrl}` : "";
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const platformRef = useRef<HTMLSelectElement>(null);
+  const platformRef = useRef<HTMLButtonElement>(null);
   const urlRef = useRef<HTMLInputElement>(null);
 
-  useImperativeHandle(ref, () => ({
-    focus: () => {
-      platformRef.current?.focus();
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        focus: () => {
+          platformRef.current?.focus();
+        },
+      };
     },
-  }));
+    []
+  );
 
   const onInvalid = (e: InvalidEvent<HTMLInputElement>) => {
     const { target } = e;
     e.preventDefault();
-
-    console.log("HEY");
-
     if (target.validity.valueMissing) {
       setErrorMessage("Cannot be empty");
     } else if (target.validity.typeMismatch || target.validity.patternMismatch) {
@@ -66,7 +69,7 @@ export const UserLinkComponent = ({ userLink, onChange, ref }: UserLinkComponent
   return (
     <div className={styles["user-link-component"]}>
       <Select.Root defaultValue={userLink.platform} onValueChange={handlePlatformChange}>
-        <Select.Trigger aria-label="Platform">
+        <Select.Trigger aria-label="Platform" ref={platformRef}>
           <Select.Value />
         </Select.Trigger>
         <Select.Portal>
