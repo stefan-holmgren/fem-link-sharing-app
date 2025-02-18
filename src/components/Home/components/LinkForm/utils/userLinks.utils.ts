@@ -1,6 +1,7 @@
 import { User } from "@/components/AuthContext/AuthContext";
 import { db } from "@/config/firebase";
-import { collection, getDocs, query, QueryDocumentSnapshot, where } from "firebase/firestore";
+import { getDoc, QueryDocumentSnapshot } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 
 export type UserLink = {
   platform: "github" | "youtube";
@@ -8,7 +9,6 @@ export type UserLink = {
 };
 
 export type UserLinks = {
-  uid: string;
   links: UserLink[];
 };
 
@@ -17,9 +17,14 @@ const UserLinkConverter = {
   fromFirestore: (snap: QueryDocumentSnapshot) => snap.data() as UserLinks,
 };
 
+const getUserLinksDocRef = (user: User) => doc(db, "userLinks", user.id).withConverter(UserLinkConverter);
+
 export const getUserLinks = async (user: User) => {
-  const userLinksCollection = collection(db, "userLinks").withConverter(UserLinkConverter);
-  const q = query(userLinksCollection, where("uid", "==", user.id));
-  const querySnapshot = await getDocs(q);
-  return querySnapshot.empty ? [] : querySnapshot.docs[0].data().links;
+  const doc = await getDoc(getUserLinksDocRef(user));
+  return doc.data()?.links ?? [];
+};
+
+export const updateUserLinks = async (user: User, userLinks: UserLink[]) => {
+  const docRef = getUserLinksDocRef(user);
+  await setDoc(docRef, { links: userLinks });
 };
