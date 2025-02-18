@@ -1,7 +1,7 @@
 import { FormEventHandler, MouseEventHandler, useEffect, useRef, useState } from "react";
 import styles from "./LinkForm.module.css";
 import { User } from "@/components/AuthContext/AuthContext";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getUserLinks, updateUserLinks, UserLink } from "./utils/userLinks.utils";
 import { UserLinkComponent } from "./components/UserLinkComponent";
 import { linkTypes } from "./components/linkTypes.utils";
@@ -11,7 +11,20 @@ type LinkFormProps = {
 };
 
 export const LinkForm = ({ user }: LinkFormProps) => {
+  const queryClient = useQueryClient();
   const { data: userLinks } = useQuery({ queryKey: ["userlinks", user.id], queryFn: () => getUserLinks(user) });
+  const saveUserLinks = useMutation({
+    mutationFn: () => updateUserLinks(user, currentUserLinks),
+    onSuccess: () => {
+      alert("Links saved successfully!");
+      queryClient.invalidateQueries({ queryKey: ["userlinks", user.id] });
+    },
+    onError: (error) => {
+      console.error("Error saving links: ", error);
+      alert("Failed to save links.");
+    },
+  });
+
   const [currentUserLinks, setCurrentUserLinks] = useState<UserLink[]>([]);
   const lastSelectRef = useRef<HTMLSelectElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
@@ -28,18 +41,7 @@ export const LinkForm = ({ user }: LinkFormProps) => {
 
   const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-
-    const handleSaveLinks = async () => {
-      try {
-        await updateUserLinks(user, currentUserLinks);
-        alert("Links saved successfully!");
-      } catch (error) {
-        console.error("Error saving links: ", error);
-        alert("Failed to save links.");
-      }
-    };
-
-    handleSaveLinks();
+    saveUserLinks.mutate();
   };
 
   const onAddNewLink: MouseEventHandler<HTMLButtonElement> = () => {
