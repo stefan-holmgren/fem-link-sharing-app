@@ -1,29 +1,19 @@
 import { FormEventHandler, MouseEventHandler, useEffect, useRef, useState } from "react";
 import styles from "./LinkForm.module.css";
 import { User } from "@/components/AuthContext/AuthContext";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUserLinks, updateUserLinks, UserLink } from "./utils/userLinks.utils";
+import { UserLink } from "./utils/userLinks.utils";
 import { UserLinkComponent } from "./components/UserLinkComponent";
 import { linkTypes } from "./components/linkTypes.utils";
+import { useSaveUserLinks } from "./hooks/useSaveUserLinks";
+import { useGetUserLinks } from "./hooks/useGetUserLinks";
 
 type LinkFormProps = {
   user: User;
 };
 
 export const LinkForm = ({ user }: LinkFormProps) => {
-  const queryClient = useQueryClient();
-  const { data: userLinks } = useQuery({ queryKey: ["userlinks", user.id], queryFn: () => getUserLinks(user) });
-  const saveUserLinks = useMutation({
-    mutationFn: () => updateUserLinks(user, currentUserLinks),
-    onSuccess: () => {
-      alert("Links saved successfully!");
-      queryClient.invalidateQueries({ queryKey: ["userlinks", user.id] });
-    },
-    onError: (error) => {
-      console.error("Error saving links: ", error);
-      alert("Failed to save links.");
-    },
-  });
+  const { userLinks } = useGetUserLinks(user);
+  const saveUserLinks = useSaveUserLinks();
 
   const [currentUserLinks, setCurrentUserLinks] = useState<UserLink[]>([]);
   const lastSelectRef = useRef<HTMLSelectElement>(null);
@@ -41,7 +31,7 @@ export const LinkForm = ({ user }: LinkFormProps) => {
 
   const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    saveUserLinks.mutate();
+    saveUserLinks.mutate({ user, links: currentUserLinks });
   };
 
   const onAddNewLink: MouseEventHandler<HTMLButtonElement> = () => {
@@ -66,7 +56,6 @@ export const LinkForm = ({ user }: LinkFormProps) => {
 
   const onLinkDelete = (index: number) => {
     setCurrentUserLinks((prev) => {
-      console.log("Prev", prev, index);
       const updatedUserLinks = [...prev];
       updatedUserLinks.splice(index, 1);
       return updatedUserLinks;
