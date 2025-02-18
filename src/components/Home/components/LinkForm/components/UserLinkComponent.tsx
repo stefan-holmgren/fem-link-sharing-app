@@ -1,7 +1,8 @@
 import styles from "./UserLinkComponent.module.css";
-import { ChangeEvent, InvalidEvent, Ref, useImperativeHandle, useRef, useState } from "react";
+import { ChangeEvent, ChangeEventHandler, InvalidEvent, Ref, useImperativeHandle, useRef, useState } from "react";
 import { UserLink } from "../utils/userLinks.utils";
 import { isPlatform, linkTypes } from "./linkTypes.utils";
+import * as Select from "@radix-ui/react-select";
 
 type UserLinkComponentProps = {
   userLink: UserLink;
@@ -30,10 +31,14 @@ export const UserLinkComponent = ({ userLink, onChange, ref }: UserLinkComponent
     const { target } = e;
     e.preventDefault();
 
+    console.log("HEY");
+
     if (target.validity.valueMissing) {
       setErrorMessage("Cannot be empty");
     } else if (target.validity.typeMismatch || target.validity.patternMismatch) {
       setErrorMessage("Need to be a valid url");
+    } else {
+      setErrorMessage(null);
     }
   };
 
@@ -42,27 +47,40 @@ export const UserLinkComponent = ({ userLink, onChange, ref }: UserLinkComponent
     setErrorMessage(null);
   };
 
-  const handleChange = () => {
-    const platform = platformRef.current?.value ?? "";
-    const url = urlRef.current?.value ?? "";
+  const handleUrlChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const url = e.target.value ?? "";
+    onChange({
+      ...userLink,
+      url,
+    });
+  };
 
-    if (isPlatform(platform)) {
-      onChange({
-        platform,
-        url,
-      });
+  const handlePlatformChange = (newPlatform: string) => {
+    if (isPlatform(newPlatform)) {
+      onChange({ ...userLink, platform: newPlatform });
+      // Make sure the input removes its error state (if it has one)
+      setErrorMessage(null);
     }
   };
 
   return (
     <div className={styles["user-link-component"]}>
-      <select aria-label="Platform" value={userLink.platform} onChange={() => handleChange()} ref={platformRef}>
-        {linkTypes.map(({ value, label }) => (
-          <option value={value} key={value}>
-            {label}
-          </option>
-        ))}
-      </select>
+      <Select.Root defaultValue={userLink.platform} onValueChange={handlePlatformChange}>
+        <Select.Trigger aria-label="Platform">
+          <Select.Value />
+        </Select.Trigger>
+        <Select.Portal>
+          <Select.Content position={"popper"}>
+            <Select.Viewport>
+              {linkTypes.map(({ value, label }) => (
+                <Select.Item value={value} key={value}>
+                  <Select.ItemText>{label}</Select.ItemText>
+                </Select.Item>
+              ))}
+            </Select.Viewport>
+          </Select.Content>
+        </Select.Portal>
+      </Select.Root>
       <input
         type="url"
         defaultValue={userLink.url}
@@ -70,7 +88,7 @@ export const UserLinkComponent = ({ userLink, onChange, ref }: UserLinkComponent
         onInput={onInput}
         onInvalid={onInvalid}
         required
-        onChange={() => handleChange()}
+        onChange={handleUrlChange}
         pattern={currentLinkType?.urlPattern}
         aria-invalid={!!errorMessage}
         aria-describedby={errorMessage ?? ""}

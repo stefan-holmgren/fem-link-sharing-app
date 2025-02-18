@@ -21,8 +21,6 @@ export const signup = async (email: string, password: string): Promise<{ success
         case "auth/weak-password":
           errorMessage = "Password is too weak - should be 6 characters or longer";
           break;
-        default:
-          console.log(err.code);
       }
     }
     return { success: false, errorMessage };
