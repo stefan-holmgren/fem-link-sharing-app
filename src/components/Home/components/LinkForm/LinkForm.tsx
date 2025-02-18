@@ -60,7 +60,9 @@ export const LinkForm = ({ user }: LinkFormProps) => {
       ) : (
         <ul>
           {currentUserLinks.map((userLink, i) => (
-            <UserLinkComponent key={i} userLink={userLink} onChange={onLinkChange(i)} />
+            <li key={i}>
+              <UserLinkComponent key={i} userLink={userLink} onChange={onLinkChange(i)} />
+            </li>
           ))}
         </ul>
       )}

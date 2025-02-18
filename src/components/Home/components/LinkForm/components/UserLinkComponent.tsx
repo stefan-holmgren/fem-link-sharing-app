@@ -55,7 +55,7 @@ export const UserLinkComponent = ({ userLink, onChange, ref }: UserLinkComponent
   };
 
   return (
-    <li className={styles["user-link-component"]}>
+    <div className={styles["user-link-component"]}>
       <select aria-label="Platform" value={userLink.platform} onChange={() => handleChange()} ref={platformRef}>
         {linkTypes.map(({ value, label }) => (
           <option value={value} key={value}>
@@ -77,6 +77,6 @@ export const UserLinkComponent = ({ userLink, onChange, ref }: UserLinkComponent
         ref={urlRef}
       />
       {!!errorMessage && <span className={styles["error-message"]}>{errorMessage}</span>}
-    </li>
+    </div>
   );
 };
