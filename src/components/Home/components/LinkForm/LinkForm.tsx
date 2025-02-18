@@ -4,7 +4,7 @@ import { User } from "@/components/AuthContext/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { getUserLinks, UserLink } from "./utils/userLinks.utils";
 import { UserLinkComponent } from "./components/UserLinkComponent";
-import { linkTypes, Platform } from "./components/linkTypes.utils";
+import { linkTypes } from "./components/linkTypes.utils";
 
 type LinkFormProps = {
   user: User;
@@ -40,10 +40,10 @@ export const LinkForm = ({ user }: LinkFormProps) => {
     lastSelectRef.current?.focus();
   };
 
-  const onPlatformChanged = (index: number) => (newPlatform: Platform) => {
+  const onLinkChange = (index: number) => (newLink: UserLink) => {
     setCurrentUserLinks((prev) => {
       if (prev?.[index]) {
-        prev[index].platform = newPlatform;
+        prev[index] = newLink;
         return [...prev];
       }
       return prev;
@@ -60,12 +60,7 @@ export const LinkForm = ({ user }: LinkFormProps) => {
       ) : (
         <ul>
           {currentUserLinks.map((userLink, i) => (
-            <UserLinkComponent
-              key={i}
-              userLink={userLink}
-              ref={i === currentUserLinks.length - 1 ? lastSelectRef : undefined}
-              onPlatformChanged={onPlatformChanged(i)}
-            />
+            <UserLinkComponent key={i} userLink={userLink} onChange={onLinkChange(i)} />
           ))}
         </ul>
       )}

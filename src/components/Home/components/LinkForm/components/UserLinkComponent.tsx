@@ -1,43 +1,81 @@
 import styles from "./UserLinkComponent.module.css";
-import { ChangeEvent, InvalidEvent, Ref, useState } from "react";
+import { ChangeEvent, InvalidEvent, Ref, useImperativeHandle, useRef, useState } from "react";
 import { UserLink } from "../utils/userLinks.utils";
-import { isPlatform, linkTypes, Platform } from "./linkTypes.utils";
+import { isPlatform, linkTypes } from "./linkTypes.utils";
 
 type UserLinkComponentProps = {
   userLink: UserLink;
-  ref?: Ref<HTMLSelectElement>;
-  onPlatformChanged: (newPlatform: Platform) => void;
+  onChange: (newUserLink: UserLink) => void;
+  ref?: Ref<UserLinkComponentRef>;
 };
 
-export const UserLinkComponent = ({ userLink, ref, onPlatformChanged }: UserLinkComponentProps) => {
+type UserLinkComponentRef = {
+  focus: () => void;
+};
+
+export const UserLinkComponent = ({ userLink, onChange, ref }: UserLinkComponentProps) => {
   const currentLinkType = linkTypes.find((linkType) => linkType.value === userLink.platform);
   const inputPlaceHolder = currentLinkType?.exampleUrl ? `e.g. ${currentLinkType.exampleUrl}` : "";
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const platformRef = useRef<HTMLSelectElement>(null);
+  const urlRef = useRef<HTMLInputElement>(null);
+
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      platformRef.current?.focus();
+    },
+  }));
+
+  const onInvalid = (e: InvalidEvent<HTMLInputElement>) => {
+    const { target } = e;
+    e.preventDefault();
+
+    if (target.validity.valueMissing) {
+      setErrorMessage("Cannot be empty");
+    } else if (target.validity.typeMismatch || target.validity.patternMismatch) {
+      setErrorMessage("Need to be a valid url");
+    }
+  };
 
   const onInput = (e: ChangeEvent<HTMLInputElement>) => {
     e.target.setCustomValidity("");
     setErrorMessage(null);
   };
 
+  const handleChange = () => {
+    const platform = platformRef.current?.value ?? "";
+    const url = urlRef.current?.value ?? "";
+
+    if (isPlatform(platform)) {
+      onChange({
+        platform,
+        url,
+      });
+    }
+  };
+
   return (
     <li className={styles["user-link-component"]}>
-      <select
-        aria-label="Platform"
-        ref={ref}
-        value={userLink.platform}
-        onChange={(e) => {
-          if (isPlatform(e.target.value)) {
-            onPlatformChanged(e.target.value);
-          }
-        }}
-      >
+      <select aria-label="Platform" value={userLink.platform} onChange={() => handleChange()} ref={platformRef}>
         {linkTypes.map(({ value, label }) => (
           <option value={value} key={value}>
             {label}
           </option>
         ))}
       </select>
-      <input type="url" defaultValue={userLink.url} placeholder={inputPlaceHolder} onInput={onInput} />
+      <input
+        type="url"
+        defaultValue={userLink.url}
+        placeholder={inputPlaceHolder}
+        onInput={onInput}
+        onInvalid={onInvalid}
+        required
+        onChange={() => handleChange()}
+        pattern={currentLinkType?.urlPattern}
+        aria-invalid={!!errorMessage}
+        data-invalid={!!errorMessage}
+        ref={urlRef}
+      />
       {!!errorMessage && <span className={styles["error-message"]}>{errorMessage}</span>}
     </li>
   );
