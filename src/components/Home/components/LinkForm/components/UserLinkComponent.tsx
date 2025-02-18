@@ -73,6 +73,7 @@ export const UserLinkComponent = ({ userLink, onChange, ref }: UserLinkComponent
         onChange={() => handleChange()}
         pattern={currentLinkType?.urlPattern}
         aria-invalid={!!errorMessage}
+        aria-describedby={errorMessage ?? ""}
         data-invalid={!!errorMessage}
         ref={urlRef}
       />
