@@ -8,10 +8,10 @@ export type User = {
 export type AuthContextType = {
   user: User | null | undefined;
   login: (email: string, password: string) => Promise<{ success: true } | { success: false; errorMessage: string }>;
-  logout: () => Promise<void>;
+  logout: () => Promise<{ success: true } | { success: false; errorMessage: string }>;
   signup: (email: string, password: string) => Promise<{ success: true } | { success: false; errorMessage: string }>;
   forgotPassword: (email: string) => Promise<{ success: true } | { success: false; errorMessage: string }>;
-  resetPassword: (corde: string, password: string) => Promise<{ success: true } | { success: false; errorMessage: string }>;
+  resetPassword: (password: string) => Promise<{ success: true } | { success: false; errorMessage: string }>;
 };
 
 export const AuthContext = createContext<AuthContextType>({

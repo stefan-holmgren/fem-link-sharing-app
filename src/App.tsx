@@ -6,15 +6,15 @@ import { Logout } from "./components/Logout";
 import { SignUp } from "./components/SignUp";
 import { ForgotPassword } from "./components/ForgotPassword/ForgotPassword";
 import { ResetPassword } from "./components/ResetPassword/ResetPassword";
-import { FirebaseAuthContextProvider } from "./components/AuthContext/firebase/FirebaseAuthContextProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { SupabaseAuthContextProvider } from "./components/AuthContext/supabase/SupabaseAuthContextProvider";
 
 const queryClient = new QueryClient();
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <FirebaseAuthContextProvider>
+      <SupabaseAuthContextProvider>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -23,7 +23,7 @@ function App() {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
-      </FirebaseAuthContextProvider>
+      </SupabaseAuthContextProvider>
     </QueryClientProvider>
   );
 }
