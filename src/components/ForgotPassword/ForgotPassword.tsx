@@ -1,12 +1,13 @@
 import { FormEvent, useRef, useState, useTransition } from "react";
 import styles from "./ForgotPassword.module.css";
-import { forgotPassword } from "./utils/forgotPassword";
+import { useAuthContext } from "../AuthContext/useAuthContext";
 
 export const ForgotPassword = () => {
   const [isPending, startTransition] = useTransition();
   const [errorMessage, setErrorMessage] = useState("");
   const [emailRecipient, setEmailRecipient] = useState("");
   const emailRef = useRef<HTMLInputElement>(null);
+  const { forgotPassword } = useAuthContext();
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

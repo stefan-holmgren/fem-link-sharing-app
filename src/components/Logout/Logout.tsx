@@ -8,7 +8,7 @@ export const Logout = () => {
 
   useEffect(() => {
     logout().then(() => {
-      navigate("/login", { replace: true });
+      navigate("/", { replace: true });
     });
   }, [logout, navigate]);
 
