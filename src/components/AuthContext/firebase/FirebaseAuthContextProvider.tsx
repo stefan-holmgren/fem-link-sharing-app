@@ -8,11 +8,11 @@ import { forgotPassword } from "./utils/forgotPassword";
 import { resetPassword } from "./utils/resetPassword";
 import { signup } from "./utils/signup";
 
-type AuthContextProviderProps = {
+type FirebaseAuthContextProviderProps = {
   children?: ReactNode;
 };
 
-export const FirebaseAuthContextProvider = ({ children }: AuthContextProviderProps) => {
+export const FirebaseAuthContextProvider = ({ children }: FirebaseAuthContextProviderProps) => {
   const [user, setUser] = useState<User | null | undefined>(undefined);
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (authorizedUser) => {
