@@ -1,6 +1,6 @@
 import { FormEventHandler, startTransition, useRef, useState, useTransition } from "react";
 import styles from "./ResetPassword.module.css";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { requestFormReset } from "react-dom";
 import { useAuthContext } from "../AuthContext/useAuthContext";
 
@@ -12,22 +12,11 @@ export const ResetPassword = () => {
   const [success, setSuccess] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const { resetPassword } = useAuthContext();
-
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const mode = queryParams.get("mode");
-  const oobCode = queryParams.get("oobCode");
-
   const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     createTransition(async () => {
       const password = passwordRef.current?.value;
       const confirmPassword = confirmPasswordRef.current?.value;
-
-      if (!oobCode || mode !== "resetPassword") {
-        setErrorMessage("Reset password not possible");
-        return;
-      }
 
       if (!password) {
         setErrorMessage("You need to enter a password");
@@ -38,7 +27,7 @@ export const ResetPassword = () => {
         return;
       }
 
-      const result = await resetPassword(oobCode, password);
+      const result = await resetPassword(password);
       if (result.success) {
         setSuccess(true);
         startTransition(() => {
