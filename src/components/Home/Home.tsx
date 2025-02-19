@@ -2,6 +2,7 @@ import styles from "./Home.module.css";
 import { useAuthContext } from "../AuthContext/useAuthContext";
 import { Link } from "react-router-dom";
 import { LinkForm } from "./components/LinkForm/LinkForm";
+import { Profile } from "./components/Profile/Profile";
 
 export const Home = () => {
   const { user } = useAuthContext();
@@ -17,6 +18,7 @@ export const Home = () => {
       ) : (
         <p>{user === undefined ? "Loading..." : <Link to="/login">Login</Link>}</p>
       )}
+      {!!user && <Profile user={user} />}
       {!!user && <LinkForm user={user} />}
     </div>
   );
