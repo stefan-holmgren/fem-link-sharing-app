@@ -1,8 +1,9 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/config/firebase";
+import { AuthContextType } from "../../AuthContext";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 
-export const login = async (email: string, password: string): Promise<{ success: true } | { success: false; errorMessage: string }> => {
+export const login: AuthContextType["login"] = async (email, password) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
     return { success: true };

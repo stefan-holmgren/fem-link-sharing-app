@@ -1,9 +1,10 @@
 import { FormEvent, useRef, useState, useTransition } from "react";
 import styles from "./SignUp.module.css";
 import { useNavigate } from "react-router-dom";
-import { signup } from "./utils/signup";
+import { useAuthContext } from "../AuthContext/useAuthContext";
 
 export const SignUp = () => {
+  const { signup } = useAuthContext();
   const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const [isPending, startTransition] = useTransition();

@@ -1,15 +1,16 @@
-import { auth } from "@/config/firebase";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../AuthContext/useAuthContext";
 
 export const Logout = () => {
   const navigate = useNavigate();
+  const { logout } = useAuthContext();
 
   useEffect(() => {
-    auth.signOut().then(() => {
+    logout().then(() => {
       navigate("/login", { replace: true });
     });
-  }, [navigate]);
+  }, [logout, navigate]);
 
   return null;
 };

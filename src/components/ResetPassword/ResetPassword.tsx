@@ -1,10 +1,8 @@
 import { FormEventHandler, startTransition, useRef, useState, useTransition } from "react";
 import styles from "./ResetPassword.module.css";
-import { confirmPasswordReset } from "firebase/auth";
-import { auth } from "@/config/firebase";
 import { Link, useLocation } from "react-router-dom";
-import { FirebaseError } from "firebase/app";
 import { requestFormReset } from "react-dom";
+import { useAuthContext } from "../AuthContext/useAuthContext";
 
 export const ResetPassword = () => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -13,6 +11,7 @@ export const ResetPassword = () => {
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
   const [success, setSuccess] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
+  const { resetPassword } = useAuthContext();
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
@@ -39,19 +38,16 @@ export const ResetPassword = () => {
         return;
       }
 
-      try {
-        await confirmPasswordReset(auth, oobCode, password);
+      const result = await resetPassword(oobCode, password);
+      if (result.success) {
         setSuccess(true);
         startTransition(() => {
           if (formRef.current) {
             requestFormReset(formRef.current);
           }
         });
-      } catch (err) {
-        if (err instanceof FirebaseError) {
-          console.error(err);
-        }
-        setErrorMessage("Failed to reset password");
+      } else {
+        setErrorMessage(result.errorMessage);
       }
     });
   };

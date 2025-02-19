@@ -1,13 +1,18 @@
 import { ReactNode, useEffect, useState } from "react";
-import { AuthContext, User } from "./AuthContext";
+import { AuthContext, User } from "../AuthContext";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/config/firebase";
+import { login } from "./utils/login";
+import { logout } from "./utils/logout";
+import { forgotPassword } from "./utils/forgotPassword";
+import { resetPassword } from "./utils/resetPassword";
+import { signup } from "./utils/signup";
 
 type AuthContextProviderProps = {
   children?: ReactNode;
 };
 
-export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
+export const FirebaseAuthContextProvider = ({ children }: AuthContextProviderProps) => {
   const [user, setUser] = useState<User | null | undefined>(undefined);
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (authorizedUser) => {
@@ -16,5 +21,5 @@ export const AuthContextProvider = ({ children }: AuthContextProviderProps) => {
     return unsubscribe;
   }, []);
 
-  return <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ user, login, logout, forgotPassword, resetPassword, signup }}>{children}</AuthContext.Provider>;
 };

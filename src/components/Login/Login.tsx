@@ -1,11 +1,12 @@
 import styles from "./Login.module.css";
 import { FormEvent, useRef, useState, useTransition } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "./utils/login";
+import { useAuthContext } from "../AuthContext/useAuthContext";
 
 export const Login = () => {
   const [isPending, startTransition] = useTransition();
   const [errorMessage, setErrorMessage] = useState("");
+  const { login } = useAuthContext();
 
   const emailRef = useRef<HTMLInputElement>(null);
   const passwordRef = useRef<HTMLInputElement>(null);

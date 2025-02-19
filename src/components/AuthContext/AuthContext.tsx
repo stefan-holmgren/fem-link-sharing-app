@@ -5,8 +5,30 @@ export type User = {
   email: string | null;
 };
 
-type AuthContext = {
+export type AuthContextType = {
   user: User | null | undefined;
+  login: (email: string, password: string) => Promise<{ success: true } | { success: false; errorMessage: string }>;
+  logout: () => Promise<void>;
+  signup: (email: string, password: string) => Promise<{ success: true } | { success: false; errorMessage: string }>;
+  forgotPassword: (email: string) => Promise<{ success: true } | { success: false; errorMessage: string }>;
+  resetPassword: (corde: string, password: string) => Promise<{ success: true } | { success: false; errorMessage: string }>;
 };
 
-export const AuthContext = createContext<AuthContext>({ user: undefined });
+export const AuthContext = createContext<AuthContextType>({
+  user: undefined,
+  login: async () => {
+    throw new Error("login() not implemented");
+  },
+  logout: async () => {
+    throw new Error("logout() not implemented");
+  },
+  signup: async () => {
+    throw new Error("signup() not implemented");
+  },
+  forgotPassword: async () => {
+    throw new Error("forgotPassword() not implemented");
+  },
+  resetPassword: async () => {
+    throw new Error("resetPassword() not implemented");
+  },
+});
