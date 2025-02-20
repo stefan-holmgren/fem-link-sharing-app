@@ -1,6 +1,6 @@
 import styles from "./UserLinkComponent.module.css";
 import { ChangeEvent, ChangeEventHandler, InvalidEvent, Ref, useImperativeHandle, useRef, useState } from "react";
-import { UserLink } from "../utils/userLinks.utils";
+import { UserLink } from "../data/userLinks.data";
 import { isPlatform, linkTypes } from "./linkTypes.utils";
 import * as Select from "@radix-ui/react-select";
 

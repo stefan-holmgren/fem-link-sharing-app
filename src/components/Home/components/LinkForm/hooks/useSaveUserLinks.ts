@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateUserLinks, UserLink } from "../utils/userLinks.utils";
+import { updateUserLinks, UserLink } from "../data/userLinks.data";
 import { User } from "@/components/AuthContext/AuthContext";
 
 export const useSaveUserLinks = () => {

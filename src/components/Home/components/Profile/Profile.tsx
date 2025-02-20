@@ -1,45 +1,70 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 import styles from "./Profile.module.css";
 import { User } from "@/components/AuthContext/AuthContext";
-import { storage } from "@/config/firebase";
-import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
+import { supabase } from "@/config/supabase";
+import { useUserProfile } from "./hooks/useGetUserProfile";
 
 type ProfileProps = {
   user: User;
 };
 
-const updateDropZone = async (dropZoneElement: HTMLElement, file: File, destination: string) => {
-  const reader = new FileReader();
+const updateDropZone = (dropZoneElement: HTMLElement, file: File, destination: string): Promise<string> => {
+  return new Promise((res, rej) => {
+    const reader = new FileReader();
 
-  reader.onload = async (event) => {
-    while (dropZoneElement.firstChild) {
-      dropZoneElement.removeChild(dropZoneElement.firstChild);
-    }
+    reader.onload = async (event) => {
+      while (dropZoneElement.firstChild) {
+        dropZoneElement.removeChild(dropZoneElement.firstChild);
+      }
 
-    const imgElement = document.createElement("img");
-    imgElement.src = event.target?.result as string;
-    imgElement.className = styles.preview;
-    dropZoneElement.innerHTML = "";
-    dropZoneElement.appendChild(imgElement);
+      const imgElement = document.createElement("img");
+      imgElement.src = event.target?.result as string;
+      imgElement.className = styles.preview;
+      while (dropZoneElement.firstChild) {
+        dropZoneElement.removeChild(dropZoneElement.firstChild);
+      }
+      dropZoneElement.appendChild(imgElement);
 
-    // Upload to Firebase Storage
-    const storageRef = ref(storage, destination);
-    await uploadBytes(storageRef, file, { cacheControl: "public, max-age=1800" });
-    console.log("File uploaded to Firebase Storage at:", destination);
-  };
-  reader.readAsDataURL(file);
+      const { error } = await supabase.storage.from("profile_pictures").upload(destination, file, {
+        upsert: true,
+      });
+
+      if (error) {
+        console.error("Error uploading file:", error.message);
+        rej(error);
+        return;
+      }
+      console.log("File uploaded to storage at:", destination);
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("profile_pictures").getPublicUrl(destination);
+      res(publicUrl);
+    };
+
+    reader.readAsDataURL(file);
+  });
 };
 
 export const Profile = ({ user }: ProfileProps) => {
-  const profilePicturePath = `/profiles/${user.id}`;
+  const profilePicturePath = `${user.id}/profile-picture`;
   const dropZoneRef = useRef<HTMLButtonElement>(null);
   const inputElementRef = useRef<HTMLInputElement>(null);
-  const storageRef = useMemo(() => ref(storage, profilePicturePath), [profilePicturePath]);
-  const [profilePictureUrl, setProfilePictureUrl] = useState("");
+  const { userProfile, updateUserProfile } = useUserProfile();
 
-  useEffect(() => {
-    getDownloadURL(storageRef).then(setProfilePictureUrl);
-  }, [storageRef]);
+  const uploadFile = useCallback(
+    async (file: File) => {
+      if (!dropZoneRef.current) {
+        return;
+      }
+      try {
+        const publicProfilePictureUrl = await updateDropZone(dropZoneRef.current, file, profilePicturePath);
+        updateUserProfile({ ...userProfile, profileImageUrl: publicProfilePictureUrl });
+      } catch (err) {
+        console.error("Failed to upload file", err);
+      }
+    },
+    [profilePicturePath, updateUserProfile, userProfile]
+  );
 
   return (
     <div className={styles.profile}>
@@ -51,9 +76,10 @@ export const Profile = ({ user }: ProfileProps) => {
         onDrop={(e) => {
           e.preventDefault();
           const file = e.dataTransfer.files?.[0];
-          if (file && dropZoneRef.current) {
-            updateDropZone(dropZoneRef.current, file, profilePicturePath);
+          if (!file) {
+            return;
           }
+          uploadFile(file);
         }}
         onClick={() => {
           inputElementRef.current?.click();
@@ -61,7 +87,16 @@ export const Profile = ({ user }: ProfileProps) => {
       >
         Drop an image here or paste it
       </button>
-      {profilePictureUrl && <img src={profilePictureUrl} alt="Profile" className={styles.profilePicture} />}
+      {userProfile?.profileImageUrl ? (
+        <img
+          src={userProfile.profileImageUrl}
+          alt="Profile"
+          className={styles["profile-picture"]}
+          onError={(e) => {
+            e.currentTarget.style.display = "none";
+          }}
+        />
+      ) : null}
       <input
         style={{ display: "none" }}
         ref={inputElementRef}
@@ -69,9 +104,10 @@ export const Profile = ({ user }: ProfileProps) => {
         accept="image/*"
         onChange={(e) => {
           const file = e.target.files?.[0];
-          if (file && dropZoneRef.current) {
-            updateDropZone(dropZoneRef.current, file, profilePicturePath);
+          if (!file) {
+            return;
           }
+          uploadFile(file);
         }}
       />
     </div>
