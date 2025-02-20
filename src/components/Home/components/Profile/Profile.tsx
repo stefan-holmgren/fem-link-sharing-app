@@ -8,7 +8,7 @@ type ProfileProps = {
   user: User;
 };
 
-const updateDropZone = (dropZoneElement: HTMLElement, file: File, destination: string): Promise<string> => {
+const updateDropZone = (dropZoneElement: HTMLElement, file: File, destination: string): Promise<void> => {
   return new Promise((res, rej) => {
     const reader = new FileReader();
 
@@ -35,10 +35,7 @@ const updateDropZone = (dropZoneElement: HTMLElement, file: File, destination: s
         return;
       }
       console.log("File uploaded to storage at:", destination);
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from("profile_pictures").getPublicUrl(destination);
-      res(publicUrl);
+      res();
     };
 
     reader.readAsDataURL(file);
@@ -46,10 +43,13 @@ const updateDropZone = (dropZoneElement: HTMLElement, file: File, destination: s
 };
 
 export const Profile = ({ user }: ProfileProps) => {
-  const profilePicturePath = `${user.id}/profile-picture`;
   const dropZoneRef = useRef<HTMLButtonElement>(null);
   const inputElementRef = useRef<HTMLInputElement>(null);
   const { userProfile, updateUserProfile } = useUserProfile();
+
+  const publicProfilePictureUrl = userProfile?.profileImagePath
+    ? supabase.storage.from("profile_pictures").getPublicUrl(userProfile?.profileImagePath).data.publicUrl
+    : null;
 
   const uploadFile = useCallback(
     async (file: File) => {
@@ -57,13 +57,18 @@ export const Profile = ({ user }: ProfileProps) => {
         return;
       }
       try {
-        const publicProfilePictureUrl = await updateDropZone(dropZoneRef.current, file, profilePicturePath);
-        updateUserProfile({ ...userProfile, profileImageUrl: publicProfilePictureUrl });
+        const oldProfilePicturePath = userProfile?.profileImagePath;
+        const profilePicturePath = `${user.id}/profile-picture-${Date.now().toString(36)}`;
+        await updateDropZone(dropZoneRef.current, file, profilePicturePath);
+        updateUserProfile({ ...userProfile, profileImagePath: profilePicturePath });
+        if (oldProfilePicturePath) {
+          supabase.storage.from("profile_pictures").remove([oldProfilePicturePath]);
+        }
       } catch (err) {
         console.error("Failed to upload file", err);
       }
     },
-    [profilePicturePath, updateUserProfile, userProfile]
+    [updateUserProfile, user.id, userProfile]
   );
 
   return (
@@ -87,16 +92,7 @@ export const Profile = ({ user }: ProfileProps) => {
       >
         Drop an image here or paste it
       </button>
-      {userProfile?.profileImageUrl ? (
-        <img
-          src={userProfile.profileImageUrl}
-          alt="Profile"
-          className={styles["profile-picture"]}
-          onError={(e) => {
-            e.currentTarget.style.display = "none";
-          }}
-        />
-      ) : null}
+      {publicProfilePictureUrl ? <img src={publicProfilePictureUrl} alt="Profile" className={styles["profile-picture"]} /> : null}
       <input
         style={{ display: "none" }}
         ref={inputElementRef}
