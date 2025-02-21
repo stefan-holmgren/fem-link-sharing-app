@@ -5,13 +5,27 @@ button {
   border: none;
   min-height: 2.875rem;
   border-radius: 0.5rem;
+  padding: 0 1.6875rem;
 
   transition: opacity 0.2s ease, background-color 0.2s ease, filter 0.2s ease;
 
-  &:hover,
-  &:focus {
-    background: var(--clr-purple-hover);
-    filter: drop-shadow(0 0 32px var(--clr-purple-drop-shadow));
+  &[data-secondary="true"] {
+    background: transparent;
+    color: var(--clr-purple);
+    border: 1px solid var(--clr-purple);
+
+    &:hover,
+    &:focus {
+      background: var(--clr-purple-hover);
+    }
+  }
+
+  &:not([data-secondary="true"]) {
+    &:hover,
+    &:focus {
+      background: var(--clr-purple-hover);
+      filter: drop-shadow(0 0 32px var(--clr-purple-drop-shadow));
+    }
   }
 
   &:disabled {

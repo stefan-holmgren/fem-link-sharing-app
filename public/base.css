@@ -76,6 +76,7 @@ h6 {
   --clr-grey: #737373;
   --clr-borders: #d9d9d9;
   --clr-purple: #633cff;
+  --clr-light-purple: #efebff;
   --clr-purple-hover: #beadff;
   --clr-purple-drop-shadow: #633cff40;
   --clr-red: #ff3939;
@@ -92,4 +93,16 @@ body {
 
 #root {
   min-height: 100vh;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  border: 0;
 }
