@@ -11,6 +11,7 @@ import { AuthLayout } from "./pages/Auth/AuthLayout/AuthLayout";
 import { Preview } from "./pages/Preview/Preview";
 import { Profile } from "./pages/App/Profile/Profile";
 import { AppLayout } from "./pages/App/AppLayout/AppLayout";
+import { RequireAuth } from "./components/RequireAuth/RequireAuth";
 
 const queryClient = new QueryClient();
 
@@ -25,12 +26,14 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
           </Route>
-          <Route element={<AppLayout />}>
-            <Route path="/" element={<Links />} />
-            <Route path="/profile" element={<Profile />} />
+          <Route element={<RequireAuth />}>
+            <Route element={<AppLayout />}>
+              <Route path="/" element={<Links />} />
+              <Route path="/profile" element={<Profile />} />
+            </Route>
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/preview" element={<Preview />} />
           </Route>
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/preview" element={<Preview />} />
         </Routes>
       </SupabaseAuthContextProvider>
     </QueryClientProvider>
