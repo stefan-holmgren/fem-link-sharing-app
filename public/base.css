@@ -69,11 +69,6 @@ h6 {
   text-wrap: balance;
 }
 
-#root,
-#__next {
-  isolation: isolate;
-}
-
 :root {
   --clr-white: #ffffff;
   --clr-light-grey: #fafafa;
@@ -89,8 +84,17 @@ h6 {
 body {
   font-family: Instrument-Sans, serif;
   font-weight: 400;
-  background: var(--clr-light-grey);
+  background: var(--clr-white);
+
   color: var(--clr-dark-grey);
   margin: 0;
   padding: 0;
+
+  @media (min-width: 768px) {
+    background: var(--clr-light-grey);
+  }
+}
+
+#root {
+  min-height: 100vh;
 }

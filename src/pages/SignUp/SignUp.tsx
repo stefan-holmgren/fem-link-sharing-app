@@ -1,7 +1,7 @@
 import { FormEvent, useRef, useState, useTransition } from "react";
 import styles from "./SignUp.module.css";
 import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "../AuthContext/useAuthContext";
+import { useAuthContext } from "../../components/AuthContext/useAuthContext";
 
 export const SignUp = () => {
   const { signup } = useAuthContext();

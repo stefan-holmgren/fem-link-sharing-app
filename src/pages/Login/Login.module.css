@@ -1,28 +1,46 @@
 .login {
-  display: grid;
-  place-items: center;
-  height: 100vh;
+  padding: 2rem;
+
+  @media (min-width: 768px) {
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    padding: 0;
+  }
 
   h1 {
     img {
       display: block;
-      margin: 0 auto;
       max-height: 2.5rem;
+
+      @media (min-width: 768px) {
+        margin: 0 auto;
+      }
     }
   }
 
   form {
-    padding: 2.5rem;
-    margin-top: 3rem;
-    width: 30rem;
-    background: var(--clr-white);
-    border-radius: 0.75rem;
+    margin-top: 4rem;
+
+    @media (min-width: 768px) {
+      padding: 2.5rem;
+      margin-top: 3rem;
+      width: 30rem;
+      background: var(--clr-white);
+      border-radius: 0.75rem;
+    }
 
     > h2 {
-      font-size: 2rem;
+      font-size: 1.5em;
+
+      @media (min-width: 768px) {
+        font-size: 2em;
+      }
+
       font-weight: 700;
       color: var(--clr-dark-grey);
     }
+
     > p {
       margin-top: 0.5rem;
       color: var(--clr-grey);
@@ -39,7 +57,7 @@
         display: flex;
         flex-direction: column;
         label {
-          font-size: 0.75rem;
+          font-size: 0.75em;
         }
       }
     }
@@ -54,6 +72,12 @@
         color: var(--clr-grey);
         margin-top: 1.5rem;
         text-align: center;
+        a {
+          display: block;
+          @media (min-width: 768px) {
+            display: inline;
+          }
+        }
       }
     }
   }

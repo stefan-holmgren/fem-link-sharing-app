@@ -1,12 +1,12 @@
 import styles from "./Login.module.css";
 import { FormEvent, InvalidEvent, useId, useRef, useState, useTransition } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuthContext } from "../AuthContext/useAuthContext";
+import { useAuthContext } from "../../components/AuthContext/useAuthContext";
 import logo from "@/assets/logo-devlinks-large.svg";
 import emailIcon from "@/assets/icon-email.svg";
 import passwordIcon from "@/assets/icon-password.svg";
-import { Input } from "../Input/Input";
-import { Form } from "../Form/Form";
+import { Input } from "../../components/Input/Input";
+import { Form } from "../../components/Form/Form";
 
 export const Login = () => {
   const [isPending, startTransition] = useTransition();

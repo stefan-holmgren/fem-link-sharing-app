@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router-dom";
-import { Home } from "./components/Home";
-import { Login } from "./components/Login";
-import { Logout } from "./components/Logout";
-import { SignUp } from "./components/SignUp";
-import { ForgotPassword } from "./components/ForgotPassword/ForgotPassword";
-import { ResetPassword } from "./components/ResetPassword/ResetPassword";
+import { Home } from "./pages/Home";
+import { Login } from "./pages/Login";
+import { Logout } from "./pages/Logout";
+import { SignUp } from "./pages/SignUp";
+import { ForgotPassword } from "./pages/ForgotPassword/ForgotPassword";
+import { ResetPassword } from "./pages/ResetPassword/ResetPassword";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SupabaseAuthContextProvider } from "./components/AuthContext/supabase/SupabaseAuthContextProvider";
 

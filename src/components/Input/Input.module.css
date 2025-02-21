@@ -24,7 +24,7 @@
       top: 50%;
       right: 1rem;
       transform: translateY(-50%);
-      font-size: 0.75rem;
+      font-size: 0.75em;
       color: var(--clr-red);
       pointer-events: none;
     }

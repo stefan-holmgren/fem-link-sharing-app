@@ -1,5 +1,5 @@
 import styles from "./Home.module.css";
-import { useAuthContext } from "../AuthContext/useAuthContext";
+import { useAuthContext } from "../../components/AuthContext/useAuthContext";
 import { Link } from "react-router-dom";
 import { LinkForm } from "./components/LinkForm/LinkForm";
 import { Profile } from "./components/Profile/Profile";
