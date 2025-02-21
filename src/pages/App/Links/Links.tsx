@@ -11,6 +11,7 @@ export const Links = () => {
   };
 
   if (isPending) {
+    // @todo: add skeleton loader?
     return null;
   }
 
