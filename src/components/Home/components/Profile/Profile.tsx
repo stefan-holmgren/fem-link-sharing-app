@@ -3,43 +3,26 @@ import styles from "./Profile.module.css";
 import { User } from "@/components/AuthContext/AuthContext";
 import { supabase } from "@/config/supabase";
 import { useUserProfile } from "./hooks/useGetUserProfile";
+import { resizeImageFile } from "@/utils/image.utils";
 
 type ProfileProps = {
   user: User;
 };
 
-const updateDropZone = (dropZoneElement: HTMLElement, file: File, destination: string): Promise<void> => {
-  return new Promise((res, rej) => {
-    const reader = new FileReader();
-
-    reader.onload = async (event) => {
-      while (dropZoneElement.firstChild) {
-        dropZoneElement.removeChild(dropZoneElement.firstChild);
-      }
-
-      const imgElement = document.createElement("img");
-      imgElement.src = event.target?.result as string;
-      imgElement.className = styles.preview;
-      while (dropZoneElement.firstChild) {
-        dropZoneElement.removeChild(dropZoneElement.firstChild);
-      }
-      dropZoneElement.appendChild(imgElement);
-
-      const { error } = await supabase.storage.from("profile_pictures").upload(destination, file, {
-        upsert: true,
-      });
-
-      if (error) {
-        console.error("Error uploading file:", error.message);
-        rej(error);
-        return;
-      }
-      console.log("File uploaded to storage at:", destination);
-      res();
-    };
-
-    reader.readAsDataURL(file);
-  });
+const updateDropZone = async (dropZoneElement: HTMLElement, file: File, destinationPath: string) => {
+  const resizedFile = await resizeImageFile(file, { maxWidth: 320, maxHeight: 320 });
+  const { error } = await supabase.storage.from("profile_pictures").upload(destinationPath, resizedFile, { upsert: true, cacheControl: "2592000" });
+  if (error) {
+    console.error("Error uploading file:", error.message);
+    throw error;
+  }
+  const imgElement = document.createElement("img");
+  imgElement.src = supabase.storage.from("profile_pictures").getPublicUrl(destinationPath).data.publicUrl;
+  imgElement.className = styles.preview;
+  while (dropZoneElement.firstChild) {
+    dropZoneElement.removeChild(dropZoneElement.firstChild);
+  }
+  dropZoneElement.appendChild(imgElement);
 };
 
 export const Profile = ({ user }: ProfileProps) => {
