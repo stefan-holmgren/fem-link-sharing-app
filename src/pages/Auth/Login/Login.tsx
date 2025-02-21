@@ -2,8 +2,8 @@ import styles from "./Login.module.css";
 import { FormEvent, useRef, useState, useTransition } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../../components/AuthContext/useAuthContext";
-import emailIcon from "@/assets/icon-email.svg";
-import passwordIcon from "@/assets/icon-password.svg";
+import EmailIcon from "@/assets/icon-email.svg?react";
+import PasswordIcon from "@/assets/icon-password.svg?react";
 import { Input } from "../../../components/Input/Input";
 import { Form } from "../../../components/Form/Form";
 
@@ -45,7 +45,7 @@ export const Login = () => {
       <fieldset>
         <Input
           label={"Email address"}
-          icon={emailIcon}
+          icon={<EmailIcon />}
           type="email"
           ref={emailRef}
           autoComplete="email"
@@ -56,7 +56,7 @@ export const Login = () => {
         />
         <Input
           label={"Password"}
-          icon={passwordIcon}
+          icon={<PasswordIcon />}
           type="password"
           ref={passwordRef}
           autoComplete="current-password"

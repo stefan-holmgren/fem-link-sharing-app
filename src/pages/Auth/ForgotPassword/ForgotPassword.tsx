@@ -3,7 +3,7 @@ import styles from "./ForgotPassword.module.css";
 import { useAuthContext } from "../../../components/AuthContext/useAuthContext";
 import { Form } from "@/components/Form/Form";
 import { Input } from "@/components/Input/Input";
-import emailIcon from "@/assets/icon-email.svg";
+import EmailIcon from "@/assets/icon-email.svg?react";
 import { Snackbar } from "@/components/Snackbar/Snackbar";
 
 export const ForgotPassword = () => {
@@ -36,7 +36,7 @@ export const ForgotPassword = () => {
   return (
     <Form heading={"Forgot password"} description="We can send you a reset password email" className={styles["forgot-password"]} onSubmit={onSubmit}>
       <fieldset>
-        <Input label="Email address" icon={emailIcon} type="email" ref={emailRef} autoComplete="email" placeholder="e.g. alex@email.com" required />
+        <Input label="Email address" icon={<EmailIcon />} type="email" ref={emailRef} autoComplete="email" placeholder="e.g. alex@email.com" required />
       </fieldset>
       <button type="submit">{isPending ? "..." : "Send reset email"}</button>
       {emailSent && (

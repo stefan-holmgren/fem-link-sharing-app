@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/components/AuthContext/useAuthContext";
 import { Form } from "@/components/Form/Form";
 import { Input } from "@/components/Input/Input";
-import emailIcon from "@/assets/icon-email.svg";
-import passwordIcon from "@/assets/icon-password.svg";
+import EmailIcon from "@/assets/icon-email.svg?react";
+import PasswordIcon from "@/assets/icon-password.svg?react";
 
 export const SignUp = () => {
   const { signup } = useAuthContext();
@@ -43,10 +43,10 @@ export const SignUp = () => {
   return (
     <Form heading={"Create account"} description={"Let's get you started sharing your links!"} className={styles.signup} onSubmit={onSubmit}>
       <fieldset>
-        <Input label={"Email address"} icon={emailIcon} type="email" autoComplete="email" placeholder="e.g. alex@email.com" required ref={emailRef} />
+        <Input label={"Email address"} icon={<EmailIcon />} type="email" autoComplete="email" placeholder="e.g. alex@email.com" required ref={emailRef} />
         <Input
           label={"Create password"}
-          icon={passwordIcon}
+          icon={<PasswordIcon />}
           type="password"
           autoComplete="new-password"
           placeholder="At least 8 characters"
@@ -55,7 +55,7 @@ export const SignUp = () => {
         />
         <Input
           label={"Confirm password"}
-          icon={passwordIcon}
+          icon={<PasswordIcon />}
           type="password"
           autoComplete="new-password"
           placeholder="At least 8 characters"

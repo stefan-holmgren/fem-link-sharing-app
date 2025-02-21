@@ -5,7 +5,7 @@ import { requestFormReset } from "react-dom";
 import { useAuthContext } from "../../../components/AuthContext/useAuthContext";
 import { Form } from "@/components/Form/Form";
 import { Input } from "@/components/Input/Input";
-import passwordIcon from "@/assets/icon-password.svg";
+import PasswordIcon from "@/assets/icon-password.svg?react";
 import { Snackbar } from "@/components/Snackbar/Snackbar";
 
 export const ResetPassword = () => {
@@ -50,7 +50,7 @@ export const ResetPassword = () => {
     <Form heading={"Reset password"} description={"Enter a new password"} className={styles["reset-password"]} onSubmit={onSubmit} ref={formRef}>
       <fieldset>
         <Input
-          icon={passwordIcon}
+          icon={<PasswordIcon />}
           label="New password"
           type="password"
           ref={passwordRef}
@@ -59,7 +59,7 @@ export const ResetPassword = () => {
           required
         />
         <Input
-          icon={passwordIcon}
+          icon={<PasswordIcon />}
           label="Confirm password"
           type="password"
           ref={confirmPasswordRef}
