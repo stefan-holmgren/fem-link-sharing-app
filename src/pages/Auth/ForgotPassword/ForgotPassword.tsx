@@ -4,6 +4,7 @@ import { useAuthContext } from "../../../components/AuthContext/useAuthContext";
 import { Form } from "@/components/Form/Form";
 import { Input } from "@/components/Input/Input";
 import emailIcon from "@/assets/icon-email.svg";
+import { Snackbar } from "@/components/Snackbar/Snackbar";
 
 export const ForgotPassword = () => {
   const [isPending, startTransition] = useTransition();
@@ -39,15 +40,11 @@ export const ForgotPassword = () => {
       </fieldset>
       <button type="submit">{isPending ? "..." : "Send reset email"}</button>
       {emailSent && (
-        <p className={styles["email-sent"]} aria-live="polite" role="alert">
+        <Snackbar variant="positive">
           An email has been sent to <span className={styles.email}>{emailRecipient}</span>
-        </p>
+        </Snackbar>
       )}
-      {failed && (
-        <p className={styles["email-failed"]} aria-live="polite" role="alert">
-          Failed to send reset email
-        </p>
-      )}
+      {failed && <Snackbar variant="negative">Failed to send reset email</Snackbar>}
     </Form>
   );
 };

@@ -1,29 +1,34 @@
-import { FormEventHandler, startTransition, useRef, useState, useTransition } from "react";
+import { FormEvent, startTransition, useRef, useState, useTransition } from "react";
 import styles from "./ResetPassword.module.css";
 import { Link } from "react-router-dom";
 import { requestFormReset } from "react-dom";
 import { useAuthContext } from "../../../components/AuthContext/useAuthContext";
+import { Form } from "@/components/Form/Form";
+import { Input } from "@/components/Input/Input";
+import passwordIcon from "@/assets/icon-password.svg";
+import { Snackbar } from "@/components/Snackbar/Snackbar";
 
 export const ResetPassword = () => {
-  const [errorMessage, setErrorMessage] = useState("");
   const [isPending, createTransition] = useTransition();
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
   const [success, setSuccess] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const { resetPassword } = useAuthContext();
-  const onSubmit: FormEventHandler<HTMLFormElement> = (e) => {
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     createTransition(async () => {
       const password = passwordRef.current?.value;
       const confirmPassword = confirmPasswordRef.current?.value;
 
-      if (!password) {
-        setErrorMessage("You need to enter a password");
+      if (password !== confirmPassword) {
+        confirmPasswordRef.current?.setCustomValidity("Mismatching password");
+        (e.target as HTMLFormElement).reportValidity();
         return;
       }
-      if (password !== confirmPassword) {
-        setErrorMessage("Mismatching password");
+
+      if (!password) {
         return;
       }
 
@@ -36,31 +41,40 @@ export const ResetPassword = () => {
           }
         });
       } else {
-        setErrorMessage(result.errorMessage);
+        console.error("Failed to reset password", result.errorMessage);
       }
     });
   };
 
   return (
-    <div className={styles["reset-password"]}>
-      <form onSubmit={onSubmit} ref={formRef}>
-        <h1>Reset Password</h1>
-        <div>
-          <input type="password" ref={passwordRef} aria-invalid={!!errorMessage} autoComplete="new-password" placeholder="Password" required />
-          <input type="password" ref={confirmPasswordRef} aria-invalid={!!errorMessage} autoComplete="new-password" placeholder="Confirm Password" required />
-          {errorMessage && (
-            <p className={styles.error} aria-live="assertive" role="alert">
-              {errorMessage}
-            </p>
-          )}
-        </div>
-        <button type="submit">{isPending ? "..." : "Reset password"}</button>
-      </form>
+    <Form heading={"Reset password"} description={"Enter a new password"} className={styles["reset-password"]} onSubmit={onSubmit} ref={formRef}>
+      <fieldset>
+        <Input
+          icon={passwordIcon}
+          label="New password"
+          type="password"
+          ref={passwordRef}
+          autoComplete="new-password"
+          placeholder="At least 8 characters"
+          required
+        />
+        <Input
+          icon={passwordIcon}
+          label="Confirm password"
+          type="password"
+          ref={confirmPasswordRef}
+          autoComplete="new-password"
+          placeholder="At least 8 characters"
+          required
+        />
+      </fieldset>
+      <p className={styles["password-info"]}>Password must contain at least 8 characters</p>
+      <button type="submit">{isPending ? "..." : "Reset password"}</button>
       {success && (
-        <p>
-          The password has been reset, go to <Link to="/login">login</Link>
-        </p>
+        <Snackbar className={styles.snackbar} variant="positive">
+          The password has been reset. <Link to="/login">Login</Link>
+        </Snackbar>
       )}
-    </div>
+    </Form>
   );
 };
