@@ -7,7 +7,7 @@ export type User = {
 
 export type AuthContextType = {
   user: User | null | undefined;
-  login: (email: string, password: string) => Promise<{ success: true } | { success: false; errorMessage: string }>;
+  login: (email: string, password: string) => Promise<{ success: true } | { success: false; error: "invalid_credentials" | "other" }>;
   logout: () => Promise<{ success: true } | { success: false; errorMessage: string }>;
   signup: (email: string, password: string) => Promise<{ success: true } | { success: false; errorMessage: string }>;
   forgotPassword: (email: string) => Promise<{ success: true } | { success: false; errorMessage: string }>;

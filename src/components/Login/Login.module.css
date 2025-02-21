@@ -14,16 +14,16 @@
   form {
     padding: 2.5rem;
     margin-top: 3rem;
-    max-width: 30rem;
+    width: 30rem;
     background: var(--clr-white);
     border-radius: 0.75rem;
 
-    h2 {
+    > h2 {
       font-size: 2rem;
       font-weight: 700;
       color: var(--clr-dark-grey);
     }
-    p {
+    > p {
       margin-top: 0.5rem;
       color: var(--clr-grey);
     }
@@ -41,35 +41,6 @@
         label {
           font-size: 0.75rem;
         }
-
-        div:has(input) {
-          position: relative;
-          input {
-            width: 100%;
-            padding-left: 2.75rem;
-          }
-          i {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            width: 1rem;
-            height: 1rem;
-            transform: translateY(-50%);
-            cursor: pointer;
-          }
-        }
-
-        div:has(input[type="password"]) {
-          i {
-            background: url("@/assets/icon-password.svg") no-repeat center center;
-          }
-        }
-
-        div:has(input[type="email"]) {
-          i {
-            background: url("@/assets/icon-email.svg") no-repeat center center;
-          }
-        }
       }
     }
 
@@ -78,10 +49,12 @@
       width: 100%;
     }
 
-    p {
-      color: var(--clr-grey);
-      margin-top: 1.5rem;
-      text-align: center;
+    > div {
+      p {
+        color: var(--clr-grey);
+        margin-top: 1.5rem;
+        text-align: center;
+      }
     }
   }
 }

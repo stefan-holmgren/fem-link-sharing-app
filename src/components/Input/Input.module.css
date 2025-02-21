@@ -1,0 +1,32 @@
+.input {
+  > div {
+    position: relative;
+    input {
+      width: 100%;
+
+      &:has(+ i) {
+        padding-left: 2.5rem;
+      }
+    }
+
+    i {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      width: 1rem;
+      height: 1rem;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
+
+    div[role="alert"] {
+      position: absolute;
+      top: 50%;
+      right: 1rem;
+      transform: translateY(-50%);
+      font-size: 0.75rem;
+      color: var(--clr-red);
+      pointer-events: none;
+    }
+  }
+}
