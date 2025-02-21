@@ -84,15 +84,10 @@ h6 {
 body {
   font-family: Instrument-Sans, serif;
   font-weight: 400;
-  background: var(--clr-white);
-
+  background: var(--clr-light-grey);
   color: var(--clr-dark-grey);
   margin: 0;
   padding: 0;
-
-  @media (min-width: 768px) {
-    background: var(--clr-light-grey);
-  }
 }
 
 #root {
