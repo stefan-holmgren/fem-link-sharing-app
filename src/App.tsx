@@ -1,12 +1,13 @@
 import { Route, Routes } from "react-router-dom";
 import { Home } from "./pages/Home";
-import { Login } from "./pages/Login";
-import { Logout } from "./pages/Logout";
-import { SignUp } from "./pages/SignUp";
-import { ForgotPassword } from "./pages/ForgotPassword/ForgotPassword";
-import { ResetPassword } from "./pages/ResetPassword/ResetPassword";
+import { Login } from "./pages/Auth/Login";
+import { Logout } from "./pages/Auth/Logout";
+import { SignUp } from "./pages/Auth/SignUp";
+import { ForgotPassword } from "./pages/Auth/ForgotPassword/ForgotPassword";
+import { ResetPassword } from "./pages/Auth/ResetPassword/ResetPassword";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SupabaseAuthContextProvider } from "./components/AuthContext/supabase/SupabaseAuthContextProvider";
+import { AuthLayout } from "./pages/Auth/AuthLayout/AuthLayout";
 
 const queryClient = new QueryClient();
 
@@ -16,11 +17,39 @@ function App() {
       <SupabaseAuthContextProvider>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
+          <Route
+            path="/login"
+            element={
+              <AuthLayout>
+                <Login />
+              </AuthLayout>
+            }
+          />
           <Route path="/Logout" element={<Logout />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route
+            path="/signup"
+            element={
+              <AuthLayout>
+                <SignUp />
+              </AuthLayout>
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <AuthLayout>
+                <ForgotPassword />
+              </AuthLayout>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <AuthLayout>
+                <ResetPassword />
+              </AuthLayout>
+            }
+          />
         </Routes>
       </SupabaseAuthContextProvider>
     </QueryClientProvider>

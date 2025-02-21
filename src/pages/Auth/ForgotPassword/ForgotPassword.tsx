@@ -1,6 +1,6 @@
 import { FormEvent, useRef, useState, useTransition } from "react";
 import styles from "./ForgotPassword.module.css";
-import { useAuthContext } from "../../components/AuthContext/useAuthContext";
+import { useAuthContext } from "../../../components/AuthContext/useAuthContext";
 
 export const ForgotPassword = () => {
   const [isPending, startTransition] = useTransition();

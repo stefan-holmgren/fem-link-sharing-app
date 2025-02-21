@@ -2,7 +2,7 @@ import { FormEventHandler, startTransition, useRef, useState, useTransition } fr
 import styles from "./ResetPassword.module.css";
 import { Link } from "react-router-dom";
 import { requestFormReset } from "react-dom";
-import { useAuthContext } from "../../components/AuthContext/useAuthContext";
+import { useAuthContext } from "../../../components/AuthContext/useAuthContext";
 
 export const ResetPassword = () => {
   const [errorMessage, setErrorMessage] = useState("");

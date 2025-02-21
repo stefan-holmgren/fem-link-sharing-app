@@ -1,0 +1,35 @@
+.auth-layout {
+  padding: 2rem;
+
+  @media (min-width: 768px) {
+    display: grid;
+    place-items: center;
+    height: 100vh;
+    padding: 0;
+  }
+
+  > div {
+    > h1 {
+      img {
+        display: block;
+        max-height: 2.5rem;
+
+        @media (min-width: 768px) {
+          margin: 0 auto;
+        }
+      }
+    }
+
+    > div {
+      margin-top: 4rem;
+
+      @media (min-width: 768px) {
+        padding: 2.5rem;
+        margin-top: 3rem;
+        width: 30rem;
+        background: var(--clr-white);
+        border-radius: 0.75rem;
+      }
+    }
+  }
+}

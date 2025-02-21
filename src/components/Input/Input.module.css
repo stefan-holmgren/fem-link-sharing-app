@@ -9,6 +9,10 @@
       }
     }
 
+    label {
+      font-size: 0.75em;
+    }
+
     i {
       position: absolute;
       left: 1rem;
