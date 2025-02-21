@@ -32,6 +32,11 @@ body {
   overflow-y: scroll;
 }
 
+ul {
+  list-style: none;
+  padding: 0;
+}
+
 img,
 picture,
 video,
