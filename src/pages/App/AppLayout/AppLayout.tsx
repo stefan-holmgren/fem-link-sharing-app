@@ -1,10 +1,11 @@
 import { Header } from "@/components/Header/Header";
+import { Outlet } from "react-router-dom";
 
-export const Profile = () => {
+export const AppLayout = () => {
   return (
     <>
       <Header />
-      <h1>Profile</h1>
+      <Outlet />
     </>
   );
 };

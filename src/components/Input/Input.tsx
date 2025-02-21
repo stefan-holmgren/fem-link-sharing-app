@@ -1,3 +1,4 @@
+import { Icon } from "../Icon/Icon";
 import styles from "./Input.module.css";
 
 import { ChangeEvent, InputHTMLAttributes, InvalidEvent, ReactNode, Ref, useId, useState } from "react";
@@ -43,7 +44,7 @@ export const Input = ({ id, icon, label, onInvalid, onChange, errorMessage, ...r
       {label && <label htmlFor={inputId}>{label}</label>}
       <div>
         <input id={inputId} onInvalid={onInvalidWrapper} onChange={onChangeWrapper} aria-invalid={!!message} {...rest} />
-        {icon && <i style={{ backgroundImage: `url("${icon}")` }} />}
+        {icon && <Icon className={styles.icon} src={icon} />}
         {message && (
           <div aria-live={"polite"} role="alert">
             {message}

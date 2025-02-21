@@ -13,14 +13,11 @@
       font-size: 0.75em;
     }
 
-    i {
+    .icon {
       position: absolute;
       left: 1rem;
       top: 50%;
-      width: 1rem;
-      height: 1rem;
       transform: translateY(-50%);
-      pointer-events: none;
     }
 
     div[role="alert"] {
