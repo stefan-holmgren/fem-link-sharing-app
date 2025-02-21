@@ -1,5 +1,5 @@
 import styles from "./Login.module.css";
-import { FormEvent, InvalidEvent, useRef, useState, useTransition } from "react";
+import { FormEvent, useRef, useState, useTransition } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../../../components/AuthContext/useAuthContext";
 import emailIcon from "@/assets/icon-email.svg";
@@ -40,23 +40,6 @@ export const Login = () => {
     });
   };
 
-  function onEmailInvalid(event: InvalidEvent<HTMLInputElement>) {
-    const { validity } = event.currentTarget;
-    if (validity.valueMissing) {
-      event.currentTarget.setCustomValidity("Can't be empty");
-    } else if (validity.typeMismatch) {
-      event.currentTarget.setCustomValidity("Please enter a valid email address.");
-    }
-  }
-
-  function onPasswordInvalid(event: InvalidEvent<HTMLInputElement>) {
-    if (event.currentTarget.validity.valueMissing) {
-      event.currentTarget.setCustomValidity("Can't be empty");
-    } else {
-      event.currentTarget.setCustomValidity("Please enter your password");
-    }
-  }
-
   return (
     <Form heading={"Login"} description={"Add your details below to get back into the app"} className={styles.login} onSubmit={onSubmit}>
       <fieldset>
@@ -69,7 +52,6 @@ export const Login = () => {
           name="email"
           placeholder="e.g. alex@email.com"
           required
-          onInvalid={onEmailInvalid}
           errorMessage={emailErrorMessage}
         />
         <Input
@@ -81,7 +63,6 @@ export const Login = () => {
           name="password"
           placeholder="Enter your password"
           required
-          onInvalid={onPasswordInvalid}
           errorMessage={passwordErrorMessage}
         />
       </fieldset>

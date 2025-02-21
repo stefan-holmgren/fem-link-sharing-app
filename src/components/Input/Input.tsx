@@ -19,6 +19,12 @@ export const Input = ({ id, icon, label, onInvalid, onChange, errorMessage, ...r
       onInvalid(event);
     }
     event.preventDefault();
+    if (event.currentTarget.validity.valueMissing) {
+      event.currentTarget.setCustomValidity("Can't be empty");
+    } else if (event.currentTarget.validity.typeMismatch) {
+      event.currentTarget.setCustomValidity("Please check again");
+    }
+
     setValidationMessage(event.currentTarget.validationMessage);
   };
 
