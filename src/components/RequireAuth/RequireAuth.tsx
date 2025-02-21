@@ -8,7 +8,7 @@ export const RequireAuth = () => {
 
   useEffect(() => {
     if (user === null) {
-      navigate("/login");
+      navigate("/login", { replace: true });
     }
   }, [user, navigate]);
 
