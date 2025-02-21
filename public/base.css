@@ -1,0 +1,95 @@
+@font-face {
+  font-family: Instrument-Sans;
+  src: url(./fonts/instrument-sans/InstrumentSans-Regular.ttf) format("truetype");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: Instrument-Sans;
+  src: url(./fonts/instrument-sans/InstrumentSans-SemiBold.ttf) format("truetype");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: Instrument-Sans;
+  src: url(./fonts/instrument-sans/InstrumentSans-Bold.ttf) format("truetype");
+  font-weight: 700;
+}
+
+/* reset css https://www.joshwcomeau.com/css/custom-css-reset/ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+* {
+  margin: 0;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+p {
+  text-wrap: pretty;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+#root,
+#__next {
+  isolation: isolate;
+}
+
+:root {
+  --clr-white: #ffffff;
+  --clr-light-grey: #fafafa;
+  --clr-dark-grey: #333333;
+  --clr-grey: #737373;
+  --clr-borders: #d9d9d9;
+  --clr-purple: #633cff;
+  --clr-purple-hover: #beadff;
+  --clr-purple-drop-shadow: #633cff40;
+}
+
+body {
+  font-family: Instrument-Sans, serif;
+  font-weight: 400;
+  background: var(--clr-light-grey);
+  color: var(--clr-dark-grey);
+  margin: 0;
+  padding: 0;
+}
