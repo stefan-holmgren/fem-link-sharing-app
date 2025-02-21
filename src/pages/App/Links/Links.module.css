@@ -1,2 +1,59 @@
 .links {
+  background-color: var(--clr-white);
+  margin: 1rem;
+  border-radius: 0.75rem;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - var(--header-height) - 2rem);
+    .links-container {
+      padding: 1.5rem;
+      flex: 1;
+
+      > h1 {
+        font-size: 1.5em;
+      }
+
+      > p {
+        margin-top: 0.5rem;
+        color: var(--clr-grey);
+      }
+
+      > button {
+        margin-top: 2.5rem;
+        width: 100%;
+      }
+
+      ul {
+        margin-top: 1.5rem;
+        padding: 1.25rem;
+        background-color: var(--clr-light-grey);
+        border-radius: 0.75rem;
+
+        li.empty-state {
+          svg {
+            height: 5rem;
+          }
+          h2 {
+            margin-top: 1.5rem;
+            text-align: center;
+          }
+          p {
+            margin-top: 1.5rem;
+            text-align: center;
+            color: var(--clr-grey);
+          }
+        }
+      }
+    }
+
+    .save-container {
+      padding: 1rem;
+      border-top: 1px solid var(--clr-borders);
+      button {
+        width: 100%;
+      }
+    }
+  }
 }

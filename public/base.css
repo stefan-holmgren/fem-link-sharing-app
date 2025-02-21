@@ -86,6 +86,8 @@ h6 {
   --clr-purple-hover: #beadff;
   --clr-purple-drop-shadow: #633cff40;
   --clr-red: #ff3939;
+
+  --header-height: 78px;
 }
 
 body {

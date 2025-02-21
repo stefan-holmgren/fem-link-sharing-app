@@ -1,25 +1,45 @@
+import { FormEvent } from "react";
 import styles from "./Links.module.css";
-import { useAuthContext } from "../../../components/AuthContext/useAuthContext";
-import { Link } from "react-router-dom";
-import { LinkForm } from "./components/LinkForm/LinkForm";
-import { Profile } from "./components/Profile/Profile";
+import IllustrationEmpty from "@/assets/illustration-empty.svg?react";
+import { useGetUserLinks } from "./hooks/useGetUserLinks";
 
 export const Links = () => {
-  const { user } = useAuthContext();
+  const { userLinks, isPending } = useGetUserLinks();
+
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
+  if (isPending) {
+    return null;
+  }
 
   return (
     <main className={styles.links}>
-      <h1>Home</h1>
-      {user ? (
-        <>
-          <p>Welcome, {user.email}</p>
-          <Link to="/logout">Logout</Link>
-        </>
-      ) : (
-        <p>{user === undefined ? "Loading..." : <Link to="/login">Login</Link>}</p>
-      )}
-      {!!user && <Profile user={user} />}
-      {!!user && <LinkForm user={user} />}
+      <form onSubmit={onSubmit}>
+        <div className={styles["links-container"]}>
+          <h1>Customize your links</h1>
+          <p>Add/edit/remove links below and then share all your profiles with the world!</p>
+          <button type="button" className={styles["add-new-link"]} data-secondary>
+            + Add new link
+          </button>
+          <ul>
+            {userLinks && userLinks.length === 0 && (
+              <li className={styles["empty-state"]}>
+                <IllustrationEmpty />
+                <h2>Let's get you started</h2>
+                <p>
+                  Use the "Add new link" button to get started. Once you have more than one link, you can reorder and edit them. We're here to help you share
+                  your profiles with everyone
+                </p>
+              </li>
+            )}
+          </ul>
+        </div>
+        <div className={styles["save-container"]}>
+          <button type="submit">Save</button>
+        </div>
+      </form>
     </main>
   );
 };
