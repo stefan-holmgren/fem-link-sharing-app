@@ -1,10 +1,12 @@
-import { FormEvent } from "react";
+import { FormEvent, useState } from "react";
 import styles from "./Links.module.css";
 import IllustrationEmpty from "@/assets/illustration-empty.svg?react";
 import { useGetUserLinks } from "./hooks/useGetUserLinks";
+import { UserLink } from "./data/userLinks.data";
 
 export const Links = () => {
   const { userLinks, isPending } = useGetUserLinks();
+  const [currentUserLinks, setCurrentUserLinks] = useState<UserLink[]>();
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
