@@ -20,7 +20,7 @@ button {
     }
   }
 
-  &:not([data-secondary="true"]) {
+  &:not([data-secondary="true"]):not([data-tertiary="true"]) {
     &:hover,
     &:focus {
       background: var(--clr-purple-hover);
