@@ -1,16 +1,23 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import styles from "./Links.module.css";
 import IllustrationEmpty from "@/assets/illustration-empty.svg?react";
 import { useGetUserLinks } from "./hooks/useGetUserLinks";
 import { UserLink } from "./data/userLinks.data";
+import { Form } from "@/components/Form/Form";
 
 export const Links = () => {
   const { userLinks, isPending } = useGetUserLinks();
-  const [currentUserLinks, setCurrentUserLinks] = useState<UserLink[]>();
+  const [currentUserLinks, setCurrentUserLinks] = useState<UserLink[]>([]);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
+
+  useEffect(() => {
+    if (userLinks) {
+      setCurrentUserLinks([...userLinks]);
+    }
+  }, [userLinks]);
 
   if (isPending) {
     // @todo: add skeleton loader?
@@ -19,7 +26,7 @@ export const Links = () => {
 
   return (
     <main className={styles.links}>
-      <form onSubmit={onSubmit}>
+      <Form onSubmit={onSubmit}>
         <div className={styles["links-container"]}>
           <h1>Customize your links</h1>
           <p>Add/edit/remove links below and then share all your profiles with the world!</p>
@@ -27,7 +34,7 @@ export const Links = () => {
             + Add new link
           </button>
           <ul>
-            {userLinks && userLinks.length === 0 && (
+            {currentUserLinks && currentUserLinks.length === 0 && (
               <li className={styles["empty-state"]}>
                 <IllustrationEmpty />
                 <h2>Let's get you started</h2>
@@ -42,7 +49,7 @@ export const Links = () => {
         <div className={styles["save-container"]}>
           <button type="submit">Save</button>
         </div>
-      </form>
+      </Form>
     </main>
   );
 };

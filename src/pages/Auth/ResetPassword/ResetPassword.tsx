@@ -1,4 +1,4 @@
-import { FormEvent, startTransition, useRef, useState, useTransition } from "react";
+import { FormEvent, InvalidEvent, startTransition, useRef, useState, useTransition } from "react";
 import styles from "./ResetPassword.module.css";
 import { Link } from "react-router-dom";
 import { requestFormReset } from "react-dom";
@@ -15,19 +15,25 @@ export const ResetPassword = () => {
   const [success, setSuccess] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
   const { resetPassword } = useAuthContext();
+
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const password = passwordRef.current?.value;
+    const confirmPassword = confirmPasswordRef.current?.value;
+
+    if (password !== confirmPassword) {
+      confirmPasswordRef.current?.setCustomValidity("Mismatching password");
+    } else {
+      confirmPasswordRef.current?.setCustomValidity("");
+    }
+
+    const formElement = e.target as HTMLFormElement;
+    if (!formElement.reportValidity()) {
+      return;
+    }
+
     createTransition(async () => {
-      const password = passwordRef.current?.value;
-      const confirmPassword = confirmPasswordRef.current?.value;
-
-      if (password !== confirmPassword) {
-        confirmPasswordRef.current?.setCustomValidity("Mismatching password");
-        (e.target as HTMLFormElement).reportValidity();
-        return;
-      }
-
       if (!password) {
         return;
       }
@@ -46,6 +52,15 @@ export const ResetPassword = () => {
     });
   };
 
+  const onPasswordInvalid = (e: InvalidEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    if (passwordRef.current?.validity.tooShort) {
+      passwordRef.current?.setCustomValidity("At least 8 characters");
+    } else {
+      passwordRef.current?.setCustomValidity("");
+    }
+  };
+
   return (
     <Form heading={"Reset password"} description={"Enter a new password"} className={styles["reset-password"]} onSubmit={onSubmit} ref={formRef}>
       <fieldset>
@@ -56,6 +71,8 @@ export const ResetPassword = () => {
           ref={passwordRef}
           autoComplete="new-password"
           placeholder="At least 8 characters"
+          minLength={8}
+          onInvalid={onPasswordInvalid}
           required
         />
         <Input

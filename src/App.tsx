@@ -13,7 +13,15 @@ import { Profile } from "./pages/App/Profile/Profile";
 import { AppLayout } from "./pages/App/AppLayout/AppLayout";
 import { RequireAuth } from "./components/RequireAuth/RequireAuth";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      staleTime: Infinity,
+    },
+  },
+});
 
 function App() {
   return (

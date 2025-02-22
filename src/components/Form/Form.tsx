@@ -2,8 +2,8 @@ import styles from "./Form.module.css";
 import { FormEvent, FormHTMLAttributes, ReactNode, Ref, useId } from "react";
 
 type FormProps = FormHTMLAttributes<HTMLFormElement> & {
-  heading: ReactNode;
-  description: ReactNode;
+  heading?: ReactNode;
+  description?: ReactNode;
   ref?: Ref<HTMLFormElement>;
 };
 
@@ -14,17 +14,21 @@ export const Form = ({ className, heading, description, onInvalid, children, ref
     if (onInvalid) {
       onInvalid(event);
     }
-    const firstInvalidInput = document.querySelector("input[aria-invalid='true']") as HTMLInputElement;
+    const firstInvalidInput = Array.from(event.currentTarget.elements).find(
+      (element) => element instanceof HTMLInputElement && !!element.validationMessage
+    ) as HTMLInputElement;
     if (firstInvalidInput) {
       firstInvalidInput.focus();
     }
   };
   return (
     <form className={`${styles.form} ${className}`} onInvalid={onInvalidWrapper} ref={ref} {...rest}>
-      <h2 id={headingId}>{heading}</h2>
-      <p className={styles.description} id={descriptionId}>
-        {description}
-      </p>
+      {!!heading && <h2 id={headingId}>{heading}</h2>}
+      {!!description && (
+        <p className={styles.description} id={descriptionId}>
+          {description}
+        </p>
+      )}
       {children}
     </form>
   );

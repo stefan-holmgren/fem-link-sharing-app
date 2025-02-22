@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useTransition } from "react";
+import { FormEvent, InvalidEvent, useRef, useTransition } from "react";
 import styles from "./SignUp.module.css";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/components/AuthContext/useAuthContext";
@@ -18,6 +18,21 @@ export const SignUp = () => {
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const confirmPassword = confirmPasswordRef.current?.value;
+    const password = passwordRef.current?.value;
+
+    if (password != confirmPassword) {
+      confirmPasswordRef.current?.setCustomValidity("Passwords do not match");
+    } else {
+      confirmPasswordRef.current?.setCustomValidity("");
+    }
+
+    const formElement = e.target as HTMLFormElement;
+    if (!formElement.reportValidity()) {
+      return;
+    }
+
     startTransition(async () => {
       const email = emailRef.current?.value;
       const password = passwordRef.current?.value;
@@ -40,6 +55,15 @@ export const SignUp = () => {
     });
   };
 
+  const onPasswordInvalid = (e: InvalidEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    if (passwordRef.current?.validity.tooShort) {
+      passwordRef.current?.setCustomValidity("At least 8 characters");
+    } else {
+      passwordRef.current?.setCustomValidity("");
+    }
+  };
+
   return (
     <Form heading={"Create account"} description={"Let's get you started sharing your links!"} className={styles.signup} onSubmit={onSubmit}>
       <fieldset>
@@ -50,7 +74,9 @@ export const SignUp = () => {
           type="password"
           autoComplete="new-password"
           placeholder="At least 8 characters"
+          minLength={8}
           required
+          onInvalid={onPasswordInvalid}
           ref={passwordRef}
         />
         <Input
