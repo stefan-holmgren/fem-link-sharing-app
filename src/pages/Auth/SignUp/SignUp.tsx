@@ -86,7 +86,6 @@ export const SignUp = () => {
           type="password"
           autoComplete="new-password"
           placeholder="At least 8 characters"
-          required
           ref={confirmPasswordRef}
         />
       </fieldset>

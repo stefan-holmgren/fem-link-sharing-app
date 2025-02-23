@@ -1,4 +1,6 @@
 .login {
+  --input-background-clr: var(--clr-light-grey);
+
   > div {
     p {
       color: var(--clr-grey);

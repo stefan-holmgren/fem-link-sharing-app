@@ -1,4 +1,6 @@
 .form {
+  --input-background-clr: var(--clr-light-grey);
+
   > h2 {
     font-size: 1.5em;
 
