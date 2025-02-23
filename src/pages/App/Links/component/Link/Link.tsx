@@ -4,6 +4,7 @@ import { Input } from "@/components/Input/Input";
 import IconLink from "@/assets/icon-link.svg?react";
 import IconDragAndDrop from "@/assets/icon-drag-and-drop.svg?react";
 import { PlatformSelect } from "../PlatformSelect/PlatformSelect";
+import { Button } from "@/components/Button/Button";
 
 type LinkProps = {
   linkIndex: number;
@@ -23,9 +24,9 @@ export const Link = ({ linkIndex, userLink, onRemove, onChange }: LinkProps) => 
       <div>
         <IconDragAndDrop />
         <h3>Link #{linkIndex + 1}</h3>
-        <button type="button" data-tertiary onClick={() => onRemove()}>
+        <Button type="button" variant="tertiary" onClick={() => onRemove()}>
           Remove
-        </button>
+        </Button>
       </div>
       <fieldset>
         <PlatformSelect defaultValue={userLink.platform} />

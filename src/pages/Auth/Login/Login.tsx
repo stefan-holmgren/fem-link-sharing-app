@@ -6,6 +6,7 @@ import EmailIcon from "@/assets/icon-email.svg?react";
 import PasswordIcon from "@/assets/icon-password.svg?react";
 import { Input } from "../../../components/Input/Input";
 import { Form } from "../../../components/Form/Form";
+import { Button } from "@/components/Button/Button";
 
 export const Login = () => {
   const [isPending, startTransition] = useTransition();
@@ -67,7 +68,7 @@ export const Login = () => {
         />
       </fieldset>
 
-      <button type="submit">{isPending ? "..." : "Login"}</button>
+      <Button type="submit">{isPending ? "..." : "Login"}</Button>
       <div>
         <p>
           Don't have an account? <Link to="/signup">Create account</Link>

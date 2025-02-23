@@ -6,6 +6,7 @@ import { Form } from "@/components/Form/Form";
 import { Input } from "@/components/Input/Input";
 import EmailIcon from "@/assets/icon-email.svg?react";
 import PasswordIcon from "@/assets/icon-password.svg?react";
+import { Button } from "@/components/Button/Button";
 
 export const SignUp = () => {
   const { signup } = useAuthContext();
@@ -90,7 +91,7 @@ export const SignUp = () => {
         />
       </fieldset>
       <p className={styles["password-info"]}>Password must contain at least 8 characters</p>
-      <button type="submit">{isPending ? "..." : "Create new account"}</button>
+      <Button type="submit">{isPending ? "..." : "Create new account"}</Button>
       <p>
         Already have an account? <a href="/login">Login</a>
       </p>

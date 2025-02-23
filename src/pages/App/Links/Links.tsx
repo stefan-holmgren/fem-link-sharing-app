@@ -5,6 +5,7 @@ import { useGetUserLinks } from "./hooks/useGetUserLinks";
 import { platforms, UserLink } from "./data/userLinks.data";
 import { Form } from "@/components/Form/Form";
 import { Link } from "./component/Link/Link";
+import { Button } from "@/components/Button/Button";
 
 type UserLinkWithUniqueId = UserLink & { uniqueId: number };
 
@@ -77,13 +78,13 @@ export const Links = () => {
         <div className={styles["links-container"]}>
           <h1>Customize your links</h1>
           <p>Add/edit/remove links below and then share all your profiles with the world!</p>
-          <button type="button" className={styles["add-new-link"]} data-secondary onClick={onAddNewLink}>
+          <Button type="button" variant="secondary" className={styles["add-new-link"]} onClick={onAddNewLink}>
             + Add new link
-          </button>
+          </Button>
           <ul>{currentUserLinks.length === 0 ? renderEmptyState() : renderLinks()}</ul>
         </div>
         <div className={styles["save-container"]}>
-          <button type="submit">Save</button>
+          <Button type="submit">Save</Button>
         </div>
       </Form>
     </main>

@@ -5,6 +5,7 @@ import { Form } from "@/components/Form/Form";
 import { Input } from "@/components/Input/Input";
 import EmailIcon from "@/assets/icon-email.svg?react";
 import { Snackbar } from "@/components/Snackbar/Snackbar";
+import { Button } from "@/components/Button/Button";
 
 export const ForgotPassword = () => {
   const [isPending, startTransition] = useTransition();
@@ -38,7 +39,7 @@ export const ForgotPassword = () => {
       <fieldset>
         <Input label="Email address" icon={<EmailIcon />} type="email" ref={emailRef} autoComplete="email" placeholder="e.g. alex@email.com" required />
       </fieldset>
-      <button type="submit">{isPending ? "..." : "Send reset email"}</button>
+      <Button type="submit">{isPending ? "..." : "Send reset email"}</Button>
       {emailSent && (
         <Snackbar variant="positive">
           An email has been sent to <span className={styles.email}>{emailRecipient}</span>

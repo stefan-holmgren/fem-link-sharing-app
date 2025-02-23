@@ -7,6 +7,7 @@ import { Form } from "@/components/Form/Form";
 import { Input } from "@/components/Input/Input";
 import PasswordIcon from "@/assets/icon-password.svg?react";
 import { Snackbar } from "@/components/Snackbar/Snackbar";
+import { Button } from "@/components/Button/Button";
 
 export const ResetPassword = () => {
   const [isPending, createTransition] = useTransition();
@@ -86,7 +87,7 @@ export const ResetPassword = () => {
         />
       </fieldset>
       <p className={styles["password-info"]}>Password must contain at least 8 characters</p>
-      <button type="submit">{isPending ? "..." : "Reset password"}</button>
+      <Button type="submit">{isPending ? "..." : "Reset password"}</Button>
       {success && (
         <Snackbar className={styles.snackbar} variant="positive">
           The password has been reset. <Link to="/login">Login</Link>
