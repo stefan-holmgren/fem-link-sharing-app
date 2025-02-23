@@ -1,8 +1,29 @@
 .input {
   > div {
     position: relative;
+
     input {
       width: 100%;
+
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid var(--clr-borders);
+      background: transparent;
+      transition: border-color 0.2s ease, filter 0.2s ease, color 0.2s ease;
+
+      &::placeholder {
+        opacity: 0.5;
+      }
+
+      &:focus,
+      &:hover {
+        border-color: var(--clr-purple);
+        filter: drop-shadow(0 0 32px var(--clr-purple-drop-shadow));
+      }
+      &[aria-invalid="true"] {
+        color: var(--clr-red);
+        border-color: var(--clr-red);
+      }
 
       &:has(+ svg) {
         padding-left: 2.5rem;
@@ -31,3 +52,25 @@
     }
   }
 }
+
+/* input {
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--clr-borders);
+  background: transparent;
+  transition: border-color 0.2s ease, filter 0.2s ease, color 0.2s ease;
+
+  &::placeholder {
+    opacity: 0.5;
+  }
+
+  &:focus,
+  &:hover {
+    border-color: var(--clr-purple);
+    filter: drop-shadow(0 0 32px var(--clr-purple-drop-shadow));
+  }
+  &[aria-invalid="true"] {
+    color: var(--clr-red);
+    border-color: var(--clr-red);
+  }
+} */
