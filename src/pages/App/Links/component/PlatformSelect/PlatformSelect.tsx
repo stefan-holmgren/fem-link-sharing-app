@@ -3,36 +3,18 @@ import { Label } from "@/components/Label/Label";
 import { Platform, platforms } from "../../data/userLinks.data";
 import * as Select from "@radix-ui/react-select";
 import ChevronDownIcon from "@/assets/icon-chevron-down.svg?react";
-import { ReactNode } from "react";
-
-import GithubIcon from "@/assets/platforms/icon-github.svg?react";
-import YoutubeIcon from "@/assets/platforms/icon-youtube.svg?react";
-
-type PlatformInfo = {
-  icon: ReactNode;
-  name: string;
-};
-
-const platformMap: Record<Platform, PlatformInfo> = {
-  github: {
-    icon: <GithubIcon />,
-    name: "GitHub",
-  },
-  youtube: {
-    icon: <YoutubeIcon />,
-    name: "YouTube",
-  },
-};
+import { platformMap } from "../../utils/platforminfo.utils";
 
 type PlatformSelectProps = {
   defaultValue: Platform;
+  onChange: (newPlatform: Platform) => void;
 };
 
-export const PlatformSelect = ({ defaultValue }: PlatformSelectProps) => {
+export const PlatformSelect = ({ defaultValue, onChange }: PlatformSelectProps) => {
   return (
     <div className={styles["platform-select"]}>
       <Label>Platform</Label>
-      <Select.Root defaultValue={defaultValue}>
+      <Select.Root defaultValue={defaultValue} onValueChange={onChange}>
         <Select.Trigger className={styles.trigger}>
           <Select.Value />
           <Select.Icon>
