@@ -7,13 +7,12 @@ import { PlatformSelect } from "../PlatformSelect/PlatformSelect";
 import { Button } from "@/components/Button/Button";
 
 type LinkProps = {
-  linkIndex: number;
   userLink: UserLink;
   onRemove: () => void;
   onChange: (newLink: UserLink) => void;
 };
 
-export const Link = ({ linkIndex, userLink, onRemove, onChange }: LinkProps) => {
+export const Link = ({ userLink, onRemove, onChange }: LinkProps) => {
   const onUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newLink = { ...userLink, url: e.target.value };
     onChange(newLink);
@@ -23,7 +22,9 @@ export const Link = ({ linkIndex, userLink, onRemove, onChange }: LinkProps) => 
     <div className={styles.link}>
       <div>
         <IconDragAndDrop />
-        <h3>Link #{linkIndex + 1}</h3>
+        <h3>
+          Link #<span className={styles.counter} />
+        </h3>
         <Button type="button" variant="tertiary" onClick={() => onRemove()}>
           Remove
         </Button>

@@ -26,12 +26,14 @@
       }
 
       ul {
+        counter-reset: link-counter;
         margin-top: 1.5rem;
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
 
         li {
+          counter-increment: link-counter;
           background-color: var(--clr-light-grey);
           border-radius: 0.75rem;
           padding: 1.25rem;
