@@ -6,15 +6,28 @@ import IconDragAndDrop from "@/assets/icon-drag-and-drop.svg?react";
 import { PlatformSelect } from "../PlatformSelect/PlatformSelect";
 import { Button } from "@/components/Button/Button";
 import { platformMap } from "../../utils/platforminfo.utils";
-import { InvalidEvent } from "react";
+import { createRef, InvalidEvent, Ref, useImperativeHandle } from "react";
+
+export type LinkRefType = {
+  focus: () => void;
+};
 
 type LinkProps = {
   userLink: UserLink;
   onRemove: () => void;
   onChange: (newLink: UserLink) => void;
+  ref?: Ref<LinkRefType>;
 };
 
-export const Link = ({ userLink, onRemove, onChange }: LinkProps) => {
+export const Link = ({ userLink, onRemove, onChange, ref }: LinkProps) => {
+  const selectRef = createRef<HTMLButtonElement>();
+
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      selectRef.current?.focus();
+    },
+  }));
+
   const onUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newLink = { ...userLink, url: e.target.value };
     onChange(newLink);
@@ -50,7 +63,7 @@ export const Link = ({ userLink, onRemove, onChange }: LinkProps) => {
         </Button>
       </div>
       <fieldset>
-        <PlatformSelect defaultValue={userLink.platform} onChange={onPlatformChange} />
+        <PlatformSelect ref={selectRef} defaultValue={userLink.platform} onChange={onPlatformChange} />
         <Input
           className={styles["link-input"]}
           label="Link"

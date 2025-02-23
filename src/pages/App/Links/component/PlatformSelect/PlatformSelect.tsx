@@ -4,18 +4,20 @@ import { Platform, platforms } from "../../data/userLinks.data";
 import * as Select from "@radix-ui/react-select";
 import ChevronDownIcon from "@/assets/icon-chevron-down.svg?react";
 import { platformMap } from "../../utils/platforminfo.utils";
+import { Ref } from "react";
 
 type PlatformSelectProps = {
   defaultValue: Platform;
   onChange: (newPlatform: Platform) => void;
+  ref?: Ref<HTMLButtonElement>;
 };
 
-export const PlatformSelect = ({ defaultValue, onChange }: PlatformSelectProps) => {
+export const PlatformSelect = ({ defaultValue, onChange, ref }: PlatformSelectProps) => {
   return (
     <div className={styles["platform-select"]}>
       <Label>Platform</Label>
       <Select.Root defaultValue={defaultValue} onValueChange={onChange}>
-        <Select.Trigger className={styles.trigger}>
+        <Select.Trigger ref={ref} className={styles.trigger}>
           <Select.Value />
           <Select.Icon>
             <ChevronDownIcon />

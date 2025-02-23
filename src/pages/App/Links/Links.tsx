@@ -4,7 +4,7 @@ import IllustrationEmpty from "@/assets/illustration-empty.svg?react";
 import { useGetUserLinks } from "./hooks/useGetUserLinks";
 import { platforms, UserLink } from "./data/userLinks.data";
 import { Form } from "@/components/Form/Form";
-import { Link } from "./component/Link/Link";
+import { Link, LinkRefType } from "./component/Link/Link";
 import { Button } from "@/components/Button/Button";
 import { useSaveUserLinks } from "./hooks/useSaveUserLinks";
 
@@ -17,12 +17,22 @@ export const Links = () => {
   const [currentUserLinks, setCurrentUserLinks] = useState<UserLinkWithUniqueId[]>([]);
   const { mutate, isPending: isMutating } = useSaveUserLinks();
   const formRef = useRef<HTMLFormElement>(null);
+  const lastLinkRef = useRef<LinkRefType>(null);
 
   useEffect(() => {
     if (userLinks) {
       setCurrentUserLinks(userLinks.map((userLink) => ({ ...userLink, uniqueId: uniqueId++ })));
     }
   }, [userLinks]);
+
+  useEffect(() => {
+    if (lastLinkRef.current) {
+      // if we've added a link, it's url is empty, so we can focus on that
+      if (currentUserLinks[currentUserLinks.length - 1].url === "") {
+        lastLinkRef.current.focus();
+      }
+    }
+  }, [currentUserLinks]);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -69,7 +79,7 @@ export const Links = () => {
   const renderLinks = () =>
     currentUserLinks.map((link, i) => (
       <li key={link.uniqueId}>
-        <Link userLink={link} onRemove={onRemoveLink(i)} onChange={onChangeLink(i)} />
+        <Link ref={i === currentUserLinks.length - 1 ? lastLinkRef : null} userLink={link} onRemove={onRemoveLink(i)} onChange={onChangeLink(i)} />
       </li>
     ));
 
