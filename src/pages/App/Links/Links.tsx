@@ -6,6 +6,7 @@ import { platforms, UserLink } from "./data/userLinks.data";
 import { Form } from "@/components/Form/Form";
 import { Link } from "./component/Link/Link";
 import { Button } from "@/components/Button/Button";
+import { useSaveUserLinks } from "./hooks/useSaveUserLinks";
 
 type UserLinkWithUniqueId = UserLink & { uniqueId: number };
 
@@ -14,6 +15,7 @@ let uniqueId = 0;
 export const Links = () => {
   const { userLinks, isPending } = useGetUserLinks();
   const [currentUserLinks, setCurrentUserLinks] = useState<UserLinkWithUniqueId[]>([]);
+  const { mutate, isPending: isMutating } = useSaveUserLinks();
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
@@ -24,6 +26,10 @@ export const Links = () => {
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (isMutating) {
+      return;
+    }
+    mutate({ links: currentUserLinks });
   };
 
   const onAddNewLink = () => {
@@ -84,7 +90,7 @@ export const Links = () => {
           <ul>{currentUserLinks.length === 0 ? renderEmptyState() : renderLinks()}</ul>
         </div>
         <div className={styles["save-container"]}>
-          <Button type="submit">Save</Button>
+          <Button type="submit">{isMutating ? "..." : "Save"}</Button>
         </div>
       </Form>
     </main>
