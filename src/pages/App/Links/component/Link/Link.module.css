@@ -1,8 +1,18 @@
 .link {
   > div {
     display: grid;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: auto 1fr;
     align-items: center;
+
+    button {
+      margin-left: auto;
+    }
+
+    .draggable {
+      align-items: center;
+      cursor: move;
+      display: flex;
+    }
   }
 
   h3 {
@@ -24,6 +34,10 @@
     border: none;
     padding: 0;
     margin: 0.75rem 0 0 0;
+  }
+
+  .link-input {
+    background: var(--clr-white);
   }
 
   .counter {

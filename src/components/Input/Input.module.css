@@ -20,6 +20,7 @@
         border-color: var(--clr-purple);
         filter: drop-shadow(0 0 32px var(--clr-purple-drop-shadow));
       }
+
       &[aria-invalid="true"] {
         color: var(--clr-red);
         border-color: var(--clr-red);

@@ -21,17 +21,19 @@ export const Link = ({ userLink, onRemove, onChange }: LinkProps) => {
   return (
     <div className={styles.link}>
       <div>
-        <IconDragAndDrop />
-        <h3>
-          Link #<span className={styles.counter} />
-        </h3>
+        <div className={styles.draggable}>
+          <IconDragAndDrop />
+          <h3>
+            Link #<span className={styles.counter} />
+          </h3>
+        </div>
         <Button type="button" variant="tertiary" onClick={() => onRemove()}>
           Remove
         </Button>
       </div>
       <fieldset>
         <PlatformSelect defaultValue={userLink.platform} />
-        <Input label="Link" icon={<IconLink />} defaultValue={userLink.url} onChange={onUrlChange} />
+        <Input className={styles["link-input"]} label="Link" icon={<IconLink />} defaultValue={userLink.url} onChange={onUrlChange} />
       </fieldset>
     </div>
   );

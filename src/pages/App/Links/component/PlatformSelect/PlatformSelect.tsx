@@ -1,4 +1,28 @@
-import { Platform } from "../../data/userLinks.data";
+import styles from "./PlatformSelect.module.css";
+import { Label } from "@/components/Label/Label";
+import { Platform, platforms } from "../../data/userLinks.data";
+import * as Select from "@radix-ui/react-select";
+import ChevronDownIcon from "@/assets/icon-chevron-down.svg?react";
+import { ReactNode } from "react";
+
+import GithubIcon from "@/assets/platforms/icon-github.svg?react";
+import YoutubeIcon from "@/assets/platforms/icon-youtube.svg?react";
+
+type PlatformInfo = {
+  icon: ReactNode;
+  name: string;
+};
+
+const platformMap: Record<Platform, PlatformInfo> = {
+  github: {
+    icon: <GithubIcon />,
+    name: "GitHub",
+  },
+  youtube: {
+    icon: <YoutubeIcon />,
+    name: "YouTube",
+  },
+};
 
 type PlatformSelectProps = {
   defaultValue: Platform;
@@ -6,9 +30,35 @@ type PlatformSelectProps = {
 
 export const PlatformSelect = ({ defaultValue }: PlatformSelectProps) => {
   return (
-    <select defaultValue={defaultValue}>
-      <option value="github">GitHub</option>
-      <option value="youtube">YouTube</option>
-    </select>
+    <div className={styles["platform-select"]}>
+      <Label>Platform</Label>
+      <Select.Root defaultValue={defaultValue}>
+        <Select.Trigger className={styles.trigger}>
+          <Select.Value />
+          <Select.Icon>
+            <ChevronDownIcon />
+          </Select.Icon>
+        </Select.Trigger>
+        <Select.Content className={styles.content} position={"popper"}>
+          <Select.ScrollUpButton className={styles["scroll-up-button"]}>
+            <ChevronDownIcon />
+          </Select.ScrollUpButton>
+          <Select.Viewport>
+            {platforms.map((platform) => (
+              <Select.Item className={styles.item} value={platform} key={platform}>
+                <Select.ItemText>
+                  {platformMap[platform].icon}
+                  <span>{platformMap[platform].name}</span>
+                </Select.ItemText>
+                <Select.ItemIndicator>&nbsp;(Selected)</Select.ItemIndicator>
+              </Select.Item>
+            ))}
+          </Select.Viewport>
+          <Select.ScrollDownButton className={styles["scroll-down-button"]}>
+            <ChevronDownIcon />
+          </Select.ScrollDownButton>
+        </Select.Content>
+      </Select.Root>
+    </div>
   );
 };

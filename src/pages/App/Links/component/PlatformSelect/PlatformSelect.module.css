@@ -1,0 +1,96 @@
+.platform-select {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .trigger {
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--clr-borders);
+    color: var(--clr-dark-grey);
+    background: var(--clr-white);
+    transition: border-color 0.2s ease, filter 0.2s ease, color 0.2s ease;
+
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto 1fr;
+
+    /* the arrow */
+    > span:last-child {
+      color: var(--clr-purple);
+      transition: transform 0.2s ease;
+      margin-left: auto;
+    }
+
+    &[data-state="open"] {
+      > span:last-child {
+        transform: rotate(180deg);
+      }
+    }
+
+    > span:not(:last-child) {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      align-items: center;
+      > span {
+        margin-left: 0.5rem;
+        text-align: left;
+      }
+    }
+
+    &:focus,
+    &:hover {
+      border-color: var(--clr-purple);
+      filter: drop-shadow(0 0 32px var(--clr-purple-drop-shadow));
+    }
+  }
+
+  .content {
+    background: var(--clr-white);
+    z-index: 1;
+    border-radius: 0.5rem;
+    width: var(--radix-select-trigger-width);
+    max-height: var(--radix-select-content-available-height);
+    margin-top: 0.5rem;
+    border: 1px solid var(--clr-borders);
+    filter: drop-shadow(0 0 32px rgba(0, 0, 0, 0.1));
+    overflow: hidden;
+
+    padding: 0 1rem;
+
+    .item {
+      padding: 0.75rem 0;
+
+      display: grid;
+      grid-template-columns: auto 1fr;
+
+      > span {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        align-items: center;
+
+        > span {
+          margin-left: 0.5rem;
+        }
+      }
+
+      &:not(:last-child) {
+        border-bottom: 1px solid var(--clr-borders);
+      }
+
+      &[data-highlighted] {
+        color: var(--clr-purple);
+      }
+    }
+
+    .scroll-up-button,
+    .scroll-down-button {
+      color: var(--clr-grey);
+      margin: 0.5rem auto;
+    }
+
+    .scroll-up-button {
+      transform: rotate(180deg);
+    }
+  }
+}
