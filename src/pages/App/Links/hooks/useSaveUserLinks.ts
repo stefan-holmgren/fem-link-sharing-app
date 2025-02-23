@@ -14,12 +14,10 @@ export const useSaveUserLinks = () => {
       return updateUserLinks(user, links);
     },
     onSuccess: () => {
-      alert("Links saved successfully!");
       queryClient.invalidateQueries({ queryKey: ["userlinks", user?.id] });
     },
     onError: (error) => {
       console.error("Error saving links: ", error);
-      alert("Failed to save links.");
     },
   });
 };
