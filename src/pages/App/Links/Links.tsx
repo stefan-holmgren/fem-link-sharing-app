@@ -63,7 +63,7 @@ export const Links = () => {
   const renderLinks = () =>
     currentUserLinks.map((link, i) => (
       <li key={link.uniqueId}>
-        <Link linkIndex={i} userLink={link} onRemove={onRemoveLink(i)} onChange={onChangeLink(i)} />
+        <Link userLink={link} onRemove={onRemoveLink(i)} onChange={onChangeLink(i)} />
       </li>
     ));
 
