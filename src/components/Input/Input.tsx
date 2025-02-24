@@ -15,6 +15,7 @@ export const Input = ({ id, icon, label, onInvalid, onChange, errorMessage, ...r
   const [validationMessage, setValidationMessage] = useState("");
 
   const onInvalidWrapper = (event: InvalidEvent<HTMLInputElement>) => {
+    console.log("Oninvalid");
     if (onInvalid) {
       onInvalid(event);
     }

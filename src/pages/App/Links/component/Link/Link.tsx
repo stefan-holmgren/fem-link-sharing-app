@@ -25,6 +25,7 @@ type LinkProps = {
 
 export const Link = ({ userLink, onRemove, onChange, ref }: LinkProps) => {
   const selectRef = createRef<HTMLButtonElement>();
+  const urlRef = createRef<HTMLInputElement>();
   const sortable = useSortable({ id: userLink.id });
 
   const style = {
@@ -45,6 +46,7 @@ export const Link = ({ userLink, onRemove, onChange, ref }: LinkProps) => {
 
   const onPlatformChange = (newPlatform: Platform) => {
     const newLink = { ...userLink, platform: newPlatform };
+    urlRef.current?.setCustomValidity("");
     onChange(newLink);
   };
 
@@ -75,6 +77,7 @@ export const Link = ({ userLink, onRemove, onChange, ref }: LinkProps) => {
       <fieldset>
         <PlatformSelect ref={selectRef} defaultValue={userLink.platform} onChange={onPlatformChange} />
         <Input
+          ref={urlRef}
           className={styles["link-input"]}
           label="Link"
           icon={<IconLink />}

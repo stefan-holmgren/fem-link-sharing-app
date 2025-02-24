@@ -22,7 +22,7 @@ export const Header = () => {
           <li>
             <NavLink to="/profile">
               <ProfileIcon />
-              <span>Profile</span>
+              <span>Profile Details</span>
             </NavLink>
           </li>
         </ul>
