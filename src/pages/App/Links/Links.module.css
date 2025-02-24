@@ -38,6 +38,8 @@
       ul {
         padding-bottom: 1.5rem;
 
+        overflow-x: clip;
+
         counter-reset: link-counter;
         margin-top: 1.5rem;
         display: flex;
