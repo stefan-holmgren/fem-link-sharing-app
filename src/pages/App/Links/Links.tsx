@@ -116,6 +116,8 @@ export const Links = () => {
     return null;
   }
 
+  const isEmpty = currentUserLinks.length === 0;
+
   return (
     <main className={styles.links}>
       <Form onSubmit={onSubmit} ref={formRef}>
@@ -125,10 +127,12 @@ export const Links = () => {
           <Button type="button" variant="secondary" className={styles["add-new-link"]} onClick={onAddNewLink}>
             + Add new link
           </Button>
-          {currentUserLinks.length === 0 ? renderEmptyState() : renderLinks()}
+          {isEmpty ? renderEmptyState() : renderLinks()}
         </div>
         <div className={styles["save-container"]}>
-          <Button type="submit">{isMutating ? "..." : "Save"}</Button>
+          <Button type="submit" disabled={isEmpty}>
+            {isMutating ? "..." : "Save"}
+          </Button>
         </div>
       </Form>
     </main>

@@ -17,6 +17,10 @@
       padding: 1.5rem;
       flex: 1;
 
+      @media (min-width: 768px) {
+        padding: 2.5rem;
+      }
+
       > h1 {
         font-size: 1.5em;
       }
@@ -65,11 +69,21 @@
             h2 {
               margin-top: 1.5rem;
               text-align: center;
+
+              @media (min-width: 768px) {
+                margin-top: 2.5rem;
+                font-size: 2em;
+                max-width: 30.5rem;
+              }
             }
             p {
               margin-top: 1.5rem;
               text-align: center;
               color: var(--clr-grey);
+
+              @media (min-width: 768px) {
+                max-width: 30.5rem;
+              }
             }
           }
         }
@@ -79,8 +93,19 @@
     .save-container {
       padding: 1rem;
       border-top: 1px solid var(--clr-borders);
+
+      @media (min-width: 768px) {
+        padding: 1.5rem 2.5rem;
+      }
+
       button {
         width: 100%;
+
+        @media (min-width: 768px) {
+          display: block;
+          width: auto;
+          margin-left: auto;
+        }
       }
     }
   }
