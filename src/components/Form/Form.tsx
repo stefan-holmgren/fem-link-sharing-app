@@ -7,7 +7,7 @@ type FormProps = FormHTMLAttributes<HTMLFormElement> & {
   ref?: Ref<HTMLFormElement>;
 };
 
-export const Form = ({ className, heading, description, onInvalid, children, ref, ...rest }: FormProps) => {
+export const Form = ({ className = "", heading, description, onInvalid, children, ref, ...rest }: FormProps) => {
   const headingId = useId();
   const descriptionId = useId();
   const onInvalidWrapper = (event: FormEvent<HTMLFormElement>) => {
