@@ -7,13 +7,17 @@ import { PlatformSelect } from "../PlatformSelect/PlatformSelect";
 import { Button } from "@/components/Button/Button";
 import { platformMap } from "../../utils/platforminfo.utils";
 import { createRef, InvalidEvent, Ref, useImperativeHandle } from "react";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+
+export type UserLinkWithUniqueId = UserLink & { id: number };
 
 export type LinkRefType = {
   focus: () => void;
 };
 
 type LinkProps = {
-  userLink: UserLink;
+  userLink: UserLinkWithUniqueId;
   onRemove: () => void;
   onChange: (newLink: UserLink) => void;
   ref?: Ref<LinkRefType>;
@@ -21,6 +25,12 @@ type LinkProps = {
 
 export const Link = ({ userLink, onRemove, onChange, ref }: LinkProps) => {
   const selectRef = createRef<HTMLButtonElement>();
+  const sortable = useSortable({ id: userLink.id });
+
+  const style = {
+    transform: CSS.Transform.toString(sortable.transform),
+    transition: sortable.transition,
+  };
 
   useImperativeHandle(ref, () => ({
     focus: () => {
@@ -50,9 +60,9 @@ export const Link = ({ userLink, onRemove, onChange, ref }: LinkProps) => {
   };
 
   return (
-    <div className={styles.link}>
+    <li className={styles.link} style={style} ref={sortable.setNodeRef}>
       <div>
-        <div className={styles.draggable}>
+        <div className={styles.draggable} {...sortable.attributes} {...sortable.listeners}>
           <IconDragAndDrop />
           <h3>
             Link #<span className={styles.counter} />
@@ -76,6 +86,6 @@ export const Link = ({ userLink, onRemove, onChange, ref }: LinkProps) => {
           required
         />
       </fieldset>
-    </div>
+    </li>
   );
 };

@@ -7,3 +7,4 @@
 - supabase
 - tanstack-query
 - radix-ui (for the select component)
+- dnd-kit for drag and drop

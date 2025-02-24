@@ -9,6 +9,7 @@
     }
 
     .draggable {
+      touch-action: none;
       align-items: center;
       cursor: move;
       display: flex;

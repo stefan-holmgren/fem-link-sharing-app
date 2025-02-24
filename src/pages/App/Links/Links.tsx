@@ -4,11 +4,11 @@ import IllustrationEmpty from "@/assets/illustration-empty.svg?react";
 import { useGetUserLinks } from "./hooks/useGetUserLinks";
 import { platforms, UserLink } from "./data/userLinks.data";
 import { Form } from "@/components/Form/Form";
-import { Link, LinkRefType } from "./component/Link/Link";
+import { Link, LinkRefType, UserLinkWithUniqueId } from "./component/Link/Link";
 import { Button } from "@/components/Button/Button";
 import { useSaveUserLinks } from "./hooks/useSaveUserLinks";
-
-type UserLinkWithUniqueId = UserLink & { uniqueId: number };
+import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import { arrayMove, SortableContext } from "@dnd-kit/sortable";
 
 let uniqueId = 0;
 
@@ -21,7 +21,7 @@ export const Links = () => {
 
   useEffect(() => {
     if (userLinks) {
-      setCurrentUserLinks(userLinks.map((userLink) => ({ ...userLink, uniqueId: uniqueId++ })));
+      setCurrentUserLinks(userLinks.map((userLink) => ({ ...userLink, id: uniqueId++ })));
     }
   }, [userLinks]);
 
@@ -46,7 +46,7 @@ export const Links = () => {
     if (!formRef.current?.reportValidity()) {
       return;
     }
-    setCurrentUserLinks((prev) => [...prev, { url: "", platform: platforms[0], uniqueId: uniqueId++ }]);
+    setCurrentUserLinks((prev) => [...prev, { url: "", platform: platforms[0], id: uniqueId++ }]);
   };
 
   const onRemoveLink = (index: number) => () => {
@@ -60,8 +60,21 @@ export const Links = () => {
   const onChangeLink = (index: number) => (newLink: UserLink) => {
     setCurrentUserLinks((prev) => {
       const updatedUserLinks = [...prev];
-      updatedUserLinks[index] = { ...newLink, uniqueId: prev[index].uniqueId };
+      updatedUserLinks[index] = { ...newLink, id: prev[index].id };
       return updatedUserLinks;
+    });
+  };
+
+  const onDragEnd = (e: DragEndEvent) => {
+    const { active, over } = e;
+    if (!over || active.id === over?.id) {
+      return;
+    }
+
+    setCurrentUserLinks((prev) => {
+      const oldIndex = prev.findIndex((link) => link.id === active.id);
+      const newIndex = prev.findIndex((link) => link.id === over.id);
+      return arrayMove(prev, oldIndex, newIndex);
     });
   };
 
@@ -79,14 +92,23 @@ export const Links = () => {
   );
 
   const renderLinks = () => (
-    <ul>
-      {currentUserLinks.map((link, i) => (
-        <li key={link.uniqueId}>
-          <Link ref={i === currentUserLinks.length - 1 ? lastLinkRef : null} userLink={link} onRemove={onRemoveLink(i)} onChange={onChangeLink(i)} />
-        </li>
-      ))}
-    </ul>
+    <DndContext onDragEnd={onDragEnd}>
+      <ul>
+        <SortableContext items={currentUserLinks}>
+          {currentUserLinks.map((link, i) => (
+            <Link
+              key={link.id}
+              ref={i === currentUserLinks.length - 1 ? lastLinkRef : null}
+              userLink={link}
+              onRemove={onRemoveLink(i)}
+              onChange={onChangeLink(i)}
+            />
+          ))}
+        </SortableContext>
+      </ul>
+    </DndContext>
   );
+
   if (isPending || !currentUserLinks) {
     // @todo: add skeleton loader?
     return null;
