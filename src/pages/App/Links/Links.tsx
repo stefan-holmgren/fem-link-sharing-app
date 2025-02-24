@@ -66,23 +66,27 @@ export const Links = () => {
   };
 
   const renderEmptyState = () => (
-    <li className={styles["empty-state"]}>
-      <IllustrationEmpty />
-      <h2>Let's get you started</h2>
-      <p>
-        Use the "Add new link" button to get started. Once you have more than one link, you can reorder and edit them. We're here to help you share your
-        profiles with everyone
-      </p>
-    </li>
+    <ul>
+      <li className={styles["empty-state"]}>
+        <IllustrationEmpty />
+        <h2>Let's get you started</h2>
+        <p>
+          Use the "Add new link" button to get started. Once you have more than one link, you can reorder and edit them. We're here to help you share your
+          profiles with everyone
+        </p>
+      </li>
+    </ul>
   );
 
-  const renderLinks = () =>
-    currentUserLinks.map((link, i) => (
-      <li key={link.uniqueId}>
-        <Link ref={i === currentUserLinks.length - 1 ? lastLinkRef : null} userLink={link} onRemove={onRemoveLink(i)} onChange={onChangeLink(i)} />
-      </li>
-    ));
-
+  const renderLinks = () => (
+    <ul>
+      {currentUserLinks.map((link, i) => (
+        <li key={link.uniqueId}>
+          <Link ref={i === currentUserLinks.length - 1 ? lastLinkRef : null} userLink={link} onRemove={onRemoveLink(i)} onChange={onChangeLink(i)} />
+        </li>
+      ))}
+    </ul>
+  );
   if (isPending || !currentUserLinks) {
     // @todo: add skeleton loader?
     return null;
@@ -97,7 +101,7 @@ export const Links = () => {
           <Button type="button" variant="secondary" className={styles["add-new-link"]} onClick={onAddNewLink}>
             + Add new link
           </Button>
-          <ul>{currentUserLinks.length === 0 ? renderEmptyState() : renderLinks()}</ul>
+          {currentUserLinks.length === 0 ? renderEmptyState() : renderLinks()}
         </div>
         <div className={styles["save-container"]}>
           <Button type="submit">{isMutating ? "..." : "Save"}</Button>
