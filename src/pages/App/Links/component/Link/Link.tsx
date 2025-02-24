@@ -31,6 +31,7 @@ export const Link = ({ userLink, onRemove, onChange, ref }: LinkProps) => {
   const style = {
     transform: CSS.Transform.toString(sortable.transform),
     transition: sortable.transition,
+    zIndex: sortable.isDragging ? 1 : 0,
   };
 
   useImperativeHandle(ref, () => ({

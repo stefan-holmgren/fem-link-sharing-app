@@ -12,6 +12,8 @@
     flex-direction: column;
     min-height: calc(100vh - var(--header-height) - 2rem);
     .links-container {
+      display: flex;
+      flex-direction: column;
       padding: 1.5rem;
       flex: 1;
 
@@ -34,6 +36,9 @@
         margin-top: 1.5rem;
         display: flex;
         flex-direction: column;
+
+        flex: 1;
+
         gap: 1.5rem;
 
         li {
@@ -44,17 +49,28 @@
         }
 
         li.empty-state {
-          svg {
-            height: 5rem;
-          }
-          h2 {
-            margin-top: 1.5rem;
-            text-align: center;
-          }
-          p {
-            margin-top: 1.5rem;
-            text-align: center;
-            color: var(--clr-grey);
+          display: grid;
+          place-items: center;
+          flex: 1;
+
+          div {
+            svg {
+              margin: auto;
+              height: 5rem;
+
+              @media (min-width: 768px) {
+                height: 10rem;
+              }
+            }
+            h2 {
+              margin-top: 1.5rem;
+              text-align: center;
+            }
+            p {
+              margin-top: 1.5rem;
+              text-align: center;
+              color: var(--clr-grey);
+            }
           }
         }
       }

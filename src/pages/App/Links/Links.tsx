@@ -8,7 +8,7 @@ import { Link, LinkRefType, UserLinkWithUniqueId } from "./component/Link/Link";
 import { Button } from "@/components/Button/Button";
 import { useSaveUserLinks } from "./hooks/useSaveUserLinks";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
-import { arrayMove, SortableContext } from "@dnd-kit/sortable";
+import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 
 let uniqueId = 0;
 
@@ -81,12 +81,14 @@ export const Links = () => {
   const renderEmptyState = () => (
     <ul>
       <li className={styles["empty-state"]}>
-        <IllustrationEmpty />
-        <h2>Let's get you started</h2>
-        <p>
-          Use the "Add new link" button to get started. Once you have more than one link, you can reorder and edit them. We're here to help you share your
-          profiles with everyone
-        </p>
+        <div>
+          <IllustrationEmpty />
+          <h2>Let's get you started</h2>
+          <p>
+            Use the "Add new link" button to get started. Once you have more than one link, you can reorder and edit them. We're here to help you share your
+            profiles with everyone
+          </p>
+        </div>
       </li>
     </ul>
   );
@@ -94,7 +96,7 @@ export const Links = () => {
   const renderLinks = () => (
     <DndContext onDragEnd={onDragEnd}>
       <ul>
-        <SortableContext items={currentUserLinks}>
+        <SortableContext items={currentUserLinks} strategy={verticalListSortingStrategy}>
           {currentUserLinks.map((link, i) => (
             <Link
               key={link.id}
