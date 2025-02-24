@@ -14,11 +14,11 @@
     .links-container {
       display: flex;
       flex-direction: column;
-      padding: 1.5rem;
+      padding: 0 1.5rem;
       flex: 1;
 
       @media (min-width: 768px) {
-        padding: 2.5rem;
+        padding: 0 2.5rem;
       }
 
       > h1 {
@@ -36,6 +36,8 @@
       }
 
       ul {
+        padding-bottom: 1.5rem;
+
         counter-reset: link-counter;
         margin-top: 1.5rem;
         display: flex;
@@ -44,6 +46,11 @@
         flex: 1;
 
         gap: 1.5rem;
+
+        @media (min-width: 768px) {
+          max-height: calc(100vh - var(--header-height) - 19rem);
+          overflow-y: auto;
+        }
 
         li {
           counter-increment: link-counter;
