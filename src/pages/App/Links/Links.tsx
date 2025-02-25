@@ -9,7 +9,7 @@ import { Button } from "@/components/Button/Button";
 import { useSaveUserLinks } from "./hooks/useSaveUserLinks";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { MobileAside } from "./component/MobileAside/MobileAside";
+import { MobileAside } from "../../../components/MobileAside/MobileAside";
 
 let uniqueId = 0;
 
