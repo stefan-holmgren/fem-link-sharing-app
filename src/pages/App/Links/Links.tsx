@@ -9,7 +9,6 @@ import { Button } from "@/components/Button/Button";
 import { useSaveUserLinks } from "./hooks/useSaveUserLinks";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { MobileAside } from "../../../components/MobileAside/MobileAside";
 
 let uniqueId = 0;
 
@@ -121,24 +120,21 @@ export const Links = () => {
 
   return (
     <div className={styles.links}>
-      <MobileAside showSkeleton={true} />
-      <main>
-        <Form onSubmit={onSubmit} ref={formRef}>
-          <div className={styles["links-container"]}>
-            <h1>Customize your links</h1>
-            <p>Add/edit/remove links below and then share all your profiles with the world!</p>
-            <Button type="button" variant="secondary" className={styles["add-new-link"]} onClick={onAddNewLink}>
-              + Add new link
-            </Button>
-            {isEmpty ? renderEmptyState() : renderLinks()}
-          </div>
-          <div className={styles["save-container"]}>
-            <Button type="submit" disabled={isEmpty}>
-              {isMutating ? "..." : "Save"}
-            </Button>
-          </div>
-        </Form>
-      </main>
+      <Form onSubmit={onSubmit} ref={formRef}>
+        <div className={styles["links-container"]}>
+          <h1>Customize your links</h1>
+          <p>Add/edit/remove links below and then share all your profiles with the world!</p>
+          <Button type="button" variant="secondary" className={styles["add-new-link"]} onClick={onAddNewLink}>
+            + Add new link
+          </Button>
+          {isEmpty ? renderEmptyState() : renderLinks()}
+        </div>
+        <div className={styles["save-container"]}>
+          <Button type="submit" disabled={isEmpty}>
+            {isMutating ? "..." : "Save"}
+          </Button>
+        </div>
+      </Form>
     </div>
   );
 };
