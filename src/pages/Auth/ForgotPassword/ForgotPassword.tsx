@@ -1,23 +1,19 @@
-import { FormEvent, useRef, useState, useTransition } from "react";
+import { FormEvent, use, useRef, useTransition } from "react";
 import styles from "./ForgotPassword.module.css";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { Form } from "@/components/Form/Form";
 import { Input } from "@/components/Input/Input";
 import EmailIcon from "@/assets/icon-email.svg?react";
-import { Snackbar } from "@/components/Snackbar/Snackbar";
 import { Button } from "@/components/Button/Button";
+import { SnackbarContext } from "@/components/SnackbarContext/SnackbarContext";
 
 export const ForgotPassword = () => {
   const [isPending, startTransition] = useTransition();
-  const [emailRecipient, setEmailRecipient] = useState("");
   const emailRef = useRef<HTMLInputElement>(null);
   const { forgotPassword } = useAuthContext();
-  const [emailSent, setEmailSent] = useState(false);
-  const [failed, setFailed] = useState(false);
+  const { showSnackbar } = use(SnackbarContext);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
-    setEmailSent(false);
-    setFailed(false);
     e.preventDefault();
     startTransition(async () => {
       const email = emailRef.current?.value;
@@ -26,10 +22,9 @@ export const ForgotPassword = () => {
       }
       const result = await forgotPassword(email);
       if (result.success) {
-        setEmailRecipient(email);
-        setEmailSent(true);
+        showSnackbar({ message: `An email has been sent to ${email}` });
       } else {
-        setFailed(true);
+        showSnackbar({ message: "Failed to send reset email", variant: "negative" });
       }
     });
   };
@@ -40,12 +35,6 @@ export const ForgotPassword = () => {
         <Input label="Email address" icon={<EmailIcon />} type="email" ref={emailRef} autoComplete="email" placeholder="e.g. alex@email.com" required />
       </fieldset>
       <Button type="submit">{isPending ? "..." : "Send reset email"}</Button>
-      {emailSent && (
-        <Snackbar variant="positive">
-          An email has been sent to <span className={styles.email}>{emailRecipient}</span>
-        </Snackbar>
-      )}
-      {failed && <Snackbar variant="negative">Failed to send reset email</Snackbar>}
     </Form>
   );
 };

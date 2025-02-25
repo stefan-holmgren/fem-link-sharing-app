@@ -4,6 +4,7 @@ export type Snackbar = {
   icon?: ReactNode;
   message: string;
   timeout?: number;
+  variant?: "positive" | "negative";
 };
 
 type SnackbarContextType = {
