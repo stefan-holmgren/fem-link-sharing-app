@@ -1,7 +1,7 @@
 import styles from "./Login.module.css";
 import { FormEvent, useRef, useState, useTransition } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuthContext } from "../../../components/AuthContext/useAuthContext";
+import { useAuthContext } from "@/hooks/useAuthContext";
 import EmailIcon from "@/assets/icon-email.svg?react";
 import PasswordIcon from "@/assets/icon-password.svg?react";
 import { Input } from "../../../components/Input/Input";

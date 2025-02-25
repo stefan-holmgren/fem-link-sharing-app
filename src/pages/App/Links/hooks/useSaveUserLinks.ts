@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateUserLinks, UserLink } from "../data/userLinks.data";
-import { useAuthContext } from "@/components/AuthContext/useAuthContext";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 export const useSaveUserLinks = () => {
   const queryClient = useQueryClient();

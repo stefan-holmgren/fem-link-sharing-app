@@ -2,7 +2,7 @@ import { FormEvent, InvalidEvent, startTransition, useRef, useState, useTransiti
 import styles from "./ResetPassword.module.css";
 import { Link } from "react-router-dom";
 import { requestFormReset } from "react-dom";
-import { useAuthContext } from "../../../components/AuthContext/useAuthContext";
+import { useAuthContext } from "@/hooks/useAuthContext";
 import { Form } from "@/components/Form/Form";
 import { Input } from "@/components/Input/Input";
 import PasswordIcon from "@/assets/icon-password.svg?react";

@@ -1,7 +1,7 @@
 import { FormEvent, InvalidEvent, useRef, useTransition } from "react";
 import styles from "./SignUp.module.css";
 import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "@/components/AuthContext/useAuthContext";
+import { useAuthContext } from "@/hooks/useAuthContext";
 import { Form } from "@/components/Form/Form";
 import { Input } from "@/components/Input/Input";
 import EmailIcon from "@/assets/icon-email.svg?react";

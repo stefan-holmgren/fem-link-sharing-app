@@ -1,6 +1,6 @@
 import { FormEvent, useRef, useState, useTransition } from "react";
 import styles from "./ForgotPassword.module.css";
-import { useAuthContext } from "../../../components/AuthContext/useAuthContext";
+import { useAuthContext } from "@/hooks/useAuthContext";
 import { Form } from "@/components/Form/Form";
 import { Input } from "@/components/Input/Input";
 import EmailIcon from "@/assets/icon-email.svg?react";
