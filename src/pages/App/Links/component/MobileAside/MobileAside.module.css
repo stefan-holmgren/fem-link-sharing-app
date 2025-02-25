@@ -1,0 +1,23 @@
+.mobile-aside {
+  --scale-content: 1;
+  position: relative;
+  display: none;
+  background-color: var(--clr-white);
+  margin: 1rem 0 1rem 1rem;
+  border-radius: 0.75rem;
+  width: 33vw;
+  max-width: 35rem;
+  max-height: calc(100vh - var(--header-height) - 2rem);
+  overflow-y: clip;
+  @media (min-width: 1024px) {
+    display: grid;
+    place-items: center;
+    margin: 1.5rem 0 1.5rem 1.5rem;
+  }
+  padding: 2rem;
+
+  .mobile {
+    position: absolute;
+    scale: var(--scale-content);
+  }
+}

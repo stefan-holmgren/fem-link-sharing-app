@@ -2,6 +2,12 @@
   position: relative;
   object-fit: contain;
 
+  &.skeleton {
+    > div {
+      background-color: transparent;
+    }
+  }
+
   > div {
     position: absolute;
     top: 4rem;
@@ -57,7 +63,6 @@
           border-radius: 0.5rem;
           display: block;
           height: 2.75rem;
-          background: red;
         }
 
         &:nth-child(n + 6) {
