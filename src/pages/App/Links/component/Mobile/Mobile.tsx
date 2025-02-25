@@ -1,12 +1,12 @@
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, Ref } from "react";
 import styles from "./Mobile.module.css";
 import IllustrationPhoneMockup from "@/assets/illustration-phone-mockup.svg?react";
 
-type MobileProps = HTMLAttributes<HTMLDivElement>;
+type MobileProps = HTMLAttributes<HTMLDivElement> & { ref?: Ref<HTMLDivElement> };
 
-export const Mobile = ({ className = "", ...rest }: MobileProps) => {
+export const Mobile = ({ className = "", ref, ...rest }: MobileProps) => {
   return (
-    <div className={`${styles.mobile} ${className}`} {...rest}>
+    <div className={`${styles.mobile} ${className}`} {...rest} ref={ref}>
       <IllustrationPhoneMockup />
       <div>
         <div className={styles["profile-picture"]}></div>

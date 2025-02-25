@@ -19,6 +19,36 @@ export const Links = () => {
   const { mutate, isPending: isMutating } = useSaveUserLinks();
   const formRef = useRef<HTMLFormElement>(null);
   const lastLinkRef = useRef<LinkRefType>(null);
+  const asideRef = useRef<HTMLElement>(null);
+  const mobileRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const aside = asideRef.current;
+    const mobile = mobileRef.current;
+    if (!aside || !mobile) {
+      return;
+    }
+
+    const calculateScale = () => {
+      const computedStyle = getComputedStyle(aside);
+      const asideHeight = aside.clientHeight - parseFloat(computedStyle.paddingTop) - parseFloat(computedStyle.paddingBottom);
+      const asideWidth = aside.clientWidth - parseFloat(computedStyle.paddingLeft) - parseFloat(computedStyle.paddingRight);
+
+      const calculateScaleFactor = (containerSize: number, contentSize: number) => Math.min(1.0, Math.max(containerSize / contentSize, 0.5));
+
+      const yScale = calculateScaleFactor(asideHeight, mobile.clientHeight);
+      const xScale = calculateScaleFactor(asideWidth, mobile.clientWidth);
+      const scale = Math.min(xScale, yScale);
+
+      aside.style.setProperty("--scale-content", scale.toString());
+    };
+
+    const resizeObserver = new ResizeObserver(calculateScale);
+    resizeObserver.observe(aside);
+
+    calculateScale();
+    return () => resizeObserver.disconnect();
+  }, [isPending]);
 
   useEffect(() => {
     if (userLinks) {
@@ -121,8 +151,8 @@ export const Links = () => {
 
   return (
     <div className={styles.links}>
-      <aside>
-        <Mobile className={styles.mobile} />
+      <aside ref={asideRef}>
+        <Mobile className={styles.mobile} ref={mobileRef} />
       </aside>
       <main>
         <Form onSubmit={onSubmit} ref={formRef}>

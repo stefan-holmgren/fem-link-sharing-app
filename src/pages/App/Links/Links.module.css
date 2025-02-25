@@ -5,6 +5,7 @@
   }
 
   aside {
+    --scale-content: 1;
     position: relative;
     display: none;
     background-color: var(--clr-white);
@@ -23,6 +24,7 @@
 
     .mobile {
       position: absolute;
+      scale: var(--scale-content);
     }
   }
 
