@@ -59,12 +59,6 @@
       margin: auto;
 
       li {
-        .profile-link {
-          border-radius: 0.5rem;
-          display: block;
-          height: 2.75rem;
-        }
-
         &:nth-child(n + 6) {
           display: none;
         }

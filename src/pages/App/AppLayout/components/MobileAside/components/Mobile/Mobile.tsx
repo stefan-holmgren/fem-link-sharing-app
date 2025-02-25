@@ -1,6 +1,7 @@
 import { HTMLAttributes, Ref } from "react";
 import styles from "./Mobile.module.css";
 import IllustrationPhoneMockup from "@/assets/illustration-phone-mockup.svg?react";
+import { PlatformButton } from "@/components/PlatformButton/PlatformButton";
 
 type MobileProps = HTMLAttributes<HTMLDivElement> & { ref?: Ref<HTMLDivElement> } & { showSkeleton?: boolean };
 
@@ -24,22 +25,22 @@ export const Mobile = ({ className = "", ref, showSkeleton = true, ...rest }: Mo
         </div>
         <ul className={styles["profile-links"]}>
           <li>
-            <div className={styles["profile-link"]} />
+            <PlatformButton platform="github" />
           </li>
           <li>
-            <div className={styles["profile-link"]} />
+            <PlatformButton platform="frontend-mentor" />
           </li>
           <li>
-            <div className={styles["profile-link"]} />
+            <PlatformButton platform="x" />
           </li>
           <li>
-            <div className={styles["profile-link"]} />
+            <PlatformButton platform="linkedin" />
           </li>
           <li>
-            <div className={styles["profile-link"]} />
+            <PlatformButton platform="youtube" />
           </li>
           <li>
-            <div className={styles["profile-link"]} />
+            <PlatformButton platform="youtube" />
           </li>
         </ul>
       </div>

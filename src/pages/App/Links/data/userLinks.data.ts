@@ -1,7 +1,7 @@
 import { User } from "@/components/AuthContext/AuthContext";
 import { supabase } from "@/config/supabase";
 
-export const platforms = ["github", "youtube"] as const;
+export const platforms = ["github", "frontend-mentor", "x", "linkedin", "youtube"] as const;
 export type Platform = (typeof platforms)[number];
 
 export type UserLink = {
