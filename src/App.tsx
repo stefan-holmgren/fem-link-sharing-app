@@ -12,6 +12,7 @@ import { Preview } from "./pages/Preview/Preview";
 import { Profile } from "./pages/App/Profile/Profile";
 import { AppLayout } from "./pages/App/AppLayout/AppLayout";
 import { RequireAuth } from "./components/RequireAuth/RequireAuth";
+import { SnackbarContextProvider } from "./components/SnackbarContext/SnackbarContextProvider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -27,22 +28,24 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <SupabaseAuthContextProvider>
-        <Routes>
-          <Route element={<AuthLayout />}>
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
-          </Route>
-          <Route element={<RequireAuth />}>
-            <Route element={<AppLayout />}>
-              <Route path="/" element={<Links />} />
-              <Route path="/profile" element={<Profile />} />
+        <SnackbarContextProvider>
+          <Routes>
+            <Route element={<AuthLayout />}>
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
             </Route>
-            <Route path="/logout" element={<Logout />} />
-            <Route path="/preview" element={<Preview />} />
-          </Route>
-        </Routes>
+            <Route element={<RequireAuth />}>
+              <Route element={<AppLayout />}>
+                <Route path="/" element={<Links />} />
+                <Route path="/profile" element={<Profile />} />
+              </Route>
+              <Route path="/logout" element={<Logout />} />
+              <Route path="/preview" element={<Preview />} />
+            </Route>
+          </Routes>
+        </SnackbarContextProvider>
       </SupabaseAuthContextProvider>
     </QueryClientProvider>
   );
