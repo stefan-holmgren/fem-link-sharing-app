@@ -9,7 +9,7 @@ import { Button } from "@/components/Button/Button";
 import { useSaveUserLinks } from "./hooks/useSaveUserLinks";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { useMobileSkeleton } from "../AppLayout/hooks/useMobileSkeleton";
+import { useMobileMockup } from "../AppLayout/hooks/useMobileMockup";
 
 let uniqueId = 0;
 
@@ -20,7 +20,7 @@ export const Links = () => {
   const formRef = useRef<HTMLFormElement>(null);
   const lastLinkRef = useRef<LinkRefType>(null);
 
-  useMobileSkeleton(true);
+  useMobileMockup({ showSkeleton: true });
 
   useEffect(() => {
     if (userLinks) {

@@ -1,7 +1,7 @@
-import { useMobileSkeleton } from "../AppLayout/hooks/useMobileSkeleton";
+import { useMobileMockup } from "../AppLayout/hooks/useMobileMockup";
 
 export const Profile = () => {
-  useMobileSkeleton(false);
+  useMobileMockup({ showSkeleton: false });
   return (
     <div>
       <h1>Profile</h1>
