@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, use, useEffect, useRef, useState } from "react";
 import styles from "./Links.module.css";
 import IllustrationEmpty from "@/assets/illustration-empty.svg?react";
 import { useGetUserLinks } from "./hooks/useGetUserLinks";
@@ -18,7 +18,7 @@ let uniqueId = 0;
 export const Links = () => {
   const { userLinks, isPending } = useGetUserLinks();
   const [currentUserLinks, setCurrentUserLinks] = useState<UserLinkWithUniqueId[]>([]);
-  const { mutate, isPending: isMutating } = useSaveUserLinks();
+  const { mutate, isPending: isMutating, isSuccess: isMutationSuccess } = useSaveUserLinks();
   const formRef = useRef<HTMLFormElement>(null);
   const lastLinkRef = useRef<LinkRefType>(null);
   const confirmDialogRef = useRef<ConfirmDialogRef>(null);
@@ -32,6 +32,12 @@ export const Links = () => {
     }
     return dirty;
   });
+
+  useEffect(() => {
+    if (isMutationSuccess) {
+      setDirty(false);
+    }
+  }, [isMutationSuccess]);
 
   useEffect(() => {
     if (blocker.state === "blocked") {
