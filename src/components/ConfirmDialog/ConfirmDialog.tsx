@@ -43,7 +43,9 @@ export const ConfirmDialog = ({ title, description, onClose, ref }: ConfirmDialo
           {!!description && <Dialog.Description className={styles.description}>{description}</Dialog.Description>}
           <div className={styles["button-strip"]}>
             <Dialog.Close asChild>
-              <Button onClick={() => closeDialog(false)}>No</Button>
+              <Button variant="secondary" onClick={() => closeDialog(false)}>
+                No
+              </Button>
             </Dialog.Close>
             <Dialog.Close asChild>
               <Button onClick={() => closeDialog(true)}>Yes</Button>
