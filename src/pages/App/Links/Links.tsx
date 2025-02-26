@@ -12,17 +12,20 @@ import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-ki
 import { useMobileMockup } from "../AppLayout/hooks/useMobileMockup";
 import { useBlocker } from "react-router-dom";
 import { ConfirmDialog, ConfirmDialogRef } from "@/components/ConfirmDialog/ConfirmDialog";
+import { SnackbarContext } from "@/components/SnackbarContext/SnackbarContext";
+import IconChangesSaved from "@/assets/icon-changes-saved.svg?react";
 
 let uniqueId = 0;
 
 export const Links = () => {
   const { userLinks, isPending } = useGetUserLinks();
   const [currentUserLinks, setCurrentUserLinks] = useState<UserLinkWithUniqueId[]>([]);
-  const { mutate, isPending: isMutating, isSuccess: isMutationSuccess } = useSaveUserLinks();
+  const { mutate, isPending: isMutating, isSuccess: isMutationSuccess, isError: isMutationError } = useSaveUserLinks();
   const formRef = useRef<HTMLFormElement>(null);
   const lastLinkRef = useRef<LinkRefType>(null);
   const confirmDialogRef = useRef<ConfirmDialogRef>(null);
   const [dirty, setDirty] = useState(false);
+  const { showSnackbar } = use(SnackbarContext);
 
   useMobileMockup({ showSkeleton: true });
 
@@ -34,10 +37,17 @@ export const Links = () => {
   });
 
   useEffect(() => {
+    if (isMutationError) {
+      showSnackbar({ message: "Failed to save changes", variant: "negative" });
+    }
+  }, [isMutationError, showSnackbar]);
+
+  useEffect(() => {
     if (isMutationSuccess) {
       setDirty(false);
+      showSnackbar({ message: "Your changes have been successfully saved!", variant: "positive", icon: <IconChangesSaved /> });
     }
-  }, [isMutationSuccess]);
+  }, [isMutationSuccess, showSnackbar]);
 
   useEffect(() => {
     if (blocker.state === "blocked") {

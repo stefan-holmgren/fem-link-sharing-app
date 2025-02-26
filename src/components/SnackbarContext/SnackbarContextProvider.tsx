@@ -1,5 +1,5 @@
 import styles from "./SnackbarContextProvider.module.css";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Snackbar, SnackbarContext } from "./SnackbarContext";
 import { Snackbar as SnackbarComponent } from "./components/Snackbar/Snackbar";
 import { AnimatePresence, motion } from "motion/react";
@@ -16,14 +16,14 @@ export const SnackbarContextProvider = ({ children }: SnackbarContextProviderPro
   const [snackbars, setSnackbars] = useState<SnackbarWithId[]>([]);
   const idCounter = useRef(0);
 
-  const showSnackbar = (snackbar: Snackbar) => {
+  const showSnackbar = useCallback((snackbar: Snackbar) => {
     const snackbarWithId = { ...snackbar, id: idCounter.current++ };
     setSnackbars((prevSnackbars) => [...prevSnackbars, snackbarWithId]);
 
     setTimeout(() => {
       setSnackbars((prevSnackbars) => prevSnackbars.filter((s) => s.id !== snackbarWithId.id));
     }, snackbarWithId.timeout ?? SNACKBAR_DEFAULT_TIMEOUT);
-  };
+  }, []);
 
   return (
     <SnackbarContext.Provider value={{ showSnackbar }}>
