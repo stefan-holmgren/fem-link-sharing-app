@@ -10,6 +10,8 @@ import { useSaveUserLinks } from "./hooks/useSaveUserLinks";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { useMobileMockup } from "../AppLayout/hooks/useMobileMockup";
+import { useBlocker } from "react-router-dom";
+import { ConfirmDialog, ConfirmDialogRef } from "@/components/ConfirmDialog/ConfirmDialog";
 
 let uniqueId = 0;
 
@@ -19,8 +21,23 @@ export const Links = () => {
   const { mutate, isPending: isMutating } = useSaveUserLinks();
   const formRef = useRef<HTMLFormElement>(null);
   const lastLinkRef = useRef<LinkRefType>(null);
+  const confirmDialogRef = useRef<ConfirmDialogRef>(null);
+  const [dirty, setDirty] = useState(false);
 
   useMobileMockup({ showSkeleton: true });
+
+  const blocker = useBlocker((tx) => {
+    if (tx.currentLocation.pathname === tx.nextLocation.pathname) {
+      return false;
+    }
+    return dirty;
+  });
+
+  useEffect(() => {
+    if (blocker.state === "blocked") {
+      confirmDialogRef.current?.open();
+    }
+  }, [blocker.state]);
 
   useEffect(() => {
     if (userLinks) {
@@ -49,10 +66,12 @@ export const Links = () => {
     if (!formRef.current?.reportValidity()) {
       return;
     }
+    setDirty(true);
     setCurrentUserLinks((prev) => [...prev, { url: "", platform: platforms[0], id: uniqueId++ }]);
   };
 
   const onRemoveLink = (index: number) => () => {
+    setDirty(true);
     setCurrentUserLinks((prev) => {
       const updatedUserLinks = [...prev];
       updatedUserLinks.splice(index, 1);
@@ -61,6 +80,7 @@ export const Links = () => {
   };
 
   const onChangeLink = (index: number) => (newLink: UserLink) => {
+    setDirty(true);
     setCurrentUserLinks((prev) => {
       const updatedUserLinks = [...prev];
       updatedUserLinks[index] = { ...newLink, id: prev[index].id };
@@ -73,6 +93,8 @@ export const Links = () => {
     if (!over || active.id === over?.id) {
       return;
     }
+
+    setDirty(true);
 
     setCurrentUserLinks((prev) => {
       const oldIndex = prev.findIndex((link) => link.id === active.id);
@@ -138,6 +160,15 @@ export const Links = () => {
           </Button>
         </div>
       </Form>
+      <ConfirmDialog
+        ref={confirmDialogRef}
+        onClose={(confirmed) => {
+          if (confirmed) {
+            blocker.proceed?.();
+          }
+          blocker.reset?.();
+        }}
+      />
     </div>
   );
 };

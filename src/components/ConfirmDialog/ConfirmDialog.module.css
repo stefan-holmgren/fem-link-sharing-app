@@ -1,0 +1,23 @@
+.overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.content {
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  margin-top: 1rem;
+  transform: translate(-50%, 0);
+  z-index: 2;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+}

@@ -6,5 +6,5 @@
 - react
 - supabase
 - tanstack-query
-- radix-ui (for the select component)
+- radix-ui (for the select and dialog component)
 - dnd-kit for drag and drop

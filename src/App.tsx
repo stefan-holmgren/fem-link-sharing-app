@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider, Routes } from "react-router-dom";
 import { Links } from "./pages/App/Links";
 import { Login } from "./pages/Auth/Login";
 import { Logout } from "./pages/Auth/Logout";
@@ -24,27 +24,33 @@ const queryClient = new QueryClient({
   },
 });
 
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <>
+      <Route element={<AuthLayout />}>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+      </Route>
+      <Route element={<RequireAuth />}>
+        <Route element={<AppLayout />}>
+          <Route path="/" element={<Links />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
+        <Route path="/logout" element={<Logout />} />
+        <Route path="/preview" element={<Preview />} />
+      </Route>
+    </>
+  )
+);
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <SupabaseAuthContextProvider>
         <SnackbarContextProvider>
-          <Routes>
-            <Route element={<AuthLayout />}>
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-            </Route>
-            <Route element={<RequireAuth />}>
-              <Route element={<AppLayout />}>
-                <Route path="/" element={<Links />} />
-                <Route path="/profile" element={<Profile />} />
-              </Route>
-              <Route path="/logout" element={<Logout />} />
-              <Route path="/preview" element={<Preview />} />
-            </Route>
-          </Routes>
+          <RouterProvider router={router} />
         </SnackbarContextProvider>
       </SupabaseAuthContextProvider>
     </QueryClientProvider>
