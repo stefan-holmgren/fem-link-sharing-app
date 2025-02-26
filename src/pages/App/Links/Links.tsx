@@ -161,6 +161,8 @@ export const Links = () => {
         </div>
       </Form>
       <ConfirmDialog
+        title="You have unsaved changes"
+        description="Are you sure you want to leave this page? Your changes will be lost."
         ref={confirmDialogRef}
         onClose={(confirmed) => {
           if (confirmed) {

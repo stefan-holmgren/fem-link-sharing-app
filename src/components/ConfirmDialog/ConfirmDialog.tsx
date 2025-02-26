@@ -8,11 +8,13 @@ export type ConfirmDialogRef = {
 };
 
 type ConfirmDialogProps = {
+  title: string;
+  description?: string;
   onClose: (confirmed: boolean) => void;
   ref?: Ref<ConfirmDialogRef>;
 };
 
-export const ConfirmDialog = ({ onClose, ref }: ConfirmDialogProps) => {
+export const ConfirmDialog = ({ title, description, onClose, ref }: ConfirmDialogProps) => {
   const [open, setOpen] = useState(false);
   const confirmedRef = useRef(false);
 
@@ -36,16 +38,17 @@ export const ConfirmDialog = ({ onClose, ref }: ConfirmDialogProps) => {
     >
       <Dialog.Portal>
         <Dialog.Overlay className={styles.overlay} />
-        <Dialog.Content className={styles.content} aria-describedby={undefined}>
-          <Dialog.Title className={styles.title}>Are you sure</Dialog.Title>
-          <Dialog.Description className={styles.description}>Do you want to continue?</Dialog.Description>
-          <Dialog.Description />
-          <Dialog.Close asChild>
-            <Button onClick={() => closeDialog(true)}>Yes</Button>
-          </Dialog.Close>
-          <Dialog.Close asChild>
-            <Button onClick={() => closeDialog(false)}>No</Button>
-          </Dialog.Close>
+        <Dialog.Content className={styles.content} {...(description ? {} : { "aria-describedby": undefined })}>
+          <Dialog.Title className={styles.title}>{title}</Dialog.Title>
+          {!!description && <Dialog.Description className={styles.description}>{description}</Dialog.Description>}
+          <div className={styles["button-strip"]}>
+            <Dialog.Close asChild>
+              <Button onClick={() => closeDialog(false)}>No</Button>
+            </Dialog.Close>
+            <Dialog.Close asChild>
+              <Button onClick={() => closeDialog(true)}>Yes</Button>
+            </Dialog.Close>
+          </div>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>
