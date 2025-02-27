@@ -1,112 +1,102 @@
 .links {
-  form {
+  .links-container {
     display: flex;
     flex-direction: column;
+    flex: 1;
 
-    .links-container {
+    > h1 {
+      font-size: 1.5em;
+    }
+
+    > p {
+      margin-top: 0.5rem;
+      color: var(--clr-grey);
+    }
+
+    > button {
+      margin-top: 2.5rem;
+      width: 100%;
+    }
+
+    ul {
+      padding-bottom: 1.5rem;
+
+      overflow-x: clip;
+
+      counter-reset: link-counter;
+      margin-top: 1.5rem;
       display: flex;
       flex-direction: column;
-      padding: 1.5rem 1.5rem 0 1.5rem;
+
       flex: 1;
 
+      gap: 1.5rem;
+
       @media (min-width: 768px) {
-        padding: 2.5rem 2.5rem 0 2.5rem;
+        max-height: calc(var(--vh-100) - var(--header-height) - 21.5rem);
+        overflow-y: auto;
       }
 
-      > h1 {
-        font-size: 1.5em;
+      li {
+        counter-increment: link-counter;
+        background-color: var(--clr-light-grey);
+        border-radius: 0.75rem;
+        padding: 1.25rem;
       }
 
-      > p {
-        margin-top: 0.5rem;
-        color: var(--clr-grey);
-      }
-
-      > button {
-        margin-top: 2.5rem;
-        width: 100%;
-      }
-
-      ul {
-        padding-bottom: 1.5rem;
-
-        overflow-x: clip;
-
-        counter-reset: link-counter;
-        margin-top: 1.5rem;
-        display: flex;
-        flex-direction: column;
-
+      li.empty-state {
+        display: grid;
+        place-items: center;
         flex: 1;
 
-        gap: 1.5rem;
+        div {
+          svg {
+            margin: auto;
+            height: 5rem;
 
-        @media (min-width: 768px) {
-          max-height: calc(var(--vh-100) - var(--header-height) - 21.5rem);
-          overflow-y: auto;
-        }
-
-        li {
-          counter-increment: link-counter;
-          background-color: var(--clr-light-grey);
-          border-radius: 0.75rem;
-          padding: 1.25rem;
-        }
-
-        li.empty-state {
-          display: grid;
-          place-items: center;
-          flex: 1;
-
-          div {
-            svg {
-              margin: auto;
-              height: 5rem;
-
-              @media (min-width: 768px) {
-                height: 10rem;
-              }
+            @media (min-width: 768px) {
+              height: 10rem;
             }
-            h2 {
-              margin-top: 1.5rem;
-              text-align: center;
+          }
+          h2 {
+            margin-top: 1.5rem;
+            text-align: center;
 
-              @media (min-width: 768px) {
-                margin-top: 2.5rem;
-                font-size: 2em;
-                max-width: 30.5rem;
-              }
+            @media (min-width: 768px) {
+              margin-top: 2.5rem;
+              font-size: 2em;
+              max-width: 30.5rem;
             }
-            p {
-              margin-top: 1.5rem;
-              text-align: center;
-              color: var(--clr-grey);
+          }
+          p {
+            margin-top: 1.5rem;
+            text-align: center;
+            color: var(--clr-grey);
 
-              @media (min-width: 768px) {
-                max-width: 30.5rem;
-              }
+            @media (min-width: 768px) {
+              max-width: 30.5rem;
             }
           }
         }
       }
     }
+  }
 
-    .save-container {
-      padding: 1rem;
-      border-top: 1px solid var(--clr-borders);
+  .save-container {
+    padding: 1rem;
+    border-top: 1px solid var(--clr-borders);
+
+    @media (min-width: 768px) {
+      padding: 1.5rem 2.5rem;
+    }
+
+    button {
+      width: 100%;
 
       @media (min-width: 768px) {
-        padding: 1.5rem 2.5rem;
-      }
-
-      button {
-        width: 100%;
-
-        @media (min-width: 768px) {
-          display: block;
-          width: auto;
-          margin-left: auto;
-        }
+        display: block;
+        width: auto;
+        margin-left: auto;
       }
     }
   }

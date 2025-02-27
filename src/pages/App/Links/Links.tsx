@@ -3,7 +3,6 @@ import styles from "./Links.module.css";
 import IllustrationEmpty from "@/assets/illustration-empty.svg?react";
 import { useGetUserLinks } from "./hooks/useGetUserLinks";
 import { platforms, UserLink } from "./data/userLinks.data";
-import { Form } from "@/components/Form/Form";
 import { Link, LinkRefType, UserLinkWithUniqueId } from "./component/Link/Link";
 import { Button } from "@/components/Button/Button";
 import { useSaveUserLinks } from "./hooks/useSaveUserLinks";
@@ -14,6 +13,7 @@ import { useBlocker } from "react-router-dom";
 import { ConfirmDialog, ConfirmDialogRef } from "@/components/ConfirmDialog/ConfirmDialog";
 import { SnackbarContext } from "@/components/SnackbarContext/SnackbarContext";
 import IconChangesSaved from "@/assets/icon-changes-saved.svg?react";
+import { SaveForm } from "@/components/SaveForm/SaveForm";
 
 let uniqueId = 0;
 
@@ -161,7 +161,7 @@ export const Links = () => {
 
   return (
     <div className={styles.links}>
-      <Form onSubmit={onSubmit} ref={formRef}>
+      <SaveForm isSaveDisabled={isEmpty} isSaving={isMutating} onSubmit={onSubmit} ref={formRef}>
         <div className={styles["links-container"]}>
           <h1>Customize your links</h1>
           <p>Add/edit/remove links below and then share all your profiles with the world!</p>
@@ -170,12 +170,7 @@ export const Links = () => {
           </Button>
           {isEmpty ? renderEmptyState() : renderLinks()}
         </div>
-        <div className={styles["save-container"]}>
-          <Button type="submit" disabled={isEmpty}>
-            {isMutating ? "..." : "Save"}
-          </Button>
-        </div>
-      </Form>
+      </SaveForm>
       <ConfirmDialog
         title="You have unsaved changes"
         description="Are you sure you want to leave this page? Your changes will be lost."
