@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getUserLinks } from "../data/userLinks.data";
+import { userLinksData } from "../data/userLinks.data";
 import { useAuthContext } from "@/hooks/useAuthContext";
 
 export const useGetUserLinks = () => {
@@ -7,7 +7,7 @@ export const useGetUserLinks = () => {
 
   const { data, ...props } = useQuery({
     queryKey: ["userlinks", user?.id],
-    queryFn: () => (user ? getUserLinks(user) : []),
+    queryFn: () => (user ? userLinksData.getUserLinks(user) : []),
     enabled: !!user,
   });
   return { ...props, userLinks: data };

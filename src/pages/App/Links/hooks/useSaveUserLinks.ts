@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateUserLinks, UserLink } from "../data/userLinks.data";
+import { userLinksData, UserLink } from "../data/userLinks.data";
 import { useAuthContext } from "@/hooks/useAuthContext";
 
 export const useSaveUserLinks = () => {
@@ -11,7 +11,7 @@ export const useSaveUserLinks = () => {
       if (!user) {
         throw new Error("User is not authenticated");
       }
-      return updateUserLinks(user, links);
+      return userLinksData.updateUserLinks(user, links);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["userlinks", user?.id] });

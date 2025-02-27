@@ -1,5 +1,6 @@
 import { User } from "@/components/AuthContext/AuthContext";
-import { supabase } from "@/config/supabase";
+import { userLinksDataLocalStorage } from "./impl/userLinks.localstorage";
+import { userLinksDataSupabase } from "./impl/userLinks.supabase";
 
 export const platforms = ["github", "frontend-mentor", "x", "linkedin", "youtube"] as const;
 export type Platform = (typeof platforms)[number];
@@ -9,28 +10,22 @@ export type UserLink = {
   url: string;
 };
 
-export const getUserLinks = async (user: User): Promise<UserLink[]> => {
-  if (user.isAnonymous) {
-    // @todo get from local storage
-    return [];
-  }
+export interface UserLinksData {
+  getUserLinks(user: User): Promise<UserLink[]>;
+  updateUserLinks(user: User, userLinks: UserLink[]): Promise<void>;
+}
 
-  const { data, error } = await supabase.from("user_links").select("links").eq("user_id", user.id).limit(1).single();
-  if (error) {
-    throw error;
-  }
-
-  return data.links ?? [];
-};
-
-export const updateUserLinks = async (user: User, userLinks: UserLink[]) => {
-  if (user.isAnonymous) {
-    // @todo store in local storage
-    return;
-  }
-
-  const { error } = await supabase.from("user_links").upsert({ user_id: user.id, links: userLinks }, { onConflict: "user_id" });
-  if (error) {
-    throw error;
-  }
+export const userLinksData: UserLinksData = {
+  getUserLinks: async (user) => {
+    if (user.isAnonymous) {
+      return userLinksDataLocalStorage.getUserLinks(user);
+    }
+    return userLinksDataSupabase.getUserLinks(user);
+  },
+  updateUserLinks: async (user, userLinks) => {
+    if (user.isAnonymous) {
+      return userLinksDataLocalStorage.updateUserLinks(user, userLinks);
+    }
+    return userLinksDataSupabase.updateUserLinks(user, userLinks);
+  },
 };
