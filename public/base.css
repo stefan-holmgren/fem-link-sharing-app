@@ -87,6 +87,9 @@ h6 {
   --clr-purple-drop-shadow: #633cff40;
   --clr-red: #ff3939;
 
+  --vh-100: 100vh;
+  --vh-100: 100dvh;
+
   --header-height: 4.875rem;
   --input-background-clr: var(--clr-white);
 
@@ -102,10 +105,6 @@ body {
   color: var(--clr-dark-grey);
   margin: 0;
   padding: 0;
-}
-
-#root {
-  min-height: calc(100vh - var(--header-height));
 }
 
 .visually-hidden {

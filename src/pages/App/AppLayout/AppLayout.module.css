@@ -6,7 +6,7 @@
     }
 
     main {
-      min-height: calc(100vh - var(--header-height) - 2rem);
+      min-height: calc(var(--vh-100) - var(--header-height) - 2rem);
       background-color: var(--clr-white);
       margin: 1rem;
       border-radius: 0.75rem;
