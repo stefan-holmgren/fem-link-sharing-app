@@ -6,16 +6,10 @@ import { UserLink } from "@/components/UserLink/UserLink";
 type MobileProps = HTMLAttributes<HTMLDivElement> & { ref?: Ref<HTMLDivElement> } & { showSkeleton?: boolean };
 
 export const Mobile = ({ className = "", ref, showSkeleton = true, ...rest }: MobileProps) => {
-  const classNames = [styles.mobile];
-  if (showSkeleton) {
-    classNames.push(styles.skeleton);
-  }
-  if (className) {
-    classNames.push(className);
-  }
+  const mergedClassName = `${styles.mobile} ${showSkeleton ? styles.skeleton : ""} ${className}`;
 
   return (
-    <div className={classNames.join(" ")} {...rest} ref={ref}>
+    <div className={mergedClassName} {...rest} ref={ref}>
       <IllustrationPhoneMockup />
       <div>
         <div className={styles["profile-picture"]}></div>
