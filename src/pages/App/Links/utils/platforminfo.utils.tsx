@@ -25,7 +25,7 @@ export const platformMap: Record<Platform, PlatformInfo> = {
     icon: <FrontendMentorIcon />,
     name: "Frontend Mentor",
     pattern: "https://www.frontendmentor.io/profile/.+",
-    placeholderExample: "https://frontendmentor.io/profile/johnappleseed",
+    placeholderExample: "https://www.frontendmentor.io/profile/johnappleseed",
   },
   x: {
     icon: <XIcon />,
@@ -37,12 +37,12 @@ export const platformMap: Record<Platform, PlatformInfo> = {
     icon: <LinkedinIcon />,
     name: "LinkedIn",
     pattern: "https://www.linkedin.com/in/.+",
-    placeholderExample: "https://linkedin.com/in/johnappleseed",
+    placeholderExample: "https://www.linkedin.com/in/johnappleseed",
   },
   youtube: {
     icon: <YoutubeIcon />,
     name: "YouTube",
     pattern: "https://www.youtube.com/@.+",
-    placeholderExample: "https://youtube.com/@johnappleseed",
+    placeholderExample: "https://www.youtube.com/@johnappleseed",
   },
 };

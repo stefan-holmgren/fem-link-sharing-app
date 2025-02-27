@@ -3,6 +3,7 @@ import { createContext } from "react";
 export type User = {
   id: string;
   email: string | null;
+  isAnonymous: boolean;
 };
 
 export type AuthContextType = {

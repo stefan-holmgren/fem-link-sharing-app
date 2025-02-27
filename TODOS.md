@@ -12,4 +12,5 @@
 - snackbars for successful saving, or errors
 - save only when links have changed
 - only save if the updated_at hasn't changed
-- warn if the user is about to navigate away with unsaved changes
+- anonymous signins
+- CAPTCHA for anonymous signins

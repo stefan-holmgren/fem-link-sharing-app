@@ -17,7 +17,7 @@ export const SupabaseAuthContextProvider = ({ children }: SupabaseAuthContextPro
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ? { email: session.user.email ?? null, id: session.user.id } : null);
+      setUser(session?.user ? { email: session.user.email ?? null, id: session.user.id, isAnonymous: session.user.is_anonymous ?? false } : null);
     });
     return () => subscription.unsubscribe();
   }, []);

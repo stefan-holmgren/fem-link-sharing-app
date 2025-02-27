@@ -13,6 +13,7 @@ import { Profile } from "./pages/App/Profile/Profile";
 import { AppLayout } from "./pages/App/AppLayout/AppLayout";
 import { RequireAuth } from "./components/RequireAuth/RequireAuth";
 import { SnackbarContextProvider } from "./components/SnackbarContext/SnackbarContextProvider";
+import { LoginAnonymously } from "./pages/Auth/LoginAnonymously/LoginAnonymosly";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,6 +30,7 @@ const router = createBrowserRouter(
     <>
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<Login />} />
+        <Route path="/login-anonymously" element={<LoginAnonymously />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />

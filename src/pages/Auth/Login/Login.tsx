@@ -74,6 +74,9 @@ export const Login = () => {
           Don't have an account? <Link to="/signup">Create account</Link>
         </p>
         <p>
+          Test it out? <Link to="/login-anonymously">Log in anonymously</Link>
+        </p>
+        <p>
           <Link to="/forgot-password">Forgot password?</Link>
         </p>
       </div>
