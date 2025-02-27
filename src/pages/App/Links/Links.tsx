@@ -160,9 +160,9 @@ export const Links = () => {
   const isEmpty = currentUserLinks.length === 0;
 
   return (
-    <div className={styles.links}>
+    <>
       <SaveForm isSaveDisabled={isEmpty} isSaving={isMutating} onSubmit={onSubmit} ref={formRef}>
-        <div className={styles["links-container"]}>
+        <div className={styles.links}>
           <h1>Customize your links</h1>
           <p>Add/edit/remove links below and then share all your profiles with the world!</p>
           <Button type="button" variant="secondary" className={styles["add-new-link"]} onClick={onAddNewLink}>
@@ -182,6 +182,6 @@ export const Links = () => {
           blocker.reset?.();
         }}
       />
-    </div>
+    </>
   );
 };

@@ -1,102 +1,76 @@
 .links {
-  .links-container {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 
-    > h1 {
-      font-size: 1.5em;
-    }
-
-    > p {
-      margin-top: 0.5rem;
-      color: var(--clr-grey);
-    }
-
-    > button {
-      margin-top: 2.5rem;
-      width: 100%;
-    }
-
-    ul {
-      padding-bottom: 1.5rem;
-
-      overflow-x: clip;
-
-      counter-reset: link-counter;
-      margin-top: 1.5rem;
-      display: flex;
-      flex-direction: column;
-
-      flex: 1;
-
-      gap: 1.5rem;
-
-      @media (min-width: 768px) {
-        max-height: calc(var(--vh-100) - var(--header-height) - 21.5rem);
-        overflow-y: auto;
-      }
-
-      li {
-        counter-increment: link-counter;
-        background-color: var(--clr-light-grey);
-        border-radius: 0.75rem;
-        padding: 1.25rem;
-      }
-
-      li.empty-state {
-        display: grid;
-        place-items: center;
-        flex: 1;
-
-        div {
-          svg {
-            margin: auto;
-            height: 5rem;
-
-            @media (min-width: 768px) {
-              height: 10rem;
-            }
-          }
-          h2 {
-            margin-top: 1.5rem;
-            text-align: center;
-
-            @media (min-width: 768px) {
-              margin-top: 2.5rem;
-              font-size: 2em;
-              max-width: 30.5rem;
-            }
-          }
-          p {
-            margin-top: 1.5rem;
-            text-align: center;
-            color: var(--clr-grey);
-
-            @media (min-width: 768px) {
-              max-width: 30.5rem;
-            }
-          }
-        }
-      }
-    }
+  > h1 {
+    font-size: 1.5em;
   }
 
-  .save-container {
-    padding: 1rem;
-    border-top: 1px solid var(--clr-borders);
+  > p {
+    margin-top: 0.5rem;
+    color: var(--clr-grey);
+  }
 
-    @media (min-width: 768px) {
-      padding: 1.5rem 2.5rem;
+  > button {
+    margin-top: 2.5rem;
+    width: 100%;
+  }
+
+  ul {
+    padding-bottom: 1.5rem;
+
+    overflow-x: clip;
+
+    counter-reset: link-counter;
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+
+    gap: 1.5rem;
+
+    li {
+      counter-increment: link-counter;
+      background-color: var(--clr-light-grey);
+      border-radius: 0.75rem;
+      padding: 1.25rem;
     }
 
-    button {
-      width: 100%;
+    li.empty-state {
+      display: grid;
+      place-items: center;
+      flex: 1;
 
-      @media (min-width: 768px) {
-        display: block;
-        width: auto;
-        margin-left: auto;
+      div {
+        svg {
+          margin: auto;
+          height: 5rem;
+
+          @media (min-width: 768px) {
+            height: 10rem;
+          }
+        }
+        h2 {
+          margin-top: 1.5rem;
+          text-align: center;
+
+          @media (min-width: 768px) {
+            margin-top: 2.5rem;
+            font-size: 2em;
+            max-width: 30.5rem;
+          }
+        }
+        p {
+          margin-top: 1.5rem;
+          text-align: center;
+          color: var(--clr-grey);
+
+          @media (min-width: 768px) {
+            max-width: 30.5rem;
+          }
+        }
       }
     }
   }
