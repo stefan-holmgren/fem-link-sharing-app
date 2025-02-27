@@ -1,11 +1,12 @@
+import { UserLink } from "@/pages/App/Links/data/userLinks.data";
 import { createContext } from "react";
 
 type MobileAsideContextType = {
-  showSkeleton: boolean;
   setShowSkeleton: (show: boolean) => void;
+  setUserLinks: (userLinks: UserLink[]) => void;
 };
 
 export const MobileAsideContext = createContext<MobileAsideContextType>({
-  showSkeleton: false,
   setShowSkeleton: () => {},
+  setUserLinks: () => {},
 });

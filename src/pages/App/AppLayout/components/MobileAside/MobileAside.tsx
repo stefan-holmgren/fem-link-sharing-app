@@ -1,11 +1,13 @@
 import { useEffect, useRef } from "react";
 import { Mobile } from "./components/Mobile/Mobile";
 import styles from "./MobileAside.module.css";
+import { UserLink } from "@/pages/App/Links/data/userLinks.data";
 
 type MobileAsideProps = {
   showSkeleton?: boolean;
+  userLinks: UserLink[];
 };
-export const MobileAside = ({ showSkeleton }: MobileAsideProps) => {
+export const MobileAside = ({ showSkeleton, userLinks }: MobileAsideProps) => {
   const asideRef = useRef<HTMLElement>(null);
   const mobileRef = useRef<HTMLDivElement>(null);
 
@@ -39,7 +41,7 @@ export const MobileAside = ({ showSkeleton }: MobileAsideProps) => {
 
   return (
     <aside className={styles["mobile-aside"]} ref={asideRef}>
-      <Mobile className={styles.mobile} showSkeleton={showSkeleton} ref={mobileRef} />
+      <Mobile className={styles.mobile} showSkeleton={showSkeleton} userLinks={userLinks} ref={mobileRef} />
     </aside>
   );
 };

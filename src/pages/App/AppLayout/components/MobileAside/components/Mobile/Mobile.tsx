@@ -2,10 +2,11 @@ import { HTMLAttributes, Ref } from "react";
 import styles from "./Mobile.module.css";
 import IllustrationPhoneMockup from "@/assets/illustration-phone-mockup.svg?react";
 import { UserLink } from "@/components/UserLink/UserLink";
+import { UserLink as UserLinkType } from "@/pages/App/Links/data/userLinks.data";
 
-type MobileProps = HTMLAttributes<HTMLDivElement> & { ref?: Ref<HTMLDivElement> } & { showSkeleton?: boolean };
+type MobileProps = HTMLAttributes<HTMLDivElement> & { ref?: Ref<HTMLDivElement>; userLinks: UserLinkType[] } & { showSkeleton?: boolean };
 
-export const Mobile = ({ className = "", ref, showSkeleton = true, ...rest }: MobileProps) => {
+export const Mobile = ({ className = "", ref, showSkeleton = true, userLinks, ...rest }: MobileProps) => {
   const mergedClassName = `${styles.mobile} ${showSkeleton ? styles.skeleton : ""} ${className}`;
 
   return (
@@ -18,18 +19,11 @@ export const Mobile = ({ className = "", ref, showSkeleton = true, ...rest }: Mo
           <p>ben@example.com</p>
         </div>
         <ul className={styles["profile-links"]}>
-          <li>
-            <UserLink userLink={{ platform: "github", url: "https://github.com/stefan-holmgren" }} />
-          </li>
-          <li>
-            <UserLink userLink={{ platform: "frontend-mentor", url: "https://github.com/stefan-holmgren" }} />
-          </li>
-          <li>
-            <UserLink userLink={{ platform: "x", url: "https://github.com/stefan-holmgren" }} />
-          </li>
-          <li>
-            <UserLink userLink={{ platform: "linkedin", url: "https://github.com/stefan-holmgren" }} />
-          </li>
+          {userLinks.map((userLink, index) => (
+            <li key={userLink.platform + userLink.url + index}>
+              <UserLink userLink={userLink} />
+            </li>
+          ))}
         </ul>
       </div>
     </div>

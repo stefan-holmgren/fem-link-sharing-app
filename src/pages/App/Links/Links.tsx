@@ -27,7 +27,7 @@ export const Links = () => {
   const [dirty, setDirty] = useState(false);
   const { showSnackbar } = use(SnackbarContext);
 
-  useMobileMockup({ showSkeleton: true });
+  useMobileMockup({ showSkeleton: true, userLinks: currentUserLinks });
 
   const blocker = useBlocker((tx) => {
     if (tx.currentLocation.pathname === tx.nextLocation.pathname) {
