@@ -1,7 +1,7 @@
 import { HTMLAttributes, Ref } from "react";
 import styles from "./Mobile.module.css";
 import IllustrationPhoneMockup from "@/assets/illustration-phone-mockup.svg?react";
-import { PlatformButton } from "@/components/PlatformButton/PlatformButton";
+import { UserLink } from "@/components/UserLink/UserLink";
 
 type MobileProps = HTMLAttributes<HTMLDivElement> & { ref?: Ref<HTMLDivElement> } & { showSkeleton?: boolean };
 
@@ -25,22 +25,16 @@ export const Mobile = ({ className = "", ref, showSkeleton = true, ...rest }: Mo
         </div>
         <ul className={styles["profile-links"]}>
           <li>
-            <PlatformButton platform="github" />
+            <UserLink userLink={{ platform: "github", url: "https://github.com/stefan-holmgren" }} />
           </li>
           <li>
-            <PlatformButton platform="frontend-mentor" />
+            <UserLink userLink={{ platform: "frontend-mentor", url: "https://github.com/stefan-holmgren" }} />
           </li>
           <li>
-            <PlatformButton platform="x" />
+            <UserLink userLink={{ platform: "x", url: "https://github.com/stefan-holmgren" }} />
           </li>
           <li>
-            <PlatformButton platform="linkedin" />
-          </li>
-          <li>
-            <PlatformButton platform="youtube" />
-          </li>
-          <li>
-            <PlatformButton platform="youtube" />
+            <UserLink userLink={{ platform: "linkedin", url: "https://github.com/stefan-holmgren" }} />
           </li>
         </ul>
       </div>
