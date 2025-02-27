@@ -1,3 +1,4 @@
+import { Label } from "../Label/Label";
 import styles from "./Input.module.css";
 
 import { ChangeEvent, InputHTMLAttributes, InvalidEvent, ReactNode, Ref, useId, useState } from "react";
@@ -41,7 +42,7 @@ export const Input = ({ id, icon, label, onInvalid, onChange, errorMessage, ...r
 
   return (
     <div className={styles.input}>
-      {label && <label htmlFor={inputId}>{label}</label>}
+      {label && <Label htmlFor={inputId}>{label}</Label>}
       <div>
         <input id={inputId} onInvalid={onInvalidWrapper} onChange={onChangeWrapper} aria-invalid={!!message} {...rest} />
         {icon}

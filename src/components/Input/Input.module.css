@@ -30,10 +30,6 @@
       }
     }
 
-    label {
-      font-size: 0.75em;
-    }
-
     svg {
       position: absolute;
       left: 1rem;
@@ -49,7 +45,7 @@
       font-size: 0.75em;
       color: var(--clr-red);
       pointer-events: none;
-      background: var(--input-background-clr);
+      background-color: var(--input-background-clr);
       padding-left: 0.5rem;
     }
   }

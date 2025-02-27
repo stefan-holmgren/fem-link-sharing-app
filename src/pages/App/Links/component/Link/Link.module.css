@@ -1,4 +1,6 @@
 .link {
+  --input-background-clr: var(--clr-white);
+
   > div {
     display: grid;
     grid-template-columns: auto 1fr;
@@ -32,13 +34,12 @@
   }
 
   fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
     border: none;
     padding: 0;
     margin: 0.75rem 0 0 0;
-  }
-
-  .link-input {
-    background: var(--clr-white);
   }
 
   .counter {

@@ -1,2 +1,5 @@
 .label {
+  font-size: 0.75em;
+  color: var(--clr-dark-grey);
+  margin-bottom: 0.25rem;
 }

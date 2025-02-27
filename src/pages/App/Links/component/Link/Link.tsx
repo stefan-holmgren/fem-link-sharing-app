@@ -79,7 +79,6 @@ export const Link = ({ userLink, onRemove, onChange, ref }: LinkProps) => {
         <PlatformSelect ref={selectRef} defaultValue={userLink.platform} onChange={onPlatformChange} />
         <Input
           ref={urlRef}
-          className={styles["link-input"]}
           label="Link"
           icon={<IconLink />}
           placeholder={`e.g. ${placeholderExample}`}
