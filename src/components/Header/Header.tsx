@@ -15,19 +15,19 @@ export const Header = () => {
         <ul>
           <li>
             <NavLink to="/">
-              <LinkIcon />
+              <LinkIcon aria-hidden />
               <span>Links</span>
             </NavLink>
           </li>
           <li>
             <NavLink to="/profile">
-              <ProfileIcon />
+              <ProfileIcon aria-hidden />
               <span>Profile Details</span>
             </NavLink>
           </li>
         </ul>
         <Button variant="secondary" onClick={() => navigate("/preview")}>
-          <PreviewIcon />
+          <PreviewIcon aria-hidden />
           <span>Preview</span>
         </Button>
       </nav>
