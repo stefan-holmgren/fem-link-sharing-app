@@ -17,7 +17,6 @@ export const Profile = () => {
   const { mutateAsync: saveUserProfile, isPending: isMutating } = useSaveUserProfile();
   const { userLinks } = useGetUserLinks();
   const [dirty, setDirty] = useState(false);
-  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [currentUserProfile, setCurrentUserProfile] = useState(userProfile);
   const [profileImageDataUrl, setProfileImageDataUrl] = useState<string>();
   const headerId = useId();
@@ -39,7 +38,6 @@ export const Profile = () => {
 
   const onProfileImageChange = (file: File) => {
     setDirty(true);
-    setProfileImageFile(file);
     setCurrentUserProfile((prev) => (prev ? { ...prev, profileImageFile: file } : { firstName: "", lastName: "", profileImageFile: file }));
   };
 
@@ -48,7 +46,11 @@ export const Profile = () => {
     if (isMutating) {
       return;
     }
-    saveUserProfile({ userProfile: { ...(currentUserProfile ?? { firstName: "", lastName: "" }), profileImageFile: profileImageFile ?? undefined } })
+    if (!currentUserProfile) {
+      return;
+    }
+
+    saveUserProfile({ userProfile: currentUserProfile })
       .then(() => {
         setDirty(false);
         snackbars.showSnackbar({ message: "Your changes have been successfully saved!", variant: "positive", icon: <IconChangesSaved /> });

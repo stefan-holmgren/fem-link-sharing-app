@@ -16,10 +16,10 @@ export const userProfileDataSupabase: UserProfileData = {
 
     const { data: profilePicture, error: profilePictureError } = await supabase.storage.from("profile_pictures").download(userProfile.profile_image_path);
     if (profilePictureError) {
-      throw profilePictureError;
+      console.error("Error downloading profile picture: ", profilePictureError);
     }
 
-    const profileImageFile = new File([profilePicture], userProfile.profile_image_path, { type: profilePicture.type });
+    const profileImageFile = profilePicture ? new File([profilePicture], userProfile.profile_image_path, { type: profilePicture.type }) : undefined;
 
     return {
       firstName: userProfile.first_name,
@@ -41,23 +41,28 @@ export const userProfileDataSupabase: UserProfileData = {
       throw userDataError;
     }
 
-    if (existingUserProfile) {
-      const previousProfileImagePath: string = existingUserProfile.profile_image_path;
-      if (userProfile.profileImageFile?.name !== previousProfileImagePath) {
+    const previousProfileImagePath: string = existingUserProfile?.profile_image_path;
+    const newProfileImagePath =
+      !previousProfileImagePath || userProfile.profileImageFile?.name !== previousProfileImagePath
+        ? `${user.id}/profile_picture${Date.now().toString(36)}`
+        : previousProfileImagePath;
+
+    // If we have changed the profile picture, we need to delete the old one and upload the new one
+    if (newProfileImagePath !== previousProfileImagePath) {
+      if (previousProfileImagePath) {
         const { error: profilePictureDeleteError } = await supabase.storage.from("profile_pictures").remove([previousProfileImagePath]);
         if (profilePictureDeleteError) {
-          throw profilePictureDeleteError;
+          console.error("Error deleting profile picture: ", profilePictureDeleteError);
         }
       }
-    }
 
-    const newProfileImagePath = `${user.id}/profile_picture${Date.now().toString(36)}`;
-    if (userProfile.profileImageFile) {
-      const { error: profilePictureUploadError } = await supabase.storage
-        .from("profile_pictures")
-        .upload(newProfileImagePath, userProfile.profileImageFile, { cacheControl: "3600" });
-      if (profilePictureUploadError) {
-        throw profilePictureUploadError;
+      if (userProfile.profileImageFile) {
+        const { error: profilePictureUploadError } = await supabase.storage
+          .from("profile_pictures")
+          .upload(newProfileImagePath, userProfile.profileImageFile, { cacheControl: "3600" });
+        if (profilePictureUploadError) {
+          console.error("Error uploading profile picture: ", profilePictureUploadError);
+        }
       }
     }
 
