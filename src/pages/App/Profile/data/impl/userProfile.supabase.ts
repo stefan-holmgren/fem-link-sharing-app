@@ -1,25 +1,30 @@
 import { supabase } from "@/config/supabase";
 import { UserProfileData } from "../userProfile.data";
 
+const downloadProfilePicture = async (profileImagePath: string) => {
+  const { data: profilePicture, error: profilePictureError } = await supabase.storage.from("profile_pictures").download(profileImagePath);
+  if (profilePictureError) {
+    console.error("Error downloading profile picture: ", profilePictureError);
+  }
+  return profilePicture ? new File([profilePicture], profileImagePath, { type: profilePicture.type }) : undefined;
+};
+
 export const userProfileDataSupabase: UserProfileData = {
   async getUserProfile(user) {
-    const { data: userProfile, error: userDataError } = await supabase
+    const { data: userProfile } = await supabase
       .from("user_profiles")
       .select("first_name, last_name, email, profile_image_path")
       .eq("user_id", user.id)
       .limit(1)
-      .single();
+      .maybeSingle();
 
-    if (userDataError) {
-      throw userDataError;
+    if (!userProfile) {
+      return null;
     }
 
-    const { data: profilePicture, error: profilePictureError } = await supabase.storage.from("profile_pictures").download(userProfile.profile_image_path);
-    if (profilePictureError) {
-      console.error("Error downloading profile picture: ", profilePictureError);
-    }
+    console.log("userProfile.profile_image_path", userProfile.profile_image_path);
 
-    const profileImageFile = profilePicture ? new File([profilePicture], userProfile.profile_image_path, { type: profilePicture.type }) : undefined;
+    const profileImageFile = userProfile.profile_image_path ? await downloadProfilePicture(userProfile.profile_image_path) : undefined;
 
     return {
       firstName: userProfile.first_name,
@@ -30,20 +35,12 @@ export const userProfileDataSupabase: UserProfileData = {
   },
 
   async updateUserProfile(user, userProfile) {
-    const { data: existingUserProfile, error: userDataError } = await supabase
-      .from("user_profiles")
-      .select("profile_image_path")
-      .eq("user_id", user.id)
-      .limit(1)
-      .single();
+    const { data: existingUserProfile } = await supabase.from("user_profiles").select("profile_image_path").eq("user_id", user.id).limit(1).maybeSingle();
 
-    if (userDataError) {
-      throw userDataError;
-    }
+    const previousProfileImagePath: string | undefined = existingUserProfile?.profile_image_path;
 
-    const previousProfileImagePath: string = existingUserProfile?.profile_image_path;
     const newProfileImagePath =
-      !previousProfileImagePath || userProfile.profileImageFile?.name !== previousProfileImagePath
+      userProfile.profileImageFile && userProfile.profileImageFile.name !== previousProfileImagePath
         ? `${user.id}/profile_picture${Date.now().toString(36)}`
         : previousProfileImagePath;
 
@@ -56,7 +53,7 @@ export const userProfileDataSupabase: UserProfileData = {
         }
       }
 
-      if (userProfile.profileImageFile) {
+      if (newProfileImagePath && userProfile.profileImageFile) {
         const { error: profilePictureUploadError } = await supabase.storage
           .from("profile_pictures")
           .upload(newProfileImagePath, userProfile.profileImageFile, { cacheControl: "3600" });
