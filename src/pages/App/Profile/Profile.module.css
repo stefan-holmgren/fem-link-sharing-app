@@ -1,11 +1,17 @@
 .profile {
   margin-top: 2.5rem;
-  .picture {
+
+  display: grid;
+  row-gap: 1.5rem;
+
+  section {
     color: var(--grey);
+    padding: 1.25rem;
     background-color: var(--clr-light-grey);
     border-radius: 0.75rem;
-    padding: 1.25rem;
+  }
 
+  .picture {
     button {
       margin-top: 1rem;
       border-radius: 0.75rem;
@@ -29,5 +35,10 @@
       color: var(--clr-grey);
       font-size: 0.75em;
     }
+  }
+
+  .details {
+    display: grid;
+    row-gap: 0.75rem;
   }
 }
