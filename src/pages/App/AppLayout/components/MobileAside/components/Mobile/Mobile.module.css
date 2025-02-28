@@ -24,8 +24,10 @@
       width: var(--size);
       height: var(--size);
       margin: auto;
-      background: red;
       border-radius: 50%;
+      overflow: clip;
+      background-size: cover;
+      background-position: center;
       outline: 4px solid var(--clr-purple);
     }
 

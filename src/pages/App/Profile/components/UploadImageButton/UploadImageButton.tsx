@@ -11,10 +11,10 @@ type UploadImageButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   defaultImageUrl?: string;
 };
 
-export const UploadImageButton = ({ className = "", allowedTypes, onFileChange, defaultImageUrl, ...rest }: UploadImageButtonProps) => {
+export const UploadImageButton = ({ className = "", allowedTypes, onFileChange, maxWidth, maxHeight, defaultImageUrl, ...rest }: UploadImageButtonProps) => {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const snackbars = use(SnackbarContext);
-  const [imageUrl, setImageUrl] = useState(defaultImageUrl);
+  const [currentImageUrl, setCurrentImageUrl] = useState("");
 
   const validateImageDimensions = (file: File) => {
     return new Promise<{ valid: boolean; message?: string }>((resolve) => {
@@ -25,8 +25,8 @@ export const UploadImageButton = ({ className = "", allowedTypes, onFileChange, 
 
       const img = new Image();
       img.onload = () => {
-        if (img.width > rest.maxWidth || img.height > rest.maxHeight) {
-          resolve({ valid: false, message: `Image dimensions must not exceed ${rest.maxWidth}x${rest.maxHeight}px` });
+        if (img.width > maxWidth || img.height > maxHeight) {
+          resolve({ valid: false, message: `Image dimensions must not exceed ${maxWidth}x${maxHeight}px` });
         } else {
           resolve({ valid: true });
         }
@@ -46,7 +46,7 @@ export const UploadImageButton = ({ className = "", allowedTypes, onFileChange, 
       }
       return;
     }
-    setImageUrl(URL.createObjectURL(file));
+    setCurrentImageUrl(URL.createObjectURL(file));
     onFileChange?.(file);
   };
 
@@ -75,6 +75,8 @@ export const UploadImageButton = ({ className = "", allowedTypes, onFileChange, 
     inputFileRef.current?.click();
   };
 
+  const activeImageUrl = currentImageUrl || defaultImageUrl;
+
   return (
     <>
       <button
@@ -83,12 +85,14 @@ export const UploadImageButton = ({ className = "", allowedTypes, onFileChange, 
         onDragOver={onDragOver}
         onDrop={onDrop}
         style={{
-          backgroundImage: imageUrl ? `url(${imageUrl})` : undefined,
+          backgroundImage: activeImageUrl ? `url(${activeImageUrl})` : undefined,
         }}
         {...rest}
       >
-        <IconUploadImage aria-hidden />
-        <span>{imageUrl ? "Change Image" : "+ Upload Image"}</span>
+        <div>
+          <IconUploadImage aria-hidden />
+          <span>{activeImageUrl ? "Change Image" : "+ Upload Image"}</span>
+        </div>
       </button>
       <input ref={inputFileRef} type="file" accept={allowedTypes.join(", ")} style={{ display: "none" }} onChange={onFileInputChange} />
     </>

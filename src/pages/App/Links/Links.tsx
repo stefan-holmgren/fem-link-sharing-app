@@ -9,35 +9,28 @@ import { useSaveUserLinks } from "./hooks/useSaveUserLinks";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { useMobileMockup } from "../AppLayout/hooks/useMobileMockup";
-import { useBlocker } from "react-router-dom";
-import { ConfirmDialog, ConfirmDialogRef } from "@/components/ConfirmDialog/ConfirmDialog";
 import { SnackbarContext } from "@/components/SnackbarContext/SnackbarContext";
 import IconChangesSaved from "@/assets/icon-changes-saved.svg?react";
 import { SaveForm } from "@/components/SaveForm/SaveForm";
+import { SaveBlocker } from "@/components/SaveBlocker/SaveBlocker";
+import { useGetUserProfile } from "../Profile/hooks/useGetUserProfile";
 
 let uniqueId = 0;
 
 export const Links = () => {
   const { userLinks, isPending } = useGetUserLinks();
+  const { userProfile } = useGetUserProfile();
   const [currentUserLinks, setCurrentUserLinks] = useState<UserLinkWithUniqueId[]>([]);
   const { mutate, isPending: isMutating, isSuccess: isMutationSuccess, isError: isMutationError } = useSaveUserLinks();
   const formRef = useRef<HTMLFormElement>(null);
   const lastLinkRef = useRef<LinkRefType>(null);
-  const confirmDialogRef = useRef<ConfirmDialogRef>(null);
   const [dirty, setDirty] = useState(false);
   const { showSnackbar } = use(SnackbarContext);
 
   const headerId = useId();
   const descriptionId = useId();
 
-  useMobileMockup({ showSkeleton: true, userLinks: currentUserLinks });
-
-  const blocker = useBlocker((tx) => {
-    if (tx.currentLocation.pathname === tx.nextLocation.pathname) {
-      return false;
-    }
-    return dirty;
-  });
+  useMobileMockup({ showSkeleton: true, userLinks: currentUserLinks, userProfile });
 
   useEffect(() => {
     if (isMutationError) {
@@ -51,12 +44,6 @@ export const Links = () => {
       showSnackbar({ message: "Your changes have been successfully saved!", variant: "positive", icon: <IconChangesSaved /> });
     }
   }, [isMutationSuccess, showSnackbar]);
-
-  useEffect(() => {
-    if (blocker.state === "blocked") {
-      confirmDialogRef.current?.open();
-    }
-  }, [blocker.state]);
 
   useEffect(() => {
     if (userLinks) {
@@ -181,17 +168,7 @@ export const Links = () => {
           {isEmpty ? renderEmptyState() : renderLinks()}
         </div>
       </SaveForm>
-      <ConfirmDialog
-        title="You have unsaved changes"
-        description="Are you sure you want to leave this page? Your changes will be lost."
-        ref={confirmDialogRef}
-        onClose={(confirmed) => {
-          if (confirmed) {
-            blocker.proceed?.();
-          }
-          blocker.reset?.();
-        }}
-      />
+      <SaveBlocker dirty={dirty} />
     </>
   );
 };
