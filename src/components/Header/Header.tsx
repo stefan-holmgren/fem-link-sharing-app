@@ -40,7 +40,6 @@ export const Header = () => {
 
   useEffect(() => {
     const activeLink = scope.current.querySelector(".active");
-    console.log("Location changed", location.pathname, activeLink);
     if (!activeLink) {
       return;
     }
