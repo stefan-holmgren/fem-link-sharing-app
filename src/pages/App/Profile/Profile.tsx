@@ -3,11 +3,12 @@ import { SaveForm } from "@/components/SaveForm/SaveForm";
 import { useMobileMockup } from "../AppLayout/hooks/useMobileMockup";
 import { useGetUserLinks } from "../Links/hooks/useGetUserLinks";
 import IconUploadImage from "@/assets/icon-upload-image.svg?react";
-import { useId } from "react";
+import { ChangeEvent, DragEvent, useId, useRef } from "react";
 import { Input } from "@/components/Input/Input";
 
 export const Profile = () => {
   const { userLinks } = useGetUserLinks();
+  const inputFileRef = useRef<HTMLInputElement>(null);
   const headerId = useId();
   const descriptionId = useId();
   const uploadImageId = useId();
@@ -15,7 +16,28 @@ export const Profile = () => {
   useMobileMockup({ showSkeleton: false, userLinks: userLinks ?? [] });
 
   const onUploadImage = () => {
-    console.log("Upload image");
+    inputFileRef.current?.click();
+  };
+
+  const onFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      console.log("selected file", file);
+    }
+  };
+
+  const onDragOver = (event: DragEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+
+  const onDrop = (event: DragEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    const file = event.dataTransfer.files?.[0];
+    if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
+      console.log("dropped file", file);
+    } else {
+      console.log("Invalid file type. Only JPEG and PNG are allowed.");
+    }
   };
 
   return (
@@ -30,11 +52,12 @@ export const Profile = () => {
       <div className={styles.profile}>
         <section className={styles.picture}>
           <label htmlFor={uploadImageId}>Profile Picture</label>
-          <button id={uploadImageId} type="button" onClick={onUploadImage}>
+          <button id={uploadImageId} type="button" onClick={onUploadImage} onDragOver={onDragOver} onDrop={onDrop}>
             <IconUploadImage aria-hidden />
             <span>+ Upload Image</span>
           </button>
           <p>Image must be below 1024x1024px. Use PNG or JPG format.</p>
+          <input ref={inputFileRef} type="file" accept="image/png, image/jpeg" style={{ display: "none" }} onChange={onFileChange} />
         </section>
         <section className={styles.details}>
           <Input label="First name*" placeholder="Enter your first name" required />
