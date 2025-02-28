@@ -10,6 +10,13 @@
   color: var(--clr-purple);
   font-weight: 600;
 
+  background-size: cover;
+  background-position: center;
+
+  &[style*="background-image"] {
+    color: white;
+  }
+
   @media (min-width: 768px) {
     margin-top: 0;
   }

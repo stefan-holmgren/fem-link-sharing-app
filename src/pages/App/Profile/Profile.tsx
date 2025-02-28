@@ -26,7 +26,7 @@ export const Profile = () => {
       <div className={styles.profile}>
         <section className={styles.picture}>
           <label htmlFor={uploadImageId}>Profile Picture</label>
-          <UploadImageButton id={uploadImageId} />
+          <UploadImageButton id={uploadImageId} type="button" allowedTypes={["image/jpeg", "image/png"]} maxWidth={1024} maxHeight={1024} />
           <p>Image must be below 1024x1024px. Use PNG or JPG format.</p>
         </section>
         <section className={styles.details}>
