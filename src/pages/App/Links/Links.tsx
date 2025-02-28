@@ -1,4 +1,4 @@
-import { FormEvent, use, useEffect, useRef, useState } from "react";
+import { FormEvent, use, useEffect, useId, useRef, useState } from "react";
 import styles from "./Links.module.css";
 import IllustrationEmpty from "@/assets/illustration-empty.svg?react";
 import { useGetUserLinks } from "./hooks/useGetUserLinks";
@@ -26,6 +26,9 @@ export const Links = () => {
   const confirmDialogRef = useRef<ConfirmDialogRef>(null);
   const [dirty, setDirty] = useState(false);
   const { showSnackbar } = use(SnackbarContext);
+
+  const headerId = useId();
+  const descriptionId = useId();
 
   useMobileMockup({ showSkeleton: true, userLinks: currentUserLinks });
 
@@ -161,10 +164,17 @@ export const Links = () => {
 
   return (
     <>
-      <SaveForm isSaveDisabled={isEmpty} isSaving={isMutating} onSubmit={onSubmit} ref={formRef}>
+      <SaveForm
+        header="Customize your links"
+        description="Add/edit/remove links below and then share all your profiles with the world!"
+        isSaveDisabled={isEmpty}
+        isSaving={isMutating}
+        onSubmit={onSubmit}
+        ref={formRef}
+        aria-labelledby={headerId}
+        aria-describedby={descriptionId}
+      >
         <div className={styles.links}>
-          <h1>Customize your links</h1>
-          <p>Add/edit/remove links below and then share all your profiles with the world!</p>
           <Button type="button" variant="secondary" className={styles["add-new-link"]} onClick={onAddNewLink}>
             + Add new link
           </Button>

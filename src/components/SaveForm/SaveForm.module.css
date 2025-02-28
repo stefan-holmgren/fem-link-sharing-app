@@ -1,14 +1,23 @@
 .save-form {
+  h1 {
+    font-size: 1.5em;
+  }
+
+  p.description {
+    margin-top: 0.5rem;
+    color: var(--clr-grey);
+  }
+
   display: flex;
   flex-direction: column;
 
   .content-container {
     display: flex;
     flex-direction: column;
-    padding: 1.5rem 1.5rem 0 1.5rem;
+    padding: 1.5rem;
 
     @media (min-width: 768px) {
-      padding: 2.5rem 2.5rem 0 2.5rem;
+      padding: 2.5rem 2.5rem 2.5rem 2.5rem;
       height: calc(var(--vh-100) - var(--header-height) - 8rem);
       overflow-y: auto;
     }

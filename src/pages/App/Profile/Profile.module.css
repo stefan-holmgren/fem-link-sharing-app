@@ -1,2 +1,33 @@
 .profile {
+  margin-top: 2.5rem;
+  .picture {
+    color: var(--grey);
+    background-color: var(--clr-light-grey);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+
+    button {
+      margin-top: 1rem;
+      border-radius: 0.75rem;
+      border: none;
+      background-color: var(--clr-light-purple);
+      width: 12rem;
+      height: 12rem;
+      color: var(--clr-purple);
+      font-weight: 600;
+      > svg {
+        margin: auto;
+      }
+      > span {
+        display: block;
+        margin-top: 0.5rem;
+      }
+    }
+
+    p {
+      margin-top: 1.5rem;
+      color: var(--clr-grey);
+      font-size: 0.75em;
+    }
+  }
 }

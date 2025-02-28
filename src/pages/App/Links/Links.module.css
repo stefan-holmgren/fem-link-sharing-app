@@ -3,23 +3,12 @@
   flex-direction: column;
   flex: 1;
 
-  > h1 {
-    font-size: 1.5em;
-  }
-
-  > p {
-    margin-top: 0.5rem;
-    color: var(--clr-grey);
-  }
-
   > button {
     margin-top: 2.5rem;
     width: 100%;
   }
 
   ul {
-    padding-bottom: 1.5rem;
-
     overflow-x: clip;
 
     counter-reset: link-counter;
