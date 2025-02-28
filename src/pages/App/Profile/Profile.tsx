@@ -10,6 +10,7 @@ import { useGetUserProfile } from "./hooks/useGetUserProfile";
 import { useSaveUserProfile } from "./hooks/useSaveUserProfile";
 import { SnackbarContext } from "@/components/SnackbarContext/SnackbarContext";
 import IconChangesSaved from "@/assets/icon-changes-saved.svg?react";
+import { downloadFileAsDataUrl } from "@/utils/file.utils";
 
 export const Profile = () => {
   const { userProfile } = useGetUserProfile();
@@ -72,13 +73,10 @@ export const Profile = () => {
       return;
     }
     const imageFile = userProfile.profileImageFile;
-    if (imageFile) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setProfileImageDataUrl(reader.result as string);
-      };
-      reader.readAsDataURL(imageFile);
+    if (!imageFile) {
+      return;
     }
+    downloadFileAsDataUrl(imageFile).then(setProfileImageDataUrl);
   }, [userProfile]);
 
   return (

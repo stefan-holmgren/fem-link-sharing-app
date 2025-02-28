@@ -4,6 +4,7 @@ import IllustrationPhoneMockup from "@/assets/illustration-phone-mockup.svg?reac
 import { UserLink } from "@/components/UserLink/UserLink";
 import { UserLink as UserLinkType } from "@/pages/App/Links/data/userLinks.data";
 import { UserProfile } from "@/pages/App/Profile/data/userProfile.data";
+import { downloadFileAsDataUrl } from "@/utils/file.utils";
 
 type MobileProps = HTMLAttributes<HTMLDivElement> & {
   ref?: Ref<HTMLDivElement>;
@@ -23,13 +24,10 @@ export const Mobile = ({ className = "", ref, showSkeleton = true, userLinks, us
       return;
     }
     const imageFile = userProfile.profileImageFile;
-    if (imageFile) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageDataUrl(reader.result as string);
-      };
-      reader.readAsDataURL(imageFile);
+    if (!imageFile) {
+      return;
     }
+    downloadFileAsDataUrl(imageFile).then(setImageDataUrl);
   }, [userProfile]);
 
   return (
