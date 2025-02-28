@@ -1,0 +1,30 @@
+.upload-image-button {
+  cursor: pointer;
+  transition: filter 0.2s ease, border 0.5s ease;
+  margin-top: 1rem;
+  border-radius: 0.75rem;
+  border: none;
+  background-color: var(--clr-light-purple);
+  width: 12rem;
+  height: 12rem;
+  color: var(--clr-purple);
+  font-weight: 600;
+
+  @media (min-width: 768px) {
+    margin-top: 0;
+  }
+
+  &:hover,
+  &:focus {
+    border: 1px solid var(--clr-borders);
+    filter: drop-shadow(0 0 1rem var(--clr-purple-drop-shadow));
+  }
+
+  > svg {
+    margin: auto;
+  }
+  > span {
+    display: block;
+    margin-top: 0.5rem;
+  }
+}
