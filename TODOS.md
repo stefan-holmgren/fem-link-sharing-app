@@ -12,5 +12,6 @@
 - snackbars for successful saving, or errors
 - save only when links have changed
 - only save if the updated_at hasn't changed
-- anonymous signins
 - CAPTCHA for anonymous signins
+- Can we skip supabase altogether for anonymous login?
+- Add "Delete account" functionality
