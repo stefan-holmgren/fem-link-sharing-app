@@ -62,8 +62,23 @@ export const UploadImageButton = ({ className = "", allowedTypes, onFileChange, 
     event.preventDefault();
   };
 
-  const onDrop = (event: DragEvent<HTMLButtonElement>) => {
+  const onDrop = async (event: DragEvent<HTMLButtonElement>) => {
     event.preventDefault();
+
+    // handle image drops from web
+    const url = event.dataTransfer.getData("URL");
+    if (url) {
+      try {
+        const response = await fetch(url);
+        const blob = await response.blob();
+        const file = new File([blob], "image", { type: blob.type });
+        handleFileChange(file);
+      } catch {
+        snackbars.showSnackbar({ message: "Failed to load image from URL", variant: "negative" });
+      }
+      return;
+    }
+
     const file = event.dataTransfer.files?.[0];
     if (!file) {
       return;
