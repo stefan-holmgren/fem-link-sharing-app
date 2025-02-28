@@ -44,7 +44,7 @@ export const MobileAside = ({ showSkeleton, userLinks, userProfile }: MobileAsid
 
   return (
     <aside className={styles["mobile-aside"]} ref={asideRef}>
-      <Mobile className={styles.mobile} showSkeleton={showSkeleton} userLinks={userLinks} userProfile={userProfile} ref={mobileRef} />
+      <Mobile className={styles.mobile} showLinksSkeleton={showSkeleton} userLinks={userLinks} userProfile={userProfile} ref={mobileRef} />
     </aside>
   );
 };

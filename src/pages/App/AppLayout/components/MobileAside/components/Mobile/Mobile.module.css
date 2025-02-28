@@ -2,12 +2,6 @@
   position: relative;
   object-fit: contain;
 
-  &.skeleton {
-    > div {
-      background-color: transparent;
-    }
-  }
-
   > div {
     position: absolute;
     top: 4rem;
@@ -15,7 +9,6 @@
     height: 32.125rem;
     left: 50%;
     transform: translateX(-50%);
-    background-color: var(--clr-white);
 
     align-items: center;
 
@@ -29,23 +22,37 @@
       background-size: cover;
       background-position: center;
       outline: 4px solid var(--clr-purple);
+      visibility: hidden;
+
+      &[style*="background-image"] {
+        visibility: visible;
+      }
     }
 
     .profile-details {
-      background: var(--clr-white);
       margin: auto;
-      margin-top: 1.5rem;
+      margin-top: 1rem;
       width: calc(100% - 2rem);
       text-align: center;
       h2 {
+        background-color: var(--clr-white);
         font-weight: 600;
         font-size: 1.125em;
+        min-height: calc(1em * 1.5); /* font-size * line-height */
         color: var(--clr-dark-grey);
+
+        &:empty {
+          visibility: hidden;
+        }
       }
       p {
+        background-color: var(--clr-white);
         margin-top: 0.5rem;
         font-size: 0.875em;
         color: var(--clr-grey);
+        &:empty {
+          visibility: hidden;
+        }
       }
     }
 
@@ -54,11 +61,16 @@
       display: flex;
       flex-direction: column;
       gap: 1.25rem;
-
+      min-height: 20rem;
       top: 13.375rem;
       width: 100%;
 
       margin: auto;
+      background-color: var(--clr-white);
+
+      &.links-skeleton {
+        background-color: transparent;
+      }
 
       li {
         pointer-events: none;

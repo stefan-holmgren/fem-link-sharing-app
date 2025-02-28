@@ -10,17 +10,18 @@ type MobileProps = HTMLAttributes<HTMLDivElement> & {
   ref?: Ref<HTMLDivElement>;
   userLinks?: UserLinkType[] | null;
   userProfile?: UserProfile | null;
-  showSkeleton?: boolean;
+  showLinksSkeleton?: boolean;
 };
 
-export const Mobile = ({ className = "", ref, showSkeleton = true, userLinks, userProfile, ...rest }: MobileProps) => {
+export const Mobile = ({ className = "", ref, showLinksSkeleton = true, userLinks, userProfile, ...rest }: MobileProps) => {
   const [imageDataUrl, setImageDataUrl] = useState<string>();
 
-  const mergedClassName = `${styles.mobile} ${showSkeleton ? styles.skeleton : ""} ${className}`;
-  const name = userProfile ? `${userProfile?.firstName} ${userProfile?.lastName}` : undefined;
+  const mergedClassName = `${styles.mobile} ${className}`;
+  const name = userProfile ? `${userProfile?.firstName} ${userProfile?.lastName}`.trim() : undefined;
 
   useEffect(() => {
     if (!userProfile) {
+      setImageDataUrl(undefined);
       return;
     }
     const imageFile = userProfile.profileImageFile;
@@ -34,12 +35,12 @@ export const Mobile = ({ className = "", ref, showSkeleton = true, userLinks, us
     <div className={mergedClassName} {...rest} ref={ref}>
       <IllustrationPhoneMockup />
       <div>
-        <div className={styles["profile-picture"]} style={{ backgroundImage: `url(${imageDataUrl}` }}></div>
+        <div className={styles["profile-picture"]} style={{ backgroundImage: imageDataUrl ? `url(${imageDataUrl}` : undefined }} />
         <div className={styles["profile-details"]}>
           <h2>{name}</h2>
           <p>{userProfile?.email}</p>
         </div>
-        <ul className={styles["profile-links"]}>
+        <ul className={`${styles["profile-links"]} ${showLinksSkeleton ? styles["links-skeleton"] : ""}`}>
           {userLinks?.map((userLink, index) => (
             <li key={userLink.platform + userLink.url + index}>
               <UserLink userLink={userLink} />

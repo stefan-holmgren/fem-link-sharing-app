@@ -107,26 +107,12 @@ export const Profile = () => {
             <p>Image must be below 1024x1024px. Use PNG or JPG format.</p>
           </section>
           <section className={styles.details}>
-            <Input
-              ref={firstNameRef}
-              label="First name*"
-              placeholder="Enter your first name"
-              defaultValue={userProfile?.firstName}
-              onChange={onDetailsChange}
-              required
-            />
-            <Input
-              ref={lastNameRef}
-              label="Last name*"
-              placeholder="Enter your last name"
-              defaultValue={userProfile?.lastName}
-              onChange={onDetailsChange}
-              required
-            />
+            <Input ref={firstNameRef} label="First name*" placeholder="e.g. John" defaultValue={userProfile?.firstName} onChange={onDetailsChange} required />
+            <Input ref={lastNameRef} label="Last name*" placeholder="e.g. Appleseed" defaultValue={userProfile?.lastName} onChange={onDetailsChange} required />
             <Input
               ref={emailRef}
               label="Email"
-              placeholder="Enter your email address"
+              placeholder="e.g. email@example.com"
               defaultValue={userProfile?.email}
               onChange={onDetailsChange}
               type="email"
