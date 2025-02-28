@@ -1,4 +1,4 @@
-import { HTMLAttributes, Ref } from "react";
+import { HTMLAttributes, Ref, useEffect, useState } from "react";
 import styles from "./Mobile.module.css";
 import IllustrationPhoneMockup from "@/assets/illustration-phone-mockup.svg?react";
 import { UserLink } from "@/components/UserLink/UserLink";
@@ -13,17 +13,30 @@ type MobileProps = HTMLAttributes<HTMLDivElement> & {
 };
 
 export const Mobile = ({ className = "", ref, showSkeleton = true, userLinks, userProfile, ...rest }: MobileProps) => {
-  const mergedClassName = `${styles.mobile} ${showSkeleton ? styles.skeleton : ""} ${className}`;
+  const [imageDataUrl, setImageDataUrl] = useState<string>();
 
+  const mergedClassName = `${styles.mobile} ${showSkeleton ? styles.skeleton : ""} ${className}`;
   const name = userProfile ? `${userProfile?.firstName} ${userProfile?.lastName}` : undefined;
 
-  console.log("backgroundImage", userProfile?.profileImageUrl);
+  useEffect(() => {
+    if (!userProfile) {
+      return;
+    }
+    const imageFile = userProfile.profileImageFile;
+    if (imageFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImageDataUrl(reader.result as string);
+      };
+      reader.readAsDataURL(imageFile);
+    }
+  }, [userProfile]);
 
   return (
     <div className={mergedClassName} {...rest} ref={ref}>
       <IllustrationPhoneMockup />
       <div>
-        <div className={styles["profile-picture"]} style={{ backgroundImage: `url(${userProfile?.profileImageUrl}` }}></div>
+        <div className={styles["profile-picture"]} style={{ backgroundImage: `url(${imageDataUrl}` }}></div>
         <div className={styles["profile-details"]}>
           <h2>{name}</h2>
           <p>{userProfile?.email}</p>

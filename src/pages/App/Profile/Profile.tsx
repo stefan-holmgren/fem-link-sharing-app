@@ -2,21 +2,27 @@ import styles from "./Profile.module.css";
 import { SaveForm } from "@/components/SaveForm/SaveForm";
 import { useMobileMockup } from "../AppLayout/hooks/useMobileMockup";
 import { useGetUserLinks } from "../Links/hooks/useGetUserLinks";
-import { FormEvent, useEffect, useId, useRef, useState } from "react";
+import { FormEvent, use, useEffect, useId, useRef, useState } from "react";
 import { Input } from "@/components/Input/Input";
 import { UploadImageButton } from "./components/UploadImageButton/UploadImageButton";
 import { SaveBlocker } from "@/components/SaveBlocker/SaveBlocker";
 import { useGetUserProfile } from "./hooks/useGetUserProfile";
+import { useSaveUserProfile } from "./hooks/useSaveUserProfile";
+import { SnackbarContext } from "@/components/SnackbarContext/SnackbarContext";
+import IconChangesSaved from "@/assets/icon-changes-saved.svg?react";
 
 export const Profile = () => {
   const { userProfile } = useGetUserProfile();
+  const { mutateAsync: saveUserProfile, isPending: isMutating } = useSaveUserProfile();
   const { userLinks } = useGetUserLinks();
   const [dirty, setDirty] = useState(false);
-  const [, setProfileImageFile] = useState<File | null>(null);
+  const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
   const [currentUserProfile, setCurrentUserProfile] = useState(userProfile);
+  const [profileImageDataUrl, setProfileImageDataUrl] = useState<string>();
   const headerId = useId();
   const descriptionId = useId();
   const uploadImageId = useId();
+  const snackbars = use(SnackbarContext);
 
   const firstNameRef = useRef<HTMLInputElement>(null);
   const lastNameRef = useRef<HTMLInputElement>(null);
@@ -33,18 +39,22 @@ export const Profile = () => {
   const onProfileImageChange = (file: File) => {
     setDirty(true);
     setProfileImageFile(file);
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const dataUrl = reader.result as string;
-      setCurrentUserProfile((prev) => (prev ? { ...prev, profileImageUrl: dataUrl } : { firstName: "", lastName: "", profileImageUrl: dataUrl }));
-    };
-    reader.readAsDataURL(file);
+    setCurrentUserProfile((prev) => (prev ? { ...prev, profileImageFile: file } : { firstName: "", lastName: "", profileImageFile: file }));
   };
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("submit");
-    setDirty(false);
+    if (isMutating) {
+      return;
+    }
+    saveUserProfile({ userProfile: { ...(currentUserProfile ?? { firstName: "", lastName: "" }), profileImageFile: profileImageFile ?? undefined } })
+      .then(() => {
+        setDirty(false);
+        snackbars.showSnackbar({ message: "Your changes have been successfully saved!", variant: "positive", icon: <IconChangesSaved /> });
+      })
+      .catch(() => {
+        snackbars.showSnackbar({ message: "Failed to save changes", variant: "negative" });
+      });
   };
 
   const onDetailsChange = () => {
@@ -56,6 +66,20 @@ export const Profile = () => {
       email: emailRef.current?.value ?? "",
     });
   };
+
+  useEffect(() => {
+    if (!userProfile) {
+      return;
+    }
+    const imageFile = userProfile.profileImageFile;
+    if (imageFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImageDataUrl(reader.result as string);
+      };
+      reader.readAsDataURL(imageFile);
+    }
+  }, [userProfile]);
 
   return (
     <>
@@ -78,7 +102,7 @@ export const Profile = () => {
               maxWidth={1024}
               maxHeight={1024}
               onFileChange={onProfileImageChange}
-              defaultImageUrl={userProfile?.profileImageUrl}
+              defaultImageUrl={profileImageDataUrl}
             />
             <p>Image must be below 1024x1024px. Use PNG or JPG format.</p>
           </section>

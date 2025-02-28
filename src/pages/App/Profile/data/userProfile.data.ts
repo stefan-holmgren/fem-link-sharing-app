@@ -1,10 +1,11 @@
 import { User } from "@/components/AuthContext/AuthContext";
+import { userProfileDataSupabase } from "./impl/userProfile.supabase";
 
 export type UserProfile = {
   firstName: string;
   lastName: string;
   email?: string;
-  profileImageUrl?: string;
+  profileImageFile?: File;
 };
 
 export interface UserProfileData {
@@ -13,15 +14,10 @@ export interface UserProfileData {
 }
 
 export const userProfileData: UserProfileData = {
-  getUserProfile: async () => {
-    return {
-      firstName: "John",
-      lastName: "Doe",
-      email: "john.doe@email.com",
-      profileImageUrl: "https://picsum.photos/600",
-    };
+  getUserProfile: (user) => {
+    return userProfileDataSupabase.getUserProfile(user);
   },
-  updateUserProfile: async () => {
-    throw new Error("Not implemented");
+  updateUserProfile: async (user, userProfile) => {
+    return userProfileDataSupabase.updateUserProfile(user, userProfile);
   },
 };
