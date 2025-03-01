@@ -1,11 +1,11 @@
 import styles from "./Link.module.css";
-import { Platform, UserLink } from "../../data/userLinks.data";
+import { Platform, UserLink } from "@/data/userLinks.data";
 import { Input } from "@/components/Input/Input";
 import IconLink from "@/assets/icon-link.svg?react";
 import IconDragAndDrop from "@/assets/icon-drag-and-drop.svg?react";
 import { PlatformSelect } from "../PlatformSelect/PlatformSelect";
 import { Button } from "@/components/Button/Button";
-import { platformMap } from "../../utils/platforminfo.utils";
+import { platformMap } from "@/utils/platforminfo.utils";
 import { createRef, InvalidEvent, Ref, useImperativeHandle } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";

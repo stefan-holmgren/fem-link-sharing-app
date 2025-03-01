@@ -1,6 +1,6 @@
 import styles from "./UserLink.module.css";
-import { UserLink as UserLinkType } from "@/pages/App/Links/data/userLinks.data";
-import { platformMap } from "@/pages/App/Links/utils/platforminfo.utils";
+import { UserLink as UserLinkType } from "@/data/userLinks.data";
+import { platformMap } from "@/utils/platforminfo.utils";
 import { HTMLAttributes, Ref } from "react";
 import IconArrowRight from "@/assets/icon-arrow-right.svg?react";
 

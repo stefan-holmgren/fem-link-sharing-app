@@ -4,8 +4,8 @@ import { MobileAside } from "./components/MobileAside/MobileAside";
 import { Outlet } from "react-router-dom";
 import { useState } from "react";
 import { MobileAsideContext } from "./components/MobileAside/components/MobileAsideContext/MobileAsideContext";
-import { UserLink } from "../Links/data/userLinks.data";
-import { UserProfile } from "../Profile/data/userProfile.data";
+import { UserLink } from "@/data/userLinks.data";
+import { UserProfile } from "@/data/userProfile.data";
 
 export const AppLayout = () => {
   const [showSkeleton, setShowSkeleton] = useState(true);

@@ -1,5 +1,5 @@
-import { UserLink } from "@/pages/App/Links/data/userLinks.data";
-import { UserProfile } from "@/pages/App/Profile/data/userProfile.data";
+import { UserLink } from "@/data/userLinks.data";
+import { UserProfile } from "@/data/userProfile.data";
 import { createContext } from "react";
 
 type MobileAsideContextType = {

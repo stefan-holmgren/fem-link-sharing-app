@@ -2,8 +2,8 @@ import { HTMLAttributes, Ref, useEffect, useState } from "react";
 import styles from "./Mobile.module.css";
 import IllustrationPhoneMockup from "@/assets/illustration-phone-mockup.svg?react";
 import { UserLink } from "@/components/UserLink/UserLink";
-import { UserLink as UserLinkType } from "@/pages/App/Links/data/userLinks.data";
-import { UserProfile } from "@/pages/App/Profile/data/userProfile.data";
+import { UserLink as UserLinkType } from "@/data/userLinks.data";
+import { UserProfile } from "@/data/userProfile.data";
 import { downloadFileAsDataUrl } from "@/utils/file.utils";
 
 type MobileProps = HTMLAttributes<HTMLDivElement> & {

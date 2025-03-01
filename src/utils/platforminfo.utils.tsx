@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { Platform } from "../data/userLinks.data";
+import { Platform } from "@/data/userLinks.data";
 
 import GithubIcon from "@/assets/platforms/icon-github.svg?react";
 import FrontendMentorIcon from "@/assets/platforms/icon-frontend-mentor.svg?react";

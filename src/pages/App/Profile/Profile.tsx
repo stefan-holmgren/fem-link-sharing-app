@@ -1,13 +1,13 @@
 import styles from "./Profile.module.css";
 import { SaveForm } from "@/components/SaveForm/SaveForm";
 import { useMobileMockup } from "../AppLayout/hooks/useMobileMockup";
-import { useGetUserLinks } from "../Links/hooks/useGetUserLinks";
+import { useGetUserLinks } from "@/hooks/useGetUserLinks";
 import { FormEvent, use, useEffect, useId, useRef, useState } from "react";
 import { Input } from "@/components/Input/Input";
 import { UploadImageButton } from "./components/UploadImageButton/UploadImageButton";
 import { SaveBlocker } from "@/components/SaveBlocker/SaveBlocker";
-import { useGetUserProfile } from "./hooks/useGetUserProfile";
-import { useSaveUserProfile } from "./hooks/useSaveUserProfile";
+import { useGetUserProfile } from "@/hooks/useGetUserProfile";
+import { useSaveUserProfile } from "@/hooks/useSaveUserProfile";
 import { SnackbarContext } from "@/components/SnackbarContext/SnackbarContext";
 import IconChangesSaved from "@/assets/icon-changes-saved.svg?react";
 import { downloadFileAsDataUrl } from "@/utils/file.utils";

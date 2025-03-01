@@ -1,9 +1,9 @@
 import styles from "./PlatformSelect.module.css";
 import { Label } from "@/components/Label/Label";
-import { Platform, platforms } from "../../data/userLinks.data";
+import { Platform, platforms } from "@/data/userLinks.data";
 import * as Select from "@radix-ui/react-select";
 import ChevronDownIcon from "@/assets/icon-chevron-down.svg?react";
-import { platformMap } from "../../utils/platforminfo.utils";
+import { platformMap } from "@/utils/platforminfo.utils";
 import { Ref } from "react";
 
 type PlatformSelectProps = {

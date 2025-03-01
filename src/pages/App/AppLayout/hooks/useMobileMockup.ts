@@ -1,7 +1,7 @@
 import { use, useEffect } from "react";
 import { MobileAsideContext } from "../components/MobileAside/components/MobileAsideContext/MobileAsideContext";
-import { UserLink } from "../../Links/data/userLinks.data";
-import { UserProfile } from "../../Profile/data/userProfile.data";
+import { UserLink } from "@/data/userLinks.data";
+import { UserProfile } from "@/data/userProfile.data";
 
 type UseMobileMockupProps = {
   showSkeleton?: boolean;

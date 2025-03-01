@@ -1,19 +1,19 @@
 import { FormEvent, use, useEffect, useId, useRef, useState } from "react";
 import styles from "./Links.module.css";
 import IllustrationEmpty from "@/assets/illustration-empty.svg?react";
-import { useGetUserLinks } from "./hooks/useGetUserLinks";
-import { platforms, UserLink } from "./data/userLinks.data";
+import { useGetUserLinks } from "@/hooks/useGetUserLinks";
+import { platforms, UserLink } from "@/data/userLinks.data";
 import { Link, LinkRefType, UserLinkWithUniqueId } from "./component/Link/Link";
 import { Button } from "@/components/Button/Button";
-import { useSaveUserLinks } from "./hooks/useSaveUserLinks";
+import { useSaveUserLinks } from "@/hooks/useSaveUserLinks";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
 import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { useMobileMockup } from "../AppLayout/hooks/useMobileMockup";
 import { SnackbarContext } from "@/components/SnackbarContext/SnackbarContext";
-import IconChangesSaved from "@/assets/icon-changes-saved.svg?react";
 import { SaveForm } from "@/components/SaveForm/SaveForm";
 import { SaveBlocker } from "@/components/SaveBlocker/SaveBlocker";
-import { useGetUserProfile } from "../Profile/hooks/useGetUserProfile";
+import { useGetUserProfile } from "@/hooks/useGetUserProfile";
+import IconChangesSaved from "@/assets/icon-changes-saved.svg?react";
 
 let uniqueId = 0;
 

@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 import { Mobile } from "./components/Mobile/Mobile";
 import styles from "./MobileAside.module.css";
-import { UserLink } from "@/pages/App/Links/data/userLinks.data";
-import { UserProfile } from "@/pages/App/Profile/data/userProfile.data";
+import { UserLink } from "@/data/userLinks.data";
+import { UserProfile } from "@/data/userProfile.data";
 
 type MobileAsideProps = {
   showSkeleton?: boolean;
