@@ -66,7 +66,7 @@ export const Header = () => {
             </NavLink>
           </li>
         </ul>
-        <Button variant="secondary" onClick={() => navigate("/preview")}>
+        <Button variant="secondary" onClick={() => navigate(`/preview`, { state: { from: location.pathname } })}>
           <PreviewIcon aria-hidden />
           <span>Preview</span>
         </Button>
