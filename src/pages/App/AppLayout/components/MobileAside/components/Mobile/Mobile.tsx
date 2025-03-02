@@ -24,11 +24,11 @@ export const Mobile = ({ className = "", ref, showLinksSkeleton = true, userLink
       setImageDataUrl(undefined);
       return;
     }
-    const imageFile = userProfile.profileImageFile;
-    if (!imageFile) {
+    const { profileImageFile } = userProfile;
+    if (!profileImageFile) {
       return;
     }
-    downloadFileAsDataUrl(imageFile).then(setImageDataUrl);
+    downloadFileAsDataUrl(profileImageFile).then(setImageDataUrl);
   }, [userProfile]);
 
   return (
