@@ -60,7 +60,7 @@ export const Preview = () => {
           </div>
           <ul>
             {userLinks &&
-              [...userLinks, ...userLinks, ...userLinks, ...userLinks, ...userLinks].map((userLink, i) => (
+              userLinks?.map((userLink, i) => (
                 <li key={`${userLink.url}-${i}`}>
                   <UserLink userLink={userLink} />
                 </li>

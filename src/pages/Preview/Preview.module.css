@@ -1,6 +1,13 @@
 .preview {
   position: relative;
 
+  background-color: var(--clr-white);
+  min-height: 100dvh;
+
+  @media (min-width: 768px) {
+    background-color: var(--clr-light-grey);
+  }
+
   header {
     z-index: 1;
     background-color: var(--clr-white);
@@ -20,23 +27,21 @@
       border-radius: 0.75rem;
 
       > :nth-child(1) {
-        margin-right: auto;
+        justify-self: start;
       }
 
       > :nth-child(2) {
-        margin-left: auto;
+        justify-self: end;
       }
     }
   }
 
   main {
     position: relative;
-    background-color: var(--clr-white);
     padding: 5.625rem 0;
 
     @media (min-width: 768px) {
       padding: 14.25rem 0;
-      background-color: var(--clr-light-grey);
 
       &:before {
         content: "";
@@ -78,6 +83,7 @@
           object-fit: cover;
         }
         h1 {
+          margin-top: 1.5rem;
           font-weight: 700;
           font-size: 2em;
           line-height: 1.25;
