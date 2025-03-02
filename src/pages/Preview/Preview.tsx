@@ -48,22 +48,25 @@ export const Preview = () => {
         </Button>
       </header>
       <main>
-        <div className={styles.profile}>
-          {!!profileImageUrl && <img src={profileImageUrl} alt="Profile image" />}
-          {!!name && (
-            <h1>
-              {userProfile?.firstName} {userProfile?.lastName}
-            </h1>
-          )}
-          {!!userProfile?.email && <p>{userProfile.email}</p>}
+        <div>
+          <div className={styles.profile}>
+            {!!profileImageUrl && <img src={profileImageUrl} alt="Profile image" />}
+            {!!name && (
+              <h1>
+                {userProfile?.firstName} {userProfile?.lastName}
+              </h1>
+            )}
+            {!!userProfile?.email && <p>{userProfile.email}</p>}
+          </div>
+          <ul>
+            {userLinks &&
+              [...userLinks, ...userLinks, ...userLinks, ...userLinks, ...userLinks].map((userLink, i) => (
+                <li key={`${userLink.url}-${i}`}>
+                  <UserLink userLink={userLink} />
+                </li>
+              ))}
+          </ul>
         </div>
-        <ul>
-          {userLinks?.map((userLink, i) => (
-            <li key={`${userLink.url}-${i}`}>
-              <UserLink userLink={userLink} />
-            </li>
-          ))}
-        </ul>
       </main>
     </div>
   );
