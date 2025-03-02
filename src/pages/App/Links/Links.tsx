@@ -21,6 +21,7 @@ export const Links = () => {
   const { userLinks, isPending } = useGetUserLinks();
   const { userProfile } = useGetUserProfile();
   const [currentUserLinks, setCurrentUserLinks] = useState<UserLinkWithUniqueId[]>([]);
+  const [duplicatedLinkIds, setDuplicatedLinkIds] = useState<number[]>([]);
   const { mutate, isPending: isMutating, isSuccess: isMutationSuccess, isError: isMutationError } = useSaveUserLinks();
   const formRef = useRef<HTMLFormElement>(null);
   const lastLinkRef = useRef<LinkRefType>(null);
@@ -76,11 +77,25 @@ export const Links = () => {
     setCurrentUserLinks((prev) => [...prev, { url: "", platform: platforms[0], id: uniqueId++ }]);
   };
 
+  const checkForDuplicates = (checking: UserLinkWithUniqueId[]) => {
+    const urls = new Set<string>();
+    const linkIds: number[] = [];
+    checking.forEach((link) => {
+      if (urls.has(link.url)) {
+        linkIds.push(link.id);
+      }
+      urls.add(link.url);
+    });
+
+    setDuplicatedLinkIds(linkIds);
+  };
+
   const onRemoveLink = (index: number) => () => {
     setDirty(true);
     setCurrentUserLinks((prev) => {
       const updatedUserLinks = [...prev];
       updatedUserLinks.splice(index, 1);
+      checkForDuplicates(updatedUserLinks);
       return updatedUserLinks;
     });
   };
@@ -90,6 +105,7 @@ export const Links = () => {
     setCurrentUserLinks((prev) => {
       const updatedUserLinks = [...prev];
       updatedUserLinks[index] = { ...newLink, id: prev[index].id };
+      checkForDuplicates(updatedUserLinks);
       return updatedUserLinks;
     });
   };
@@ -133,6 +149,7 @@ export const Links = () => {
               key={link.id}
               ref={i === currentUserLinks.length - 1 ? lastLinkRef : null}
               userLink={link}
+              invalidMessage={duplicatedLinkIds.includes(link.id) ? "Duplicate link" : undefined}
               onRemove={onRemoveLink(i)}
               onChange={onChangeLink(i)}
             />

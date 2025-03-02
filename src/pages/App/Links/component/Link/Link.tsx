@@ -6,7 +6,7 @@ import IconDragAndDrop from "@/assets/icon-drag-and-drop.svg?react";
 import { PlatformSelect } from "../PlatformSelect/PlatformSelect";
 import { Button } from "@/components/Button/Button";
 import { platformMap } from "@/utils/platforminfo.utils";
-import { createRef, InvalidEvent, Ref, useImperativeHandle } from "react";
+import { InvalidEvent, Ref, useEffect, useImperativeHandle, useRef } from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
@@ -20,12 +20,13 @@ type LinkProps = {
   userLink: UserLinkWithUniqueId;
   onRemove: () => void;
   onChange: (newLink: UserLink) => void;
+  invalidMessage?: string;
   ref?: Ref<LinkRefType>;
 };
 
-export const Link = ({ userLink, onRemove, onChange, ref }: LinkProps) => {
-  const selectRef = createRef<HTMLButtonElement>();
-  const urlRef = createRef<HTMLInputElement>();
+export const Link = ({ userLink, onRemove, onChange, invalidMessage, ref }: LinkProps) => {
+  const selectRef = useRef<HTMLButtonElement>(null);
+  const urlRef = useRef<HTMLInputElement>(null);
   const sortable = useSortable({ id: userLink.id });
 
   const style = {
@@ -39,6 +40,10 @@ export const Link = ({ userLink, onRemove, onChange, ref }: LinkProps) => {
       selectRef.current?.focus();
     },
   }));
+
+  useEffect(() => {
+    urlRef.current?.setCustomValidity(invalidMessage ?? "");
+  }, [invalidMessage]);
 
   const onUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newLink = { ...userLink, url: e.target.value };
@@ -57,8 +62,6 @@ export const Link = ({ userLink, onRemove, onChange, ref }: LinkProps) => {
     e.preventDefault();
     if (e.target.validity.patternMismatch) {
       e.target.setCustomValidity(`Please check again`);
-    } else {
-      e.target.setCustomValidity("");
     }
   };
 
