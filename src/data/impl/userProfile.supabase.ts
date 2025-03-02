@@ -22,8 +22,6 @@ export const userProfileDataSupabase: UserProfileData = {
       return null;
     }
 
-    console.log("userProfile.profile_image_path", userProfile.profile_image_path);
-
     const profileImageFile = userProfile.profile_image_path ? await downloadProfilePicture(userProfile.profile_image_path) : undefined;
 
     return {
