@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import styles from "./NotFound404.module.css";
 import { motion, Variants } from "framer-motion";
 
@@ -44,7 +43,7 @@ const NotFound404 = () => {
           Page not found!
         </motion.p>
         <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0, transition: { delay: 0.6 } }}>
-          Go <Link to="/">home</Link>
+          Go <a href="/">home</a>
         </motion.p>
       </div>
     </div>
