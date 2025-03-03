@@ -12,6 +12,7 @@ import { SnackbarContext } from "@/components/SnackbarContext/SnackbarContext";
 import IconChangesSaved from "@/assets/icon-changes-saved.svg?react";
 import { downloadFileAsDataUrl } from "@/utils/file.utils";
 import { useAuthContext } from "@/hooks/useAuthContext";
+import { savePublicProfile } from "@/data/publicProfile.data";
 
 const Profile = () => {
   const { user } = useAuthContext();
@@ -56,6 +57,9 @@ const Profile = () => {
       .then(() => {
         setDirty(false);
         snackbars.showSnackbar({ message: "Your changes have been successfully saved!", variant: "positive", icon: <IconChangesSaved /> });
+        if (user && !user.isAnonymous) {
+          savePublicProfile(user?.id, { userProfile: currentUserProfile, userLinks: userLinks ?? [] });
+        }
       })
       .catch(() => {
         snackbars.showSnackbar({ message: "Failed to save changes", variant: "negative" });

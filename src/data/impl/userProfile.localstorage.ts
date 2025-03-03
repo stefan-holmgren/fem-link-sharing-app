@@ -19,10 +19,6 @@ export const userProfileDataLocalStorage: UserProfileData = {
     return { ...JSON.parse(userProfile), profileImageFile };
   },
 
-  async getPublicUserProfile() {
-    throw new Error("Method not implemented - no public user profile in local storage");
-  },
-
   async updateUserProfile(_, userProfile) {
     const { profileImageFile, ...rest } = userProfile;
     localStorage.setItem(userProfileKey, JSON.stringify(rest));

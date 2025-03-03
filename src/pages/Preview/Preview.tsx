@@ -6,9 +6,10 @@ import { use, useEffect, useState } from "react";
 import IconLink from "@/assets/icon-link.svg?react";
 import { useGetUserLinks } from "@/hooks/useGetUserLinks";
 import { useGetUserProfile } from "@/hooks/useGetUserProfile";
-import { UserLink } from "@/components/UserLink/UserLink";
 import { downloadFileAsDataUrl } from "@/utils/file.utils";
 import { useAuthContext } from "@/hooks/useAuthContext";
+import PublicProfile from "@/components/PublicProfile/PublicProfile";
+import { PublicProfile as PublicProfileType } from "@/data/publicProfile.data";
 
 const Preview = () => {
   const { user } = useAuthContext();
@@ -49,6 +50,13 @@ const Preview = () => {
   const name = userProfile ? `${userProfile.firstName} ${userProfile.lastName}`.trim() : undefined;
   const fromPath = location.state?.from ?? "/";
 
+  const publicProfile: PublicProfileType = {
+    name,
+    email: userProfile?.email,
+    profileImageUrl,
+    userLinks,
+  };
+
   return (
     <div className={styles.preview}>
       <header>
@@ -59,27 +67,7 @@ const Preview = () => {
           Share Link
         </Button>
       </header>
-      <main>
-        <div>
-          <div className={styles.profile}>
-            {!!profileImageUrl && <img src={profileImageUrl} alt="Profile image" />}
-            {!!name && (
-              <h1>
-                {userProfile?.firstName} {userProfile?.lastName}
-              </h1>
-            )}
-            {!!userProfile?.email && <p>{userProfile.email}</p>}
-          </div>
-          <ul>
-            {userLinks &&
-              userLinks?.map((userLink, i) => (
-                <li key={`${userLink.url}-${i}`}>
-                  <UserLink userLink={userLink} />
-                </li>
-              ))}
-          </ul>
-        </div>
-      </main>
+      <PublicProfile publicProfile={publicProfile} />
     </div>
   );
 };

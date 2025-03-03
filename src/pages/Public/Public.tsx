@@ -1,26 +1,30 @@
-import { useParams } from "react-router-dom";
-import styles from "./Public.module.css";
-import { useGetUserLinks } from "@/hooks/useGetUserLinks";
-import { useGetPublicUserProfile } from "@/hooks/useGetPublicUserProfile";
-import NotFound404 from "../NotFound404/NotFound404";
+import { lazy, useEffect, useState } from "react";
+import { fetchPublicProfile, PublicProfile as PublicProfileType } from "@/data/publicProfile.data";
+import PublicProfile from "@/components/PublicProfile/PublicProfile";
+
+const NotFound404 = lazy(() => import("../NotFound404/NotFound404"));
 
 const Public = () => {
-  const userId: string | undefined = useParams().userId;
-  const { userLinks } = useGetUserLinks(userId);
-  const { userProfile } = useGetPublicUserProfile(userId);
+  const userId = window.location.pathname.split("/").pop();
+  const [publicProfile, setPublicProfile] = useState<PublicProfileType | null>(null);
+  const [error, setError] = useState<unknown | null>(null);
 
-  if (!userId) {
+  useEffect(() => {
+    if (!userId) {
+      return;
+    }
+    fetchPublicProfile(userId).then(setPublicProfile).catch(setError);
+  }, [userId]);
+
+  if (!userId || error) {
     return <NotFound404 />;
   }
 
-  return (
-    <main className={styles.public}>
-      <h1>Public</h1>
-      <p>UserId: {userId}</p>
-      <p>User Links: {JSON.stringify(userLinks)}</p>
-      <p>User Profile: {JSON.stringify(userProfile)}</p>
-    </main>
-  );
+  if (!publicProfile) {
+    return null;
+  }
+
+  return <PublicProfile publicProfile={publicProfile} />;
 };
 
 export default Public;

@@ -15,6 +15,7 @@ import { SaveBlocker } from "@/components/SaveBlocker/SaveBlocker";
 import { useGetUserProfile } from "@/hooks/useGetUserProfile";
 import IconChangesSaved from "@/assets/icon-changes-saved.svg?react";
 import { useAuthContext } from "@/hooks/useAuthContext";
+import { savePublicProfile } from "@/data/publicProfile.data";
 
 let uniqueId = 0;
 
@@ -44,9 +45,12 @@ const Links = () => {
   useEffect(() => {
     if (isMutationSuccess) {
       setDirty(false);
+      if (user && !user?.isAnonymous) {
+        savePublicProfile(user.id, { userProfile, userLinks: currentUserLinks });
+      }
       showSnackbar({ message: "Your changes have been successfully saved!", variant: "positive", icon: <IconChangesSaved /> });
     }
-  }, [isMutationSuccess, showSnackbar]);
+  }, [currentUserLinks, isMutationSuccess, showSnackbar, user, userProfile]);
 
   useEffect(() => {
     if (userLinks) {
