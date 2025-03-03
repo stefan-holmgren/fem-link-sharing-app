@@ -3,7 +3,7 @@ import { supabase } from "@/config/supabase";
 import { use, useEffect, useTransition } from "react";
 import { useNavigate } from "react-router-dom";
 
-export const LoginAnonymously = () => {
+const LoginAnonymously = () => {
   const snackbars = use(SnackbarContext);
   const [isPending, startTransition] = useTransition();
   const navigate = useNavigate();
@@ -27,3 +27,5 @@ export const LoginAnonymously = () => {
   // @todo - spinner?
   return isPending ? "..." : null;
 };
+
+export default LoginAnonymously;

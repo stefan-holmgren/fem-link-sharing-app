@@ -7,7 +7,7 @@ import EmailIcon from "@/assets/icon-email.svg?react";
 import { Button } from "@/components/Button/Button";
 import { SnackbarContext } from "@/components/SnackbarContext/SnackbarContext";
 
-export const ForgotPassword = () => {
+const ForgotPassword = () => {
   const [isPending, startTransition] = useTransition();
   const emailRef = useRef<HTMLInputElement>(null);
   const { forgotPassword } = useAuthContext();
@@ -38,3 +38,5 @@ export const ForgotPassword = () => {
     </Form>
   );
 };
+
+export default ForgotPassword;

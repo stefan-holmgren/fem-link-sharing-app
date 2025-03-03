@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/hooks/useAuthContext";
 
-export const Logout = () => {
+const Logout = () => {
   const navigate = useNavigate();
   const { logout } = useAuthContext();
 
@@ -14,3 +14,5 @@ export const Logout = () => {
 
   return null;
 };
+
+export default Logout;

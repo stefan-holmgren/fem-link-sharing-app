@@ -13,7 +13,7 @@ import IconChangesSaved from "@/assets/icon-changes-saved.svg?react";
 import { downloadFileAsDataUrl } from "@/utils/file.utils";
 import { useAuthContext } from "@/hooks/useAuthContext";
 
-export const Profile = () => {
+const Profile = () => {
   const { user } = useAuthContext();
   const { userProfile } = useGetUserProfile(user?.id);
   const { mutateAsync: saveUserProfile, isPending: isMutating } = useSaveUserProfile();
@@ -126,3 +126,5 @@ export const Profile = () => {
     </>
   );
 };
+
+export default Profile;

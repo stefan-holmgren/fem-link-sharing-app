@@ -2,7 +2,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useEffect } from "react";
 
-export const RequireAuth = () => {
+const RequireAuth = () => {
   const { user } = useAuthContext();
   const navigate = useNavigate();
 
@@ -17,3 +17,5 @@ export const RequireAuth = () => {
   }
   return null;
 };
+
+export default RequireAuth;

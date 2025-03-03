@@ -8,7 +8,7 @@ import EmailIcon from "@/assets/icon-email.svg?react";
 import PasswordIcon from "@/assets/icon-password.svg?react";
 import { Button } from "@/components/Button/Button";
 
-export const SignUp = () => {
+const SignUp = () => {
   const { signup } = useAuthContext();
   const navigate = useNavigate();
   const [isPending, startTransition] = useTransition();
@@ -97,3 +97,5 @@ export const SignUp = () => {
     </Form>
   );
 };
+
+export default SignUp;

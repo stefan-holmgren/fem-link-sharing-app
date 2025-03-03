@@ -8,7 +8,7 @@ import { Input } from "../../../components/Input/Input";
 import { Form } from "../../../components/Form/Form";
 import { Button } from "@/components/Button/Button";
 
-export const Login = () => {
+const Login = () => {
   const [isPending, startTransition] = useTransition();
 
   const { login } = useAuthContext();
@@ -83,3 +83,5 @@ export const Login = () => {
     </Form>
   );
 };
+
+export default Login;

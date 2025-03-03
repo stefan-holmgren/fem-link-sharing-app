@@ -2,7 +2,7 @@ import styles from "./AuthLayout.module.css";
 import logo from "@/assets/logo-devlinks-large.svg";
 import { Outlet } from "react-router-dom";
 
-export const AuthLayout = () => {
+const AuthLayout = () => {
   return (
     <main className={styles["auth-layout"]}>
       <div>
@@ -16,3 +16,5 @@ export const AuthLayout = () => {
     </main>
   );
 };
+
+export default AuthLayout;

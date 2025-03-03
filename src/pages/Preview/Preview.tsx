@@ -10,7 +10,7 @@ import { UserLink } from "@/components/UserLink/UserLink";
 import { downloadFileAsDataUrl } from "@/utils/file.utils";
 import { useAuthContext } from "@/hooks/useAuthContext";
 
-export const Preview = () => {
+const Preview = () => {
   const { user } = useAuthContext();
   const { userLinks, isPending: isUserLinksPending } = useGetUserLinks(user?.id);
   const { userProfile, isPending: isUserProfilePending } = useGetUserProfile(user?.id);
@@ -83,3 +83,5 @@ export const Preview = () => {
     </div>
   );
 };
+
+export default Preview;

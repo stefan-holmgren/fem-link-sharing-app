@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 import styles from "./Public.module.css";
-import { NotFound404 } from "../NotFound404/NotFound404";
 import { useGetUserLinks } from "@/hooks/useGetUserLinks";
 import { useGetPublicUserProfile } from "@/hooks/useGetPublicUserProfile";
+import NotFound404 from "../NotFound404/NotFound404";
 
-export const Public = () => {
+const Public = () => {
   const userId: string | undefined = useParams().userId;
   const { userLinks } = useGetUserLinks(userId);
   const { userProfile } = useGetPublicUserProfile(userId);
@@ -22,3 +22,5 @@ export const Public = () => {
     </main>
   );
 };
+
+export default Public;

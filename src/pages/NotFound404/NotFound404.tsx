@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import styles from "./NotFound404.module.css";
 import { motion, Variants } from "framer-motion";
 
-export const NotFound404 = () => {
+const NotFound404 = () => {
   const header = "404";
   const characters = header.split("");
 
@@ -50,3 +50,5 @@ export const NotFound404 = () => {
     </div>
   );
 };
+
+export default NotFound404;

@@ -7,7 +7,7 @@ import { MobileAsideContext } from "./components/MobileAside/components/MobileAs
 import { UserLink } from "@/data/userLinks.data";
 import { UserProfile } from "@/data/userProfile.data";
 
-export const AppLayout = () => {
+const AppLayout = () => {
   const [showSkeleton, setShowSkeleton] = useState(true);
   const [userLinks, setUserLinks] = useState<UserLink[] | null>();
   const [userProfile, setUserProfile] = useState<UserProfile | null>();
@@ -26,3 +26,5 @@ export const AppLayout = () => {
     </div>
   );
 };
+
+export default AppLayout;

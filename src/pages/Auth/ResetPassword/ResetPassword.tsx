@@ -8,7 +8,7 @@ import PasswordIcon from "@/assets/icon-password.svg?react";
 import { Button } from "@/components/Button/Button";
 import { SnackbarContext } from "@/components/SnackbarContext/SnackbarContext";
 
-export const ResetPassword = () => {
+const ResetPassword = () => {
   const [isPending, createTransition] = useTransition();
   const passwordRef = useRef<HTMLInputElement>(null);
   const confirmPasswordRef = useRef<HTMLInputElement>(null);
@@ -90,3 +90,5 @@ export const ResetPassword = () => {
     </Form>
   );
 };
+
+export default ResetPassword;

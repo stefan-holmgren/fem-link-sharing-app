@@ -18,7 +18,7 @@ import { useAuthContext } from "@/hooks/useAuthContext";
 
 let uniqueId = 0;
 
-export const Links = () => {
+const Links = () => {
   const { user } = useAuthContext();
   const { userLinks, isPending } = useGetUserLinks(user?.id);
   const { userProfile } = useGetUserProfile(user?.id);
@@ -191,3 +191,5 @@ export const Links = () => {
     </>
   );
 };
+
+export default Links;
