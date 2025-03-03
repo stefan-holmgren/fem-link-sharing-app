@@ -14,7 +14,8 @@ import { AppLayout } from "./pages/App/AppLayout/AppLayout";
 import { RequireAuth } from "./components/RequireAuth/RequireAuth";
 import { SnackbarContextProvider } from "./components/SnackbarContext/SnackbarContextProvider";
 import { LoginAnonymously } from "./pages/Auth/LoginAnonymously/LoginAnonymosly";
-import { NotFound404 } from "./pages/App/NotFound404/NotFound404";
+import { NotFound404 } from "./pages/NotFound404/NotFound404";
+import { Public } from "./pages/Public/Public";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -44,6 +45,7 @@ const router = createBrowserRouter(
         <Route path="/logout" element={<Logout />} />
         <Route path="/preview" element={<Preview />} />
       </Route>
+      <Route path="/public/:userId" element={<Public />} />
       <Route path="*" element={<NotFound404 />} />
     </>
   )

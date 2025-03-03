@@ -1,4 +1,3 @@
-import { User } from "@/components/AuthContext/AuthContext";
 import { userLinksDataLocalStorage } from "./impl/userLinks.localstorage";
 import { userLinksDataSupabase } from "./impl/userLinks.supabase";
 
@@ -11,21 +10,21 @@ export type UserLink = {
 };
 
 export interface UserLinksData {
-  getUserLinks(user: User): Promise<UserLink[]>;
-  updateUserLinks(user: User, userLinks: UserLink[]): Promise<void>;
+  getUserLinks(userId: string): Promise<UserLink[]>;
+  updateUserLinks(userId: string, userLinks: UserLink[]): Promise<void>;
 }
 
-export const userLinksData: UserLinksData = {
-  getUserLinks: async (user) => {
-    if (user.isAnonymous) {
-      return userLinksDataLocalStorage.getUserLinks(user);
+export const userLinksData = {
+  getUserLinks: async (userId: string, local: boolean) => {
+    if (local) {
+      return userLinksDataLocalStorage.getUserLinks(userId);
     }
-    return userLinksDataSupabase.getUserLinks(user);
+    return userLinksDataSupabase.getUserLinks(userId);
   },
-  updateUserLinks: async (user, userLinks) => {
-    if (user.isAnonymous) {
-      return userLinksDataLocalStorage.updateUserLinks(user, userLinks);
+  updateUserLinks: async (userId: string, userLinks: UserLink[], local: boolean) => {
+    if (local) {
+      return userLinksDataLocalStorage.updateUserLinks(userId, userLinks);
     }
-    return userLinksDataSupabase.updateUserLinks(user, userLinks);
+    return userLinksDataSupabase.updateUserLinks(userId, userLinks);
   },
 };

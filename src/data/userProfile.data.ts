@@ -1,4 +1,3 @@
-import { User } from "@/components/AuthContext/AuthContext";
 import { userProfileDataSupabase } from "./impl/userProfile.supabase";
 import { userProfileDataLocalStorage } from "./impl/userProfile.localstorage";
 
@@ -9,22 +8,33 @@ export type UserProfile = {
   profileImageFile?: File;
 };
 
+export type PublicUserProfile = {
+  firstName: string;
+  lastName: string;
+  email?: string;
+  profileImageUrl?: string;
+};
+
 export interface UserProfileData {
-  getUserProfile(user: User): Promise<UserProfile | null>;
-  updateUserProfile(user: User, userProfile: UserProfile): Promise<void>;
+  getUserProfile(userId: string): Promise<UserProfile | null>;
+  getPublicUserProfile(userId: string): Promise<PublicUserProfile | null>;
+  updateUserProfile(userId: string, userProfile: UserProfile): Promise<void>;
 }
 
-export const userProfileData: UserProfileData = {
-  getUserProfile: (user) => {
-    if (user.isAnonymous) {
-      return userProfileDataLocalStorage.getUserProfile(user);
+export const userProfileData = {
+  getUserProfile: (userId: string, local: boolean) => {
+    if (local) {
+      return userProfileDataLocalStorage.getUserProfile(userId);
     }
-    return userProfileDataSupabase.getUserProfile(user);
+    return userProfileDataSupabase.getUserProfile(userId);
   },
-  updateUserProfile: async (user, userProfile) => {
-    if (user.isAnonymous) {
-      return userProfileDataLocalStorage.updateUserProfile(user, userProfile);
+  getPublicUserProfile: async (userId: string) => {
+    return userProfileDataSupabase.getPublicUserProfile(userId);
+  },
+  updateUserProfile: async (userId: string, userProfile: UserProfile, local: boolean) => {
+    if (local) {
+      return userProfileDataLocalStorage.updateUserProfile(userId, userProfile);
     }
-    return userProfileDataSupabase.updateUserProfile(user, userProfile);
+    return userProfileDataSupabase.updateUserProfile(userId, userProfile);
   },
 };

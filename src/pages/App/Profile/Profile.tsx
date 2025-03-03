@@ -11,11 +11,13 @@ import { useSaveUserProfile } from "@/hooks/useSaveUserProfile";
 import { SnackbarContext } from "@/components/SnackbarContext/SnackbarContext";
 import IconChangesSaved from "@/assets/icon-changes-saved.svg?react";
 import { downloadFileAsDataUrl } from "@/utils/file.utils";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 export const Profile = () => {
-  const { userProfile } = useGetUserProfile();
+  const { user } = useAuthContext();
+  const { userProfile } = useGetUserProfile(user?.id);
   const { mutateAsync: saveUserProfile, isPending: isMutating } = useSaveUserProfile();
-  const { userLinks } = useGetUserLinks();
+  const { userLinks } = useGetUserLinks(user?.id);
   const [dirty, setDirty] = useState(false);
   const [currentUserProfile, setCurrentUserProfile] = useState(userProfile);
   const [profileImageDataUrl, setProfileImageDataUrl] = useState<string>();

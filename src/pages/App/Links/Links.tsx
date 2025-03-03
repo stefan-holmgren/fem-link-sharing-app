@@ -14,12 +14,14 @@ import { SaveForm } from "@/components/SaveForm/SaveForm";
 import { SaveBlocker } from "@/components/SaveBlocker/SaveBlocker";
 import { useGetUserProfile } from "@/hooks/useGetUserProfile";
 import IconChangesSaved from "@/assets/icon-changes-saved.svg?react";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 let uniqueId = 0;
 
 export const Links = () => {
-  const { userLinks, isPending } = useGetUserLinks();
-  const { userProfile } = useGetUserProfile();
+  const { user } = useAuthContext();
+  const { userLinks, isPending } = useGetUserLinks(user?.id);
+  const { userProfile } = useGetUserProfile(user?.id);
   const [currentUserLinks, setCurrentUserLinks] = useState<UserLinkWithUniqueId[]>([]);
   const [duplicatedLinkIds, setDuplicatedLinkIds] = useState<number[]>([]);
   const { mutate, isPending: isMutating, isSuccess: isMutationSuccess, isError: isMutationError } = useSaveUserLinks();

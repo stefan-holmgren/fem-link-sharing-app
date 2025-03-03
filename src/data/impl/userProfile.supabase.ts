@@ -9,15 +9,31 @@ const downloadProfilePicture = async (profileImagePath: string) => {
   return profilePicture ? new File([profilePicture], profileImagePath, { type: profilePicture.type }) : undefined;
 };
 
-export const userProfileDataSupabase: UserProfileData = {
-  async getUserProfile(user) {
-    const { data: userProfile } = await supabase
-      .from("link_sharing")
-      .select("first_name, last_name, email, profile_image_path")
-      .eq("user_id", user.id)
-      .limit(1)
-      .maybeSingle();
+const fetchUserProfileFromSupabase = async (
+  userId: string
+): Promise<{
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  profile_image_path?: string;
+} | null> => {
+  const { data } = await supabase.from("link_sharing").select("first_name, last_name, email, profile_image_path").eq("user_id", userId).limit(1).maybeSingle();
 
+  if (!data) {
+    return null;
+  }
+
+  return {
+    first_name: data.first_name,
+    last_name: data.last_name,
+    email: data.email,
+    profile_image_path: data.profile_image_path,
+  };
+};
+
+export const userProfileDataSupabase: UserProfileData = {
+  async getUserProfile(userId) {
+    const userProfile = await fetchUserProfileFromSupabase(userId);
     if (!userProfile) {
       return null;
     }
@@ -25,15 +41,31 @@ export const userProfileDataSupabase: UserProfileData = {
     const profileImageFile = userProfile.profile_image_path ? await downloadProfilePicture(userProfile.profile_image_path) : undefined;
 
     return {
-      firstName: userProfile.first_name,
-      lastName: userProfile.last_name,
+      firstName: userProfile.first_name ?? "",
+      lastName: userProfile.last_name ?? "",
       email: userProfile.email,
       profileImageFile: profileImageFile,
     };
   },
 
-  async updateUserProfile(user, userProfile) {
-    const profileImagePath = userProfile.profileImageFile ? `${user.id}/link_sharing_profile_picture` : undefined;
+  async getPublicUserProfile(userId) {
+    const userProfile = await fetchUserProfileFromSupabase(userId);
+    if (!userProfile) {
+      return null;
+    }
+
+    return {
+      firstName: userProfile.first_name ?? "",
+      lastName: userProfile.last_name ?? "",
+      email: userProfile.email,
+      profileImageUrl: userProfile.profile_image_path
+        ? supabase.storage.from("user_data").getPublicUrl(userProfile.profile_image_path).data.publicUrl
+        : undefined,
+    };
+  },
+
+  async updateUserProfile(userId, userProfile) {
+    const profileImagePath = userProfile.profileImageFile ? `${userId}/link_sharing_profile_picture` : undefined;
     if (userProfile.profileImageFile && profileImagePath) {
       const { error: profilePictureUploadError } = await supabase.storage
         .from("user_data")
@@ -45,7 +77,7 @@ export const userProfileDataSupabase: UserProfileData = {
 
     const { error: userProfileUpdateError } = await supabase.from("link_sharing").upsert(
       {
-        user_id: user.id,
+        user_id: userId,
         first_name: userProfile.firstName,
         last_name: userProfile.lastName,
         email: userProfile.email,

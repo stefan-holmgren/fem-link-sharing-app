@@ -8,10 +8,12 @@ import { useGetUserLinks } from "@/hooks/useGetUserLinks";
 import { useGetUserProfile } from "@/hooks/useGetUserProfile";
 import { UserLink } from "@/components/UserLink/UserLink";
 import { downloadFileAsDataUrl } from "@/utils/file.utils";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 export const Preview = () => {
-  const { userLinks, isPending: isUserLinksPending } = useGetUserLinks();
-  const { userProfile, isPending: isUserProfilePending } = useGetUserProfile();
+  const { user } = useAuthContext();
+  const { userLinks, isPending: isUserLinksPending } = useGetUserLinks(user?.id);
+  const { userProfile, isPending: isUserProfilePending } = useGetUserProfile(user?.id);
   const [profileImageUrl, setProfileImageUrl] = useState<string>();
   const location = useLocation();
 
@@ -25,8 +27,18 @@ export const Preview = () => {
   }, [userProfile]);
 
   const onShareLink = () => {
-    // TODO Generate a shareable link
-    navigator.clipboard.writeText(window.location.href);
+    if (!user) {
+      snackbars.showSnackbar({ message: "You need to be logged in to share your profile", variant: "negative" });
+      return;
+    }
+
+    if (user.isAnonymous) {
+      snackbars.showSnackbar({ message: "You cannot share a profile which is locally stored on your device", variant: "negative" });
+      return;
+    }
+
+    const shareUrl = `${window.location.origin}/public/${user.id}`;
+    navigator.clipboard.writeText(shareUrl);
     snackbars.showSnackbar({ message: "The link has been copied to your clipboard", variant: "positive", icon: <IconLink /> });
   };
 

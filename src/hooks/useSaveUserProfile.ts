@@ -11,7 +11,8 @@ export const useSaveUserProfile = () => {
       if (!user) {
         throw new Error("User is not authenticated");
       }
-      return userProfileData.updateUserProfile(user, userProfile);
+      const localData = user.isAnonymous;
+      return userProfileData.updateUserProfile(user.id, userProfile, localData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["userProfile", user?.id] });

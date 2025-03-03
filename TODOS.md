@@ -12,3 +12,4 @@
 - CAPTCHA for anonymous signins
 - Can we skip supabase altogether for anonymous login?
 - Add "Delete account" functionality
+- Keeping track whether user is anonymous is a bit weird :/
