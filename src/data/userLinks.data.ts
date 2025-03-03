@@ -1,7 +1,21 @@
 import { userLinksDataLocalStorage } from "./impl/userLinks.localstorage";
 import { userLinksDataSupabase } from "./impl/userLinks.supabase";
 
-export const platforms = ["github", "frontend-mentor", "x", "linkedin", "youtube"] as const;
+export const platforms = [
+  "github",
+  "frontend-mentor",
+  "x",
+  "linkedin",
+  "youtube",
+  "facebook",
+  "twitch",
+  "devto",
+  "codewars",
+  "freecodecamp",
+  "gitlab",
+  "hashnode",
+  "stackoverflow",
+] as const;
 export type Platform = (typeof platforms)[number];
 
 export type UserLink = {

@@ -35,4 +35,37 @@
   &.youtube {
     background-color: #ee3939;
   }
+
+  &.facebook {
+    background-color: #2442ac;
+  }
+
+  &.twitch {
+    background-color: #ee3fc8;
+  }
+
+  &.devto {
+    --icon-secondary-color: var(--clr-dark-grey);
+    background-color: var(--clr-dark-grey);
+  }
+
+  &.codewars {
+    background-color: #8a1a50;
+  }
+
+  &.freecodecamp {
+    background-color: #302267;
+  }
+
+  &.gitlab {
+    background-color: #eb4925;
+  }
+
+  &.hashnode {
+    background-color: #0330d1;
+  }
+
+  &.stackoverflow {
+    background-color: #ec7100;
+  }
 }
