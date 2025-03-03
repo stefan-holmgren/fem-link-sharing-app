@@ -17,8 +17,5 @@ export const useSaveUserProfile = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["userProfile", user?.id] });
     },
-    onError: (error) => {
-      console.error("Error saving user profile: ", error);
-    },
   });
 };

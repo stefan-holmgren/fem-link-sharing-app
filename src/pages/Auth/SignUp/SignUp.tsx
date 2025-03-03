@@ -50,8 +50,6 @@ const SignUp = () => {
       const result = await signup(email, password);
       if (result.success) {
         navigate("/", { replace: true });
-      } else {
-        console.error("Failed to sign up", result.errorMessage);
       }
     });
   };

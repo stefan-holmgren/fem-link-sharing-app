@@ -2,10 +2,7 @@ import { getUserProfilePicturePath, supabase } from "@/config/supabase";
 import { UserProfileData } from "../userProfile.data";
 
 const downloadProfilePicture = async (profileImagePath: string) => {
-  const { data: profilePicture, error: profilePictureError } = await supabase.storage.from("user_data").download(profileImagePath);
-  if (profilePictureError) {
-    console.error("Error downloading profile picture: ", profilePictureError);
-  }
+  const { data: profilePicture } = await supabase.storage.from("user_data").download(profileImagePath);
   return profilePicture ? new File([profilePicture], profileImagePath, { type: profilePicture.type }) : undefined;
 };
 
@@ -51,12 +48,7 @@ export const userProfileDataSupabase: UserProfileData = {
   async updateUserProfile(userId, userProfile) {
     const profileImagePath = userProfile.profileImageFile ? getUserProfilePicturePath(userId) : undefined;
     if (userProfile.profileImageFile && profileImagePath) {
-      const { error: profilePictureUploadError } = await supabase.storage
-        .from("user_data")
-        .upload(profileImagePath, userProfile.profileImageFile, { upsert: true, cacheControl: "3600" });
-      if (profilePictureUploadError) {
-        console.error("Error uploading profile picture: ", profilePictureUploadError);
-      }
+      await supabase.storage.from("user_data").upload(profileImagePath, userProfile.profileImageFile, { upsert: true, cacheControl: "3600" });
     }
 
     const { error: userProfileUpdateError } = await supabase.from("link_sharing").upsert(

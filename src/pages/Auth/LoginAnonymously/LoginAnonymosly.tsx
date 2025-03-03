@@ -13,8 +13,7 @@ const LoginAnonymously = () => {
       try {
         await supabase.auth.signInAnonymously();
         navigate("/", { replace: true });
-      } catch (error) {
-        console.error("Failed to login anonymously", error);
+      } catch {
         snackbars.showSnackbar({
           message: "Failed to login anonymously",
           variant: "negative",
