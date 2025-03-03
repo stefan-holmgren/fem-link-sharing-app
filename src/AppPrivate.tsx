@@ -48,7 +48,8 @@ const router = createBrowserRouter(
       </Route>
       <Route path="*" element={<NotFound404 />} />
     </>
-  )
+  ),
+  { basename: "/fem-link-sharing-app" }
 );
 
 function AppPrivate() {

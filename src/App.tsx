@@ -5,7 +5,7 @@ const AppPrivate = lazy(() => import("./AppPrivate"));
 
 function App() {
   const location = window.location;
-  const isPublic = location.pathname.startsWith("/public");
+  const isPublic = location.pathname.startsWith("/fem-link-sharing-app/public");
 
   return isPublic ? <AppPublic /> : <AppPrivate />;
 }
