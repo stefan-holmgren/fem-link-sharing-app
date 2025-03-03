@@ -1,0 +1,38 @@
+.preview {
+  position: relative;
+
+  background-color: var(--clr-white);
+  min-height: 100dvh;
+
+  @media (min-width: 768px) {
+    background-color: var(--clr-light-grey);
+  }
+
+  header {
+    z-index: 1;
+    background-color: var(--clr-white);
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    padding: 1rem 1.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1rem;
+
+    @media (min-width: 768px) {
+      top: 1rem;
+      left: 1rem;
+      right: 1rem;
+      border-radius: 0.75rem;
+
+      > :nth-child(1) {
+        justify-self: start;
+      }
+
+      > :nth-child(2) {
+        justify-self: end;
+      }
+    }
+  }
+}

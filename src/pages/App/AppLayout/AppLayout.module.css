@@ -1,0 +1,19 @@
+.app-layout {
+  > div {
+    @media (min-width: 1024px) {
+      display: grid;
+      grid-template-columns: auto 1fr;
+    }
+
+    main {
+      min-height: calc(var(--vh-100) - var(--header-height) - 2rem);
+      background-color: var(--clr-white);
+      margin: 1rem;
+      border-radius: 0.75rem;
+
+      @media (min-width: 768px) {
+        margin: 1.5rem;
+      }
+    }
+  }
+}

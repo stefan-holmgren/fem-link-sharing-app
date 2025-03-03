@@ -1,0 +1,49 @@
+.upload-image-button {
+  position: relative;
+  overflow: clip;
+  cursor: pointer;
+  transition: filter 0.2s ease;
+  border-radius: 0.75rem;
+  border: none;
+  background-color: var(--clr-light-purple);
+  width: 12rem;
+  height: 12rem;
+  color: var(--clr-purple);
+  font-weight: 600;
+
+  background-size: cover;
+  background-position: center;
+
+  &[style*="background-image"] {
+    color: white;
+
+    div {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  div {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+
+    > svg {
+      margin: auto;
+    }
+
+    > span {
+      display: block;
+      margin-top: 0.5rem;
+    }
+  }
+
+  @media (min-width: 768px) {
+    margin-top: 0;
+  }
+
+  &:hover,
+  &:focus {
+    filter: drop-shadow(0 0 1rem var(--clr-purple-drop-shadow));
+  }
+}

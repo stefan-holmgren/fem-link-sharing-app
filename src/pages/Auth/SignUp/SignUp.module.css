@@ -1,0 +1,23 @@
+.signup {
+  --input-background-clr: var(--clr-light-grey);
+
+  > p.password-info {
+    margin-top: 1.5rem;
+    font-size: 0.75em;
+    color: var(--clr-grey);
+    text-align: left;
+  }
+
+  > p {
+    margin-top: 1.5rem;
+    color: var(--clr-grey);
+    text-align: center;
+
+    > a {
+      display: block;
+      @media (min-width: 768px) {
+        display: inline;
+      }
+    }
+  }
+}

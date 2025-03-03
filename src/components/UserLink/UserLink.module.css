@@ -1,0 +1,71 @@
+.userlink {
+  border-radius: 0.5rem;
+  border: none;
+  width: 100%;
+  text-align: left;
+  min-height: 2.75rem;
+  box-sizing: border-box;
+
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  column-gap: 0.5rem;
+  padding: 0.5rem 1rem;
+
+  color: #fff;
+
+  &.github {
+    background-color: #1a1a1a;
+  }
+
+  &.frontend-mentor {
+    color: var(--clr-dark-grey);
+    background-color: #ffffff;
+    border: 1px solid var(--clr-borders);
+  }
+
+  &.x {
+    background-color: #000000;
+  }
+
+  &.linkedin {
+    background-color: #2d68ff;
+  }
+
+  &.youtube {
+    background-color: #ee3939;
+  }
+
+  &.facebook {
+    background-color: #2442ac;
+  }
+
+  &.twitch {
+    background-color: #ee3fc8;
+  }
+
+  &.devto {
+    --icon-secondary-color: var(--clr-dark-grey);
+    background-color: var(--clr-dark-grey);
+  }
+
+  &.codewars {
+    background-color: #8a1a50;
+  }
+
+  &.freecodecamp {
+    background-color: #302267;
+  }
+
+  &.gitlab {
+    background-color: #eb4925;
+  }
+
+  &.hashnode {
+    background-color: #0330d1;
+  }
+
+  &.stackoverflow {
+    background-color: #ec7100;
+  }
+}

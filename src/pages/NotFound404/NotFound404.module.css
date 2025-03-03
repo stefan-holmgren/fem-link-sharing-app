@@ -1,0 +1,32 @@
+.not-found-404 {
+  display: grid;
+  place-items: center;
+  min-height: var(--vh-100);
+
+  h1 {
+    font-size: 4em;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    display: block;
+    filter: drop-shadow(0 0 2rem var(--clr-purple));
+    span {
+      display: inline-block;
+    }
+  }
+
+  p {
+    text-align: center;
+  }
+
+  p:first-of-type {
+    font-weight: 600;
+    color: var(--clr-grey);
+    text-align: center;
+    font-size: 1.125em;
+    margin-top: 1rem;
+  }
+
+  p {
+    margin-top: 1.5rem;
+  }
+}

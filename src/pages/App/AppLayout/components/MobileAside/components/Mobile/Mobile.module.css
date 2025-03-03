@@ -1,0 +1,83 @@
+.mobile {
+  position: relative;
+  object-fit: contain;
+
+  > div {
+    position: absolute;
+    top: 4rem;
+    width: 14.8125rem;
+    height: 32.125rem;
+    left: 50%;
+    transform: translateX(-50%);
+
+    align-items: center;
+
+    .profile-picture {
+      --size: 6rem;
+      width: var(--size);
+      height: var(--size);
+      margin: auto;
+      border-radius: 50%;
+      overflow: clip;
+      background-size: cover;
+      background-position: center;
+      outline: 4px solid var(--clr-purple);
+      visibility: hidden;
+
+      &[style*="background-image"] {
+        visibility: visible;
+      }
+    }
+
+    .profile-details {
+      margin: auto;
+      margin-top: 1rem;
+      width: calc(100% - 2rem);
+      text-align: center;
+      h2 {
+        background-color: var(--clr-white);
+        font-weight: 600;
+        font-size: 1.125em;
+        min-height: calc(1em * 1.5); /* font-size * line-height */
+        color: var(--clr-dark-grey);
+
+        &:empty {
+          visibility: hidden;
+        }
+      }
+      p {
+        background-color: var(--clr-white);
+        margin-top: 0.5rem;
+        font-size: 0.875em;
+        color: var(--clr-grey);
+        &:empty {
+          visibility: hidden;
+        }
+      }
+    }
+
+    .profile-links {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      min-height: 20rem;
+      top: 13.375rem;
+      width: 100%;
+
+      margin: auto;
+      background-color: var(--clr-white);
+
+      &.links-skeleton {
+        background-color: transparent;
+      }
+
+      li {
+        pointer-events: none;
+        &:nth-child(n + 6) {
+          display: none;
+        }
+      }
+    }
+  }
+}

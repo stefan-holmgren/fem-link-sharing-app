@@ -1,0 +1,48 @@
+.save-form {
+  h1 {
+    font-size: 1.5em;
+
+    @media (min-width: 768px) {
+      font-size: 2em;
+    }
+  }
+
+  p.description {
+    margin-top: 0.5rem;
+    color: var(--clr-grey);
+  }
+
+  display: flex;
+  flex-direction: column;
+
+  .content-container {
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+
+    @media (min-width: 768px) {
+      padding: 2.5rem 2.5rem 2.5rem 2.5rem;
+      height: calc(var(--vh-100) - var(--header-height) - 8rem);
+      overflow-y: auto;
+    }
+  }
+
+  .save-container {
+    padding: 1rem;
+    border-top: 1px solid var(--clr-borders);
+
+    @media (min-width: 768px) {
+      padding: 1.5rem 2.5rem;
+    }
+
+    button {
+      width: 100%;
+
+      @media (min-width: 768px) {
+        display: block;
+        width: auto;
+        margin-left: auto;
+      }
+    }
+  }
+}

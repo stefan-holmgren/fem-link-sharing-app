@@ -1,0 +1,82 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+
+  &[data-state="open"] {
+    animation: fadeIn 0.1s ease-out;
+  }
+
+  &[data-state="closed"] {
+    animation: fadeOut 0.3s ease-in;
+  }
+}
+
+.content {
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, 0);
+  z-index: 2;
+  padding: 1rem 1.5rem;
+
+  width: 100%;
+  border-radius: 0 0 0.75rem 0.75rem;
+
+  @media (min-width: 768px) {
+    border-radius: 0.75rem;
+    margin-top: 2rem;
+    padding: 1.5rem 2rem;
+    max-width: 25rem;
+  }
+
+  &[data-state="open"] {
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  &[data-state="closed"] {
+    animation: fadeOut 0.2s ease-in;
+  }
+
+  .title {
+    color: var(--clr-dark-grey);
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .description {
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: var(--clr-grey);
+  }
+
+  .button-strip {
+    margin-top: 2.5rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    button {
+      min-width: 6rem;
+    }
+  }
+}

@@ -1,0 +1,13 @@
+.snackbar {
+  color: var(--clr-light-grey);
+  background-color: var(--clr-dark-grey);
+  font-weight: 600;
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  pointer-events: auto;
+  margin: 0 1rem;
+}

@@ -1,0 +1,50 @@
+.link {
+  --input-background-clr: var(--clr-white);
+
+  > div {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+
+    button {
+      margin-left: auto;
+    }
+
+    .draggable {
+      touch-action: none;
+      align-items: center;
+      cursor: move;
+      display: flex;
+    }
+  }
+
+  h3 {
+    font-weight: 700;
+    font-size: 1em;
+    margin-left: 0.5rem;
+  }
+
+  button {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    font-weight: 400;
+    min-height: auto;
+    color: grey;
+  }
+
+  fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    border: none;
+    padding: 0;
+    margin: 0.75rem 0 0 0;
+  }
+
+  .counter {
+    &:after {
+      content: counter(link-counter);
+    }
+  }
+}
