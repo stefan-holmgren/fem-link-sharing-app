@@ -1,8 +1,8 @@
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { SupabaseAuthContextProvider } from "./components/AuthContext/supabase/SupabaseAuthContextProvider";
 import { SnackbarContextProvider } from "./components/SnackbarContext/SnackbarContextProvider";
 import { lazy } from "react";
+import { AuthContextProvider } from "./components/AuthContext/AuthContextProvider";
 
 const Links = lazy(() => import("./pages/App/Links/Links"));
 const Login = lazy(() => import("./pages/Auth/Login/Login"));
@@ -55,11 +55,11 @@ const router = createBrowserRouter(
 function AppPrivate() {
   return (
     <QueryClientProvider client={queryClient}>
-      <SupabaseAuthContextProvider>
+      <AuthContextProvider>
         <SnackbarContextProvider>
           <RouterProvider router={router} />
         </SnackbarContextProvider>
-      </SupabaseAuthContextProvider>
+      </AuthContextProvider>
     </QueryClientProvider>
   );
 }
