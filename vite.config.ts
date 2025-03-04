@@ -5,7 +5,7 @@ import svgr from "vite-plugin-svgr";
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "/fem-link-sharing-app/",
+  base: "/fem-link-sharing-app",
   plugins: [
     react(),
     svgr({
