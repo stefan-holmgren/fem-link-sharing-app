@@ -7,6 +7,7 @@ import PreviewIcon from "@/assets/icon-preview-header.svg?react";
 import { Button } from "@/components/Button/Button";
 import { useAnimate } from "motion/react";
 import { useCallback, useEffect } from "react";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
 export const Header = () => {
   const [scope, animate] = useAnimate();
@@ -51,7 +52,14 @@ export const Header = () => {
   return (
     <header className={styles.header}>
       <nav>
-        <HeaderLogo />
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger>
+            <HeaderLogo />
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content className={styles["dropdown-content"]} align={"start"}>
+            <DropdownMenu.Item onSelect={() => navigate("/logout")}>Log out</DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
         <ul ref={scope}>
           <li>
             <NavLink to="/">
