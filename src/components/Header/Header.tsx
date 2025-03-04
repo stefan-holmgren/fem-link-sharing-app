@@ -53,7 +53,7 @@ export const Header = () => {
     <header className={styles.header}>
       <nav>
         <DropdownMenu.Root>
-          <DropdownMenu.Trigger>
+          <DropdownMenu.Trigger className={styles["dropdown-trigger"]}>
             <HeaderLogo />
           </DropdownMenu.Trigger>
           <DropdownMenu.Content className={styles["dropdown-content"]} align={"start"}>
