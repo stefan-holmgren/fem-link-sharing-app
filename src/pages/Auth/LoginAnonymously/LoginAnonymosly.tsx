@@ -1,5 +1,5 @@
 import { SnackbarContext } from "@/components/SnackbarContext/SnackbarContext";
-import { supabase } from "@/config/supabase";
+import { useAuthContext } from "@/hooks/useAuthContext";
 import { use, useEffect, useTransition } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -7,11 +7,12 @@ const LoginAnonymously = () => {
   const snackbars = use(SnackbarContext);
   const [isPending, startTransition] = useTransition();
   const navigate = useNavigate();
+  const { loginAnonymously } = useAuthContext();
 
   useEffect(() => {
     startTransition(async () => {
       try {
-        await supabase.auth.signInAnonymously();
+        await loginAnonymously();
         navigate("/", { replace: true });
       } catch {
         snackbars.showSnackbar({
@@ -21,7 +22,7 @@ const LoginAnonymously = () => {
         navigate("/login", { replace: true });
       }
     });
-  }, [navigate, snackbars]);
+  }, [loginAnonymously, navigate, snackbars]);
 
   // @todo - spinner?
   return isPending ? "..." : null;

@@ -1,5 +1,7 @@
 import { createContext } from "react";
 
+export type UserChangeCallback = (user: User | null) => void;
+
 export type User = {
   id: string;
   email: string | null;
@@ -9,6 +11,7 @@ export type User = {
 export type AuthContextType = {
   user: User | null | undefined;
   login: (email: string, password: string) => Promise<{ success: true } | { success: false; error: "invalid_credentials" | "other" }>;
+  loginAnonymously: () => Promise<{ success: true } | { success: false; errorMessage: string }>;
   logout: () => Promise<{ success: true } | { success: false; errorMessage: string }>;
   signup: (email: string, password: string) => Promise<{ success: true } | { success: false; errorMessage: string }>;
   forgotPassword: (email: string) => Promise<{ success: true } | { success: false; errorMessage: string }>;
@@ -19,6 +22,9 @@ export const AuthContext = createContext<AuthContextType>({
   user: undefined,
   login: async () => {
     throw new Error("login() not implemented");
+  },
+  loginAnonymously: async () => {
+    throw new Error("loginAnonymously() not implemented");
   },
   logout: async () => {
     throw new Error("logout() not implemented");
