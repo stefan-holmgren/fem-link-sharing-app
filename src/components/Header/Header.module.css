@@ -57,7 +57,7 @@
       }
     }
 
-    button:last-of-type {
+    button {
       justify-self: end;
       svg {
         display: none;
