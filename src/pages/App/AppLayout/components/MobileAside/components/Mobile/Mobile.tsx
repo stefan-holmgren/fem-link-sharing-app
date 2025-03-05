@@ -43,7 +43,7 @@ export const Mobile = ({ className = "", ref, showLinksSkeleton = true, userLink
         <ul className={`${styles["profile-links"]} ${showLinksSkeleton ? styles["links-skeleton"] : ""}`}>
           {userLinks?.map((userLink, index) => (
             <li key={userLink.platform + userLink.url + index}>
-              <UserLink userLink={userLink} />
+              <UserLink userLink={userLink} tabIndex={-1} />
             </li>
           ))}
         </ul>

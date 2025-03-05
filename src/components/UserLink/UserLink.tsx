@@ -6,11 +6,11 @@ import IconArrowRight from "@/assets/icon-arrow-right.svg?react";
 
 type UserLinkProps = HTMLAttributes<HTMLAnchorElement> & { userLink: UserLinkType; ref?: Ref<HTMLAnchorElement> };
 
-export const UserLink = ({ className = "", userLink: { platform, url }, ref }: UserLinkProps) => {
+export const UserLink = ({ className = "", userLink: { platform, url }, ref, ...rest }: UserLinkProps) => {
   const { icon, name } = platformMap[platform];
   const mergedClassName = `${styles["userlink"]} ${styles[platform]} ${className}`;
   return (
-    <a className={mergedClassName} ref={ref} href={url} target="_blank" rel="noreferrer">
+    <a className={mergedClassName} ref={ref} href={url} target="_blank" rel="noreferrer" {...rest}>
       {icon}
       <span>{name}</span>
       <IconArrowRight />
